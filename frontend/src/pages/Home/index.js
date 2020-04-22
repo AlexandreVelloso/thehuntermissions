@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiRefreshCcw } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './styles.css';
 import NavBar from '../../components/Navbar';
@@ -94,6 +94,7 @@ export default function Home() {
             if (animal.mission.id === missionId) {
                 const objectives = animal.mission.objectives.map((objective) => {
                     objective.completed = true;
+                    return objective;
                 });
 
                 animal.objectives = objectives;
@@ -124,7 +125,7 @@ export default function Home() {
                     {animals.map(animal => (
                         <li key={animal.id}>
                             <div className="animal-title">
-                                <h1>{animal.name}</h1>
+                                <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>
                                 <button onClick={() => handleCompleteMission(animal.mission.id)} disabled={loading}>Complete mission</button>
                             </div>
                             <div className="mission-info">

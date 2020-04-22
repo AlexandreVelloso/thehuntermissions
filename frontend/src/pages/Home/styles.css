@@ -76,6 +76,11 @@
     padding-left: 10px;
 }
 
+.animal-title a {
+    text-decoration: none;
+    color: black;
+}
+
 .animal-title button {
     background-color: green;
     color: white;
