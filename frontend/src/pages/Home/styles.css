@@ -33,6 +33,12 @@
     list-style: none;
 }
 
+@media screen and (max-width: 992px) {
+    .home-container ul {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
 .home-container ul li {
     background: #fff;
     padding: 12px;
