@@ -6,7 +6,7 @@ import './styles.css';
 
 import logo from '../../assets/Logo.jpg';
 
-export default function MyNavBar() {
+export default function MyNavBar({ username }) {
     const history = useHistory();
 
     async function handleLogout() {
@@ -22,7 +22,7 @@ export default function MyNavBar() {
             <Link className="menuLink" to="/">Equipament</Link>
 
             <div className="user-info">
-                Welcome <Link to="/">AlexandreVelloso</Link>
+                Welcome <Link to="/">{username}</Link>
                 <button onClick={handleLogout}>
                     <FiPower size={25} className="logout-icon" color="#fff" />
                     Logout
