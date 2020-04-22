@@ -3,6 +3,7 @@ exports.seed = function seed(knex) {
     // Deletes ALL existing entries
     return knex('animals').del()
         .then(() => knex('animals').insert([
+            { name: 'All Ducks' },
             { name: 'Alpine Ibex' },
             { name: 'American Black Duck' },
             { name: 'Arctic Fox' },
@@ -31,6 +32,7 @@ exports.seed = function seed(knex) {
             { name: 'Northern Pintail' },
             { name: 'Pheasant' },
             { name: 'Polar Bear' },
+            { name: 'Ptarmigans' },
             { name: 'Red Deer' },
             { name: 'Red Fox' },
             { name: 'Red Kangaroo' },

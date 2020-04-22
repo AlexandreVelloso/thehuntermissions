@@ -7,37 +7,39 @@ async function findAnimalBy(column, value) {
         .first();
 }
 
-function allDucksMissions() {
+async function allDucksMissions() {
+    const allDucks = await findAnimalBy('name', 'All Ducks');
+
     return [
         {
-            name: 'First Audition', reward: 100, hint: '', animal_id: null,
+            name: 'First Audition', reward: 100, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'The Soprano', reward: 200, hint: '', animal_id: null,
+            name: 'The Soprano', reward: 200, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'The Baritone', reward: 300, hint: '', animal_id: null,
+            name: 'The Baritone', reward: 300, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Sprechgesang', reward: 400, hint: '', animal_id: null,
+            name: 'Sprechgesang', reward: 400, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Backing Vocals', reward: 600, hint: '', animal_id: null,
+            name: 'Backing Vocals', reward: 600, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Resonating Bodies', reward: 800, hint: '', animal_id: null,
+            name: 'Resonating Bodies', reward: 800, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Bird Rights', reward: 1000, hint: '', animal_id: null,
+            name: 'Bird Rights', reward: 1000, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Silencing the Critics', reward: 1200, hint: '', animal_id: null,
+            name: 'Silencing the Critics', reward: 1200, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'Dress Rehearsal', reward: 1800, hint: '', animal_id: null,
+            name: 'Dress Rehearsal', reward: 1800, hint: '', animal_id: allDucks.id,
         },
         {
-            name: 'The Grand Premiere', reward: 3600, hint: '', animal_id: null,
+            name: 'The Grand Premiere', reward: 3600, hint: '', animal_id: allDucks.id,
         },
     ];
 }
@@ -970,37 +972,38 @@ async function polarBearMissions() {
     ];
 }
 
-function ptarmiganMissions() {
+async function ptarmiganMissions() {
+    const ptarmigans = await findAnimalBy('name', 'Ptarmigans');
     return [
         {
-            name: 'Haud Yer Wheesht!', reward: 100, hint: '', animal_id: null,
+            name: 'Haud Yer Wheesht!', reward: 100, hint: '', animal_id: ptarmigans.id,
         },
         {
-            name: 'All Ptarmigans a\' Jock Tamson\'s Bairns!', reward: 200, hint: '', animal_id: null,
+            name: 'All Ptarmigans a\' Jock Tamson\'s Bairns!', reward: 200, hint: '', animal_id: ptarmigans.id,
         },
         {
-            name: 'It\'s a Lang Road That\'s No Goat a Turnin\'!', reward: 300, hint: 'Location: Mountains of Val-des-Bois.', animal_id: null,
+            name: 'It\'s a Lang Road That\'s No Goat a Turnin\'!', reward: 300, hint: 'Location: Mountains of Val-des-Bois.', animal_id: ptarmigans.id,
         },
         {
-            name: 'Guid Gear Comes in Sma\' Bulk!', reward: 400, hint: 'Location: Mountains of Val-des-Bois', animal_id: null,
+            name: 'Guid Gear Comes in Sma\' Bulk!', reward: 400, hint: 'Location: Mountains of Val-des-Bois', animal_id: ptarmigans.id,
         },
         {
-            name: 'It\'s a Sair Ficht For Half a Loaf!', reward: 600, hint: 'Location: Western half of Hemmeldal', animal_id: null,
+            name: 'It\'s a Sair Ficht For Half a Loaf!', reward: 600, hint: 'Location: Western half of Hemmeldal', animal_id: ptarmigans.id,
         },
         {
-            name: 'Noo Jist Haud On!', reward: 800, hint: 'Do not harvest the first shot ptarmigan, but rather wait until you have shot a second. Then harvest both within 10 minutes.', animal_id: null,
+            name: 'Noo Jist Haud On!', reward: 800, hint: 'Do not harvest the first shot ptarmigan, but rather wait until you have shot a second. Then harvest both within 10 minutes.', animal_id: ptarmigans.id,
         },
         {
-            name: 'Dinnae Teach Yer Granny Tae Suck Eggs!', reward: 1000, hint: 'Location: Mountains of Timbergold Trails.', animal_id: null,
+            name: 'Dinnae Teach Yer Granny Tae Suck Eggs!', reward: 1000, hint: 'Location: Mountains of Timbergold Trails.', animal_id: ptarmigans.id,
         },
         {
-            name: 'Bletherin\' Birds, Ah Tell Ye!', reward: 1200, hint: 'Location: Mountains of Timbergold Trails.', animal_id: null,
+            name: 'Bletherin\' Birds, Ah Tell Ye!', reward: 1200, hint: 'Location: Mountains of Timbergold Trails.', animal_id: ptarmigans.id,
         },
         {
-            name: 'The Baw\'s on The Slates!', reward: 1800, hint: '', animal_id: null,
+            name: 'The Baw\'s on The Slates!', reward: 1800, hint: '', animal_id: ptarmigans.id,
         },
         {
-            name: 'Speak o\' the Devil!', reward: 3600, hint: '', animal_id: null,
+            name: 'Speak o\' the Devil!', reward: 3600, hint: '', animal_id: ptarmigans.id,
         },
     ];
 }
@@ -1608,7 +1611,7 @@ async function wildBoarMissions() {
 exports.seed = function (knex) {
     return knex('missions').del()
         .then(async () => {
-            await knex('missions').insert(allDucksMissions());
+            await knex('missions').insert(await allDucksMissions());
             await knex('missions').insert(await alpineIbexMissions());
             await knex('missions').insert(await arcticFoxMissions());
             await knex('missions').insert(await bantengMissions());
@@ -1634,7 +1637,7 @@ exports.seed = function (knex) {
             await knex('missions').insert(await muleDeerMissions());
             await knex('missions').insert(await pheasantMissions());
             await knex('missions').insert(await polarBearMissions());
-            await knex('missions').insert(ptarmiganMissions());
+            await knex('missions').insert(await ptarmiganMissions());
             await knex('missions').insert(await redDeerMissions());
             await knex('missions').insert(await redFoxMissions());
             await knex('missions').insert(await redKangarooMissions());
