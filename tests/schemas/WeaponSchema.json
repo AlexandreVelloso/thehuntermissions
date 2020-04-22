@@ -1,0 +1,33 @@
+{
+    "$id": "weapon",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Weapon response",
+    "definitions": {
+        "weapon": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "arrayOfWeapons": {
+            "type": "array",
+            "items": {
+                "$ref": "weapon"
+            }
+        }
+    }
+}

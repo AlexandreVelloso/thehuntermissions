@@ -1,0 +1,729 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "The hunter missions project",
+        "version": "1.0.0",
+        "title": "The hunter missions",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost:3333",
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authenticate a user"
+        },
+        {
+            "name": "LastMission",
+            "description": "Only the animals last mission"
+        },
+        {
+            "name": "Animal",
+            "description": "Animals in the game"
+        },
+        {
+            "name": "Mission",
+            "description": "Missions in the game from a user"
+        },
+        {
+            "name": "Objective",
+            "description": "Objectives in the game from a user"
+        },
+        {
+            "name": "Weapon",
+            "description": "Weapons in the game"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login a user",
+                "description": "",
+                "operationId": "loginUser",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Login object",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to login",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a user",
+                "description": "",
+                "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Register object",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "username",
+                                "email",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/lastMissions": {
+            "get": {
+                "tags": [
+                    "LastMission"
+                ],
+                "summary": "Retrieve all animals with their last mission",
+                "description": "",
+                "operationId": "getAnimalsLastMission",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/LastMission"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/lastMissions/{animalId}": {
+            "get": {
+                "tags": [
+                    "LastMission"
+                ],
+                "parameters": [
+                    {
+                        "name": "animalId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the animal to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Retrieve an animal with his last mission",
+                "description": "",
+                "operationId": "findAnimalLastMission",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/LastMission"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/animals": {
+            "get": {
+                "tags": [
+                    "Animal"
+                ],
+                "summary": "Retrieve all animals",
+                "operationId": "getAnimals",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/definitions/Animal"
+                                    }
+                                ],
+                                "properties": {
+                                    "missions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Mission"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/animals/{animalId}": {
+            "get": {
+                "tags": [
+                    "Animal"
+                ],
+                "summary": "Find an animal",
+                "operationId": "findAnimal",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/Animal"
+                                }
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "missions": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Mission"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/missions": {
+            "get": {
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "Retrieve all missions",
+                "operationId": "getMissions",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Mission"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/missions/{missionId}": {
+            "get": {
+                "tags": [
+                    "Mission"
+                ],
+                "parameters": [
+                    {
+                        "name": "missionId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the mission to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Find a mission",
+                "operationId": "findMission",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Mission"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Mission"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the mission to update",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "completed",
+                        "in": "body",
+                        "required": true,
+                        "description": "Boolean to describe if the mission was completed or not",
+                        "type": "object",
+                        "properties": {
+                            "completed": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update a Mission",
+                "operationId": "updateMission",
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/weapons": {
+            "get": {
+                "tags": [
+                    "Weapon"
+                ],
+                "summary": "Retrieve all weapons",
+                "operationId": "getWeapons",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Weapon"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/objectives": {
+            "get": {
+                "tags": [
+                    "Objective"
+                ],
+                "summary": "Retrieve all objectives",
+                "operationId": "getObjectives",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Objective"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/objectives/{objectiveId}": {
+            "get": {
+                "tags": [
+                    "Objective"
+                ],
+                "parameters": [
+                    {
+                        "name": "objectiveId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the objective to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Find a objective",
+                "operationId": "findObjective",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Objective"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Objective"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the objective to update",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "completed",
+                        "in": "body",
+                        "required": true,
+                        "description": "Boolean to describe if the objective was completed or not",
+                        "type": "object",
+                        "properties": {
+                            "completed": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update a objective",
+                "operationId": "updateObjective",
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "scopes": [
+                "JWT"
+            ]
+        }
+    },
+    "definitions": {
+        "Animal": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Mission": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "reward": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "hint": {
+                    "type": "string"
+                },
+                "animal_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "objectives": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Objective"
+                    }
+                }
+            }
+        },
+        "Objective": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "mission_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "completed": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Weapon": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "LastMission": {
+            "type": "object",
+            "properties": {
+                "animal": {
+                    "$ref": "#/definitions/Animal"
+                },
+                "mission": {
+                    "$ref": "#/definitions/Mission"
+                }
+            }
+        },
+        "UserLoginResponse": {
+            "type": "object",
+            "properties": {
+                "user": {
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "accessToken": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

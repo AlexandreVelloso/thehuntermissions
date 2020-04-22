@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiRefreshCcw } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 
 import './styles.css';
 import NavBar from '../../components/Navbar';
@@ -10,6 +11,7 @@ import api from '../../services/api';
 export default function Home() {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
+    const history = useHistory();
 
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,12 +29,14 @@ export default function Home() {
 
                 setAnimals(response.data);
             } catch (err) {
-
+                if (!err.response || err.response.status === 401) {
+                    history.push('/login');
+                }
             }
         }
 
         loadAnimals();
-    }, [token]);
+    }, [token, history]);
 
     async function loadAnimals() {
         try {

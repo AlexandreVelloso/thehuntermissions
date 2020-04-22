@@ -1,0 +1,15 @@
+{
+    "$id": "error",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Error response",
+    "definitions": {
+        "error": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

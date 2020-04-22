@@ -1,0 +1,53 @@
+{
+    "$id": "objective",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Objective response",
+    "definitions": {
+        "objective": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "mission_id": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": [
+                        "null",
+                        "number"
+                    ]
+                },
+                "completed": {
+                    "type": [
+                        "null",
+                        "number"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "mission_id",
+                "created_at",
+                "user_id",
+                "completed"
+            ]
+        },
+        "arrayOfObjectives": {
+            "type": "array",
+            "items": {
+                "$ref": "objective"
+            }
+        }
+    }
+}

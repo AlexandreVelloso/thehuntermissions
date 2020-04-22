@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 
-export default function Routes() {
+export default function Routes({ match }) {
     return (
         <BrowserRouter>
             <Switch>

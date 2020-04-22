@@ -1,0 +1,33 @@
+{
+    "$id": "animal",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "description": "Mission response",
+    "definitions": {
+        "animal": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "missions": {
+                    "$ref": "mission#/definitions/arrayOfMissions"
+                }
+            }
+        },
+        "arrayOfAnimals": {
+            "type": "array",
+            "items": {
+                "$ref": "animal"
+            }
+        }
+    }
+}
