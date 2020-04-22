@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+import { config } from '../contants';
+
 const api = axios.create({
-    baseURL: '/api'
+    baseURL: config.baseURL,
 });
 
 export default api;
