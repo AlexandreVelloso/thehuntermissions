@@ -34,7 +34,6 @@ export default function Home() {
                 }
             }
         }
-
         loadAnimals();
     }, [token, history]);
 
@@ -52,9 +51,9 @@ export default function Home() {
         }
     }
 
-    async function updateObjective(id, completed) {
+    async function updateObjective(objectiveId, completed) {
         try {
-            await api.put(`objectives/${id}`, {
+            await api.put(`objectives/${objectiveId}`, {
                 completed,
             }, {
                 headers: {
@@ -67,9 +66,9 @@ export default function Home() {
         }
     }
 
-    async function updateMission(id) {
+    async function updateMission(missionId) {
         try {
-            await api.put(`missions/${id}`, {
+            await api.put(`missions/${missionId}`, {
                 completed: true,
             }, {
                 headers: {
@@ -82,16 +81,34 @@ export default function Home() {
         }
     }
 
-    async function handleChangeObjective(id, checked) {
+    async function handleChangeObjective(objectiveId, checked) {
         setLoading(true);
-        await updateObjective(id, checked);
+        await updateObjective(objectiveId, checked);
         await loadAnimals();
         setLoading(false);
     }
 
-    async function handleCompleteMission(id) {
+    function changeObjectivesCheckbox(missionId) {
+        const animalsChanged = animals.map((animal) => {
+
+            if (animal.mission.id === missionId) {
+                const objectives = animal.mission.objectives.map((objective) => {
+                    objective.completed = true;
+                });
+
+                animal.objectives = objectives;
+            }
+
+            return animal;
+        });
+
+        setAnimals(animalsChanged);
+    }
+
+    async function handleCompleteMission(missionId) {
         setLoading(true);
-        await updateMission(id);
+        changeObjectivesCheckbox(missionId);
+        await updateMission(missionId);
         await loadAnimals();
         setLoading(false);
     }
