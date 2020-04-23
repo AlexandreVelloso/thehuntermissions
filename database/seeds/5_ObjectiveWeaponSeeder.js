@@ -26,8 +26,13 @@ async function createObjectiveWeapon(weaponName) {
         weapon_id: weapon.id,
     }));
 
-    await ObjectiveWeapon.query()
-        .insertGraph(weaponObjectives);
+    if (process.env.NODE_ENV === 'production') {
+        await ObjectiveWeapon.query()
+            .insert(weaponObjectives);
+    } else {
+        await ObjectiveWeapon.query()
+            .insertGraph(weaponObjectives);
+    }
 }
 
 exports.seed = (knex) => {

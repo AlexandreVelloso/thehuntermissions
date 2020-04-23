@@ -1661,6 +1661,10 @@ exports.seed = (knex) => {
                 ...await wildBoarMissions(),
             ];
 
-            await Mission.query().insertGraph(missionsArray);
+            if (process.env.NODE_ENV === 'production') {
+                await Mission.query().insert(missionsArray);
+            } else {
+                await Mission.query().insertGraph(missionsArray);
+            }
         });
 };
