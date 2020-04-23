@@ -17,7 +17,7 @@ async function findObjectivesByWeapon(weapon) {
         .select('*');
 }
 
-async function createObjectiveWeapon(weaponName) {
+async function createObjectiveWeapon(knex, weaponName) {
     const weapon = await findWeaponBy('name', weaponName);
     const objectives = await findObjectivesByWeapon(weapon.name);
 
@@ -27,7 +27,7 @@ async function createObjectiveWeapon(weaponName) {
     }));
 
     if (process.env.NODE_ENV === 'production') {
-        await ObjectiveWeapon.query()
+        await knex('objectives_weapons')
             .insert(weaponObjectives);
     } else {
         await ObjectiveWeapon.query()
@@ -40,43 +40,43 @@ exports.seed = (knex) => {
 
     return knex('objectives_weapons').del()
         .then(async () => {
-            await createObjectiveWeapon('12 GA Blaser F3 Game O/U Shotgun');
-            await createObjectiveWeapon('12 GA Pump Action Shotgun');
-            await createObjectiveWeapon('12 GA Single Shot Shotgun');
-            await createObjectiveWeapon('17 HMR HV Ammunition');
-            await createObjectiveWeapon('20 GA Semi-Automatic Shotgun');
-            await createObjectiveWeapon('22 Air Rifle');
-            await createObjectiveWeapon('22 Pistol');
-            await createObjectiveWeapon('223 Bolt Action Rifle');
-            await createObjectiveWeapon('243 Bolt Action Rifle');
-            await createObjectiveWeapon('270 Bolt Action Rifle');
-            await createObjectiveWeapon('30-06 Lever Action Rifle');
-            await createObjectiveWeapon('30-30 Lever Action Rifle');
-            await createObjectiveWeapon('300 Bolt Action Rifle');
-            await createObjectiveWeapon('303 British Bolt Action Rifle');
-            await createObjectiveWeapon('308 Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon('308 Single Shot Handgun');
-            await createObjectiveWeapon('340 Weatherby Magnum Bolt Action Rifle');
-            await createObjectiveWeapon('357 Revolver');
-            await createObjectiveWeapon('44 Magnum Revolver');
-            await createObjectiveWeapon('45-70 Government');
-            await createObjectiveWeapon('454 Revolver');
-            await createObjectiveWeapon('50 Cap Lock Muzzleloader');
-            await createObjectiveWeapon('6.5x55 Blaser R8 Bolt Action Rifle');
-            await createObjectiveWeapon('7mm Break Action Rifle');
-            await createObjectiveWeapon('7mm Magnum Bullpup Rifle');
-            await createObjectiveWeapon('8x57 IS Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon('8x57 IS K98k Bolt Action Rifle');
-            await createObjectiveWeapon('9.3x62 Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon('Cable-backed Bow');
-            await createObjectiveWeapon('Crossbow Pistol');
-            await createObjectiveWeapon('Heavy Recurve Bow');
-            await createObjectiveWeapon('Inline Muzzleloader');
-            await createObjectiveWeapon('Longbow');
-            await createObjectiveWeapon('Parker Python Compound Bow');
-            await createObjectiveWeapon('Recurve Bow');
-            await createObjectiveWeapon('Snakebite Compound Bow');
-            await createObjectiveWeapon('SxS Shotgun');
-            await createObjectiveWeapon('Tenpoint Carbon Fusion Crossbow');
+            await createObjectiveWeapon(knex, '12 GA Blaser F3 Game O/U Shotgun');
+            await createObjectiveWeapon(knex, '12 GA Pump Action Shotgun');
+            await createObjectiveWeapon(knex, '12 GA Single Shot Shotgun');
+            await createObjectiveWeapon(knex, '17 HMR HV Ammunition');
+            await createObjectiveWeapon(knex, '20 GA Semi-Automatic Shotgun');
+            await createObjectiveWeapon(knex, '22 Air Rifle');
+            await createObjectiveWeapon(knex, '22 Pistol');
+            await createObjectiveWeapon(knex, '223 Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '243 Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '270 Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '30-06 Lever Action Rifle');
+            await createObjectiveWeapon(knex, '30-30 Lever Action Rifle');
+            await createObjectiveWeapon(knex, '300 Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '303 British Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '308 Anschütz 1780 D FL Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '308 Single Shot Handgun');
+            await createObjectiveWeapon(knex, '340 Weatherby Magnum Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '357 Revolver');
+            await createObjectiveWeapon(knex, '44 Magnum Revolver');
+            await createObjectiveWeapon(knex, '45-70 Government');
+            await createObjectiveWeapon(knex, '454 Revolver');
+            await createObjectiveWeapon(knex, '50 Cap Lock Muzzleloader');
+            await createObjectiveWeapon(knex, '6.5x55 Blaser R8 Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '7mm Break Action Rifle');
+            await createObjectiveWeapon(knex, '7mm Magnum Bullpup Rifle');
+            await createObjectiveWeapon(knex, '8x57 IS Anschütz 1780 D FL Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '8x57 IS K98k Bolt Action Rifle');
+            await createObjectiveWeapon(knex, '9.3x62 Anschütz 1780 D FL Bolt Action Rifle');
+            await createObjectiveWeapon(knex, 'Cable-backed Bow');
+            await createObjectiveWeapon(knex, 'Crossbow Pistol');
+            await createObjectiveWeapon(knex, 'Heavy Recurve Bow');
+            await createObjectiveWeapon(knex, 'Inline Muzzleloader');
+            await createObjectiveWeapon(knex, 'Longbow');
+            await createObjectiveWeapon(knex, 'Parker Python Compound Bow');
+            await createObjectiveWeapon(knex, 'Recurve Bow');
+            await createObjectiveWeapon(knex, 'Snakebite Compound Bow');
+            await createObjectiveWeapon(knex, 'SxS Shotgun');
+            await createObjectiveWeapon(knex, 'Tenpoint Carbon Fusion Crossbow');
         });
 };
