@@ -10,7 +10,7 @@ exports.up = function up(knex) {
 
         table.foreign('mission_id')
             .references('id')
-            .inTable('animals');
+            .inTable('missions');
     });
 };
 
