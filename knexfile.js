@@ -45,12 +45,12 @@ module.exports = {
     },
 
     production: {
-        client: 'mysql',
+        client: 'postgresql',
         connection: {
-            host: 'btbcg2dzcauvwdbpwkdp-mysql.services.clever-cloud.com',
-            database: 'btbcg2dzcauvwdbpwkdp',
-            user: 'us42qqrugfw3qpk4',
-            password: '0jKWpkdMiJOy68Fs2cHN',
+            host: 'bgbsxnmgxgs2zgn3abhb-postgresql.services.clever-cloud.com',
+            database: 'bgbsxnmgxgs2zgn3abhb',
+            user: 'uv6ql1mcpuf7wq6hhgwl',
+            password: 'jGS6Yrmw87acy7AOUgKs',
         },
         pool: {
             min: 2,
