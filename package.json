@@ -9,7 +9,7 @@
     "test": "jest --forceExit --detectOpenHandles",
     "lint": "npx eslint",
     "db_reset": "npx knex migrate:rollback && knex migrate:latest && knex seed:run",
-    "heroku-prebuild": "cd frontend && npm install --only=dev && npm install && npm run build"
+    "heroku-prebuild": "rm -Rf node_modules && cd frontend && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
