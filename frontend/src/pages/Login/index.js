@@ -10,6 +10,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     async function handleLogin(e) {
@@ -18,10 +19,12 @@ export default function Login() {
         try {
             setErrorMessage('');
 
+            setLoading(true);
             const response = await api.post('login', {
                 email,
                 password
             });
+            setLoading(false);
 
             const { username } = response.data.user;
             const token = response.data.accessToken;
@@ -32,6 +35,7 @@ export default function Login() {
             history.push('/');
         } catch (err) {
 
+            setLoading(false);
             if (!err.response) {
                 setErrorMessage('Error when try to connect to server')
             } else {
@@ -58,7 +62,7 @@ export default function Login() {
                         placeholder="Password"
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button onClick={handleLogin} className="button" type="submit">
+                    <button onClick={handleLogin} disabled={loading} className="button" type="submit">
                         Entrar
                     </button>
 

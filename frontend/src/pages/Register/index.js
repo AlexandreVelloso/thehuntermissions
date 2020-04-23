@@ -11,6 +11,7 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     async function handleRegister(e) {
@@ -19,11 +20,13 @@ export default function Register() {
         try {
             setErrorMessage('');
 
+            setLoading(true);
             const response = await api.post('register', {
                 username,
                 email,
                 password
             });
+            setLoading(false);
 
             const token = response.data.accessToken;
 
@@ -32,7 +35,7 @@ export default function Register() {
 
             history.push('/');
         } catch (err) {
-
+            setLoading(false);
             if (!err.response) {
                 setErrorMessage('Error when try to connect to server')
             } else {
@@ -63,7 +66,7 @@ export default function Register() {
                         placeholder="Password"
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button onClick={handleRegister} className="button" type="submit">
+                    <button onClick={handleRegister} disabled={loading} className="button" type="submit">
                         Entrar
                     </button>
 
