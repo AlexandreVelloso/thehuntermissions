@@ -121,3 +121,5 @@ database/test.sqlite
 .DS_Store
 
 .vscode/
+
+database/dev.sqlite

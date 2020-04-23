@@ -47,16 +47,20 @@ module.exports = {
     production: {
         client: 'postgresql',
         connection: {
-            database: 'my_db',
-            user: 'username',
-            password: 'password',
+            host: 'bgbsxnmgxgs2zgn3abhb-postgresql.services.clever-cloud.com',
+            database: 'bgbsxnmgxgs2zgn3abhb',
+            user: 'uv6ql1mcpuf7wq6hhgwl',
+            password: 'jGS6Yrmw87acy7AOUgKs',
         },
         pool: {
             min: 2,
             max: 10,
         },
         migrations: {
-            tableName: 'knex_migrations',
+            directory: './database/migrations',
+        },
+        seeds: {
+            directory: './database/seeds',
         },
     },
 

@@ -1,14 +1,18 @@
-const connection = require('../connection');
+const { Model } = require('objection');
+
+const Weapon = require('../models/Weapon');
+const Objective = require('../models/Objective');
+const ObjectiveWeapon = require('../models/ObjectiveWeapon');
 
 async function findWeaponBy(column, value) {
-    return connection('weapons')
+    return Weapon.query()
         .where(column, value)
         .select('*')
         .first();
 }
 
 async function findObjectivesByWeapon(weapon) {
-    return connection('objectives')
+    return Objective.query()
         .where('name', 'like', `%${weapon}%`)
         .select('*');
 }
@@ -22,11 +26,18 @@ async function createObjectiveWeapon(weaponName) {
         weapon_id: weapon.id,
     }));
 
-    await weaponObjectives.map(async (weaponObjective) => connection('objectives_weapons')
-        .insert(weaponObjective));
+    if (process.env.NODE_ENV === 'production') {
+        await ObjectiveWeapon.query()
+            .insert(weaponObjectives);
+    } else {
+        await ObjectiveWeapon.query()
+            .insertGraph(weaponObjectives);
+    }
 }
 
-exports.seed = function (knex) {
+exports.seed = (knex) => {
+    Model.knex(knex);
+
     return knex('objectives_weapons').del()
         .then(async () => {
             await createObjectiveWeapon('12 GA Blaser F3 Game O/U Shotgun');

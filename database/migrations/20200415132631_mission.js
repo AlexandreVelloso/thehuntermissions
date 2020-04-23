@@ -4,7 +4,7 @@ exports.up = function up(knex) {
         table.increments();
         table.string('name').notNullable();
         table.integer('reward').notNullable();
-        table.string('hint');
+        table.string('hint', 800);
         table.integer('animal_id')
             .unsigned();
         table.timestamps(true, true);
