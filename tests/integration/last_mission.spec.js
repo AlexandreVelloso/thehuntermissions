@@ -48,7 +48,7 @@ describe('LastMissions Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(40);
+        expect(response.body).toHaveLength(42);
 
         const testSchema = {
             $ref: 'lastMission#/definitions/arrayOfLastMissions',
@@ -60,7 +60,7 @@ describe('LastMissions Index', () => {
         const firstAnimal = response.body[0];
         const firstMission = firstAnimal.mission;
         const { objectives } = firstMission;
-        expect(objectives).toHaveLength(1);
+        expect(objectives).toHaveLength(4);
     });
 
     it('should validate JWT token', async () => {
@@ -93,7 +93,7 @@ describe('LastMissions Get', () => {
         const animal = response.body;
         const firstMission = animal.mission;
         const { objectives } = firstMission;
-        expect(objectives).toHaveLength(1);
+        expect(objectives).toHaveLength(4);
     });
 
     it('should give error when not find animal', async () => {
