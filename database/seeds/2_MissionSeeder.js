@@ -1,7 +1,10 @@
-const connection = require('../connection');
+const { Model } = require('objection');
+
+const Animal = require('../models/Animal');
+const Mission = require('../models/Mission');
 
 async function findAnimalBy(column, value) {
-    return connection('animals')
+    return Animal.query()
         .where(column, value)
         .select('*')
         .first();
@@ -1608,50 +1611,56 @@ async function wildBoarMissions() {
     ];
 }
 
-exports.seed = function (knex) {
+exports.seed = (knex) => {
+    Model.knex(knex);
+
     return knex('missions').del()
         .then(async () => {
-            await knex('missions').insert(await allDucksMissions());
-            await knex('missions').insert(await alpineIbexMissions());
-            await knex('missions').insert(await arcticFoxMissions());
-            await knex('missions').insert(await bantengMissions());
-            await knex('missions').insert(await bighornSheepMissions());
-            await knex('missions').insert(await bisonMissions());
-            await knex('missions').insert(await blackBearMissions());
-            await knex('missions').insert(await blacktailDeerMissions());
-            await knex('missions').insert(await bobcatMissions());
-            await knex('missions').insert(await brownBearMissions());
-            await knex('missions').insert(await canadaGooseMissions());
-            await knex('missions').insert(await cottontailRabbitMissions());
-            await knex('missions').insert(await coyoteMissions());
-            await knex('missions').insert(await dallSheepMissions());
-            await knex('missions').insert(await eurasianLynxMissions());
-            await knex('missions').insert(await europeanRabbitMissions());
-            await knex('missions').insert(await feralGoatMissions());
-            await knex('missions').insert(await feralHogMissions());
-            await knex('missions').insert(await greyWolfMissions());
-            await knex('missions').insert(await grizzlyBearMissions());
-            await knex('missions').insert(await magpieGooseMissions());
-            await knex('missions').insert(await mallardDuckMissions());
-            await knex('missions').insert(await mooseMissions());
-            await knex('missions').insert(await muleDeerMissions());
-            await knex('missions').insert(await pheasantMissions());
-            await knex('missions').insert(await polarBearMissions());
-            await knex('missions').insert(await ptarmiganMissions());
-            await knex('missions').insert(await redDeerMissions());
-            await knex('missions').insert(await redFoxMissions());
-            await knex('missions').insert(await redKangarooMissions());
-            await knex('missions').insert(await reindeerMissions());
-            await knex('missions').insert(await rockyMountainElkMissions());
-            await knex('missions').insert(await roeDeerMissions());
-            await knex('missions').insert(await rooseveltElkMissions());
-            await knex('missions').insert(await rusaDeerMissions());
-            await knex('missions').insert(await sambarDeerMissions());
-            await knex('missions').insert(await sitkaDeerMissions());
-            await knex('missions').insert(await snowShoeHareMissions());
-            await knex('missions').insert(await turkeyMissions());
-            await knex('missions').insert(await waterBuffaloMissions());
-            await knex('missions').insert(await whitetailDeerMissions());
-            await knex('missions').insert(await wildBoarMissions());
+            const missionsArray = [
+                ...await allDucksMissions(),
+                ...await alpineIbexMissions(),
+                ...await arcticFoxMissions(),
+                ...await bantengMissions(),
+                ...await bighornSheepMissions(),
+                ...await bisonMissions(),
+                ...await blackBearMissions(),
+                ...await blacktailDeerMissions(),
+                ...await bobcatMissions(),
+                ...await brownBearMissions(),
+                ...await canadaGooseMissions(),
+                ...await cottontailRabbitMissions(),
+                ...await coyoteMissions(),
+                ...await dallSheepMissions(),
+                ...await eurasianLynxMissions(),
+                ...await europeanRabbitMissions(),
+                ...await feralGoatMissions(),
+                ...await feralHogMissions(),
+                ...await greyWolfMissions(),
+                ...await grizzlyBearMissions(),
+                ...await magpieGooseMissions(),
+                ...await mallardDuckMissions(),
+                ...await mooseMissions(),
+                ...await muleDeerMissions(),
+                ...await pheasantMissions(),
+                ...await polarBearMissions(),
+                ...await ptarmiganMissions(),
+                ...await redDeerMissions(),
+                ...await redFoxMissions(),
+                ...await redKangarooMissions(),
+                ...await reindeerMissions(),
+                ...await rockyMountainElkMissions(),
+                ...await roeDeerMissions(),
+                ...await rooseveltElkMissions(),
+                ...await rusaDeerMissions(),
+                ...await sambarDeerMissions(),
+                ...await sitkaDeerMissions(),
+                ...await snowShoeHareMissions(),
+                ...await turkeyMissions(),
+                ...await waterBuffaloMissions(),
+                ...await whitetailDeerMissions(),
+                ...await wildBoarMissions(),
+            ];
+
+            await Mission.query().insertGraph(missionsArray);
         });
 };

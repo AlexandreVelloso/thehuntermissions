@@ -1,14 +1,17 @@
-const connection = require('../connection');
+const { Model } = require('objection');
+
+const Mission = require('../models/Mission');
+const Animal = require('../models/Animal');
 
 async function findMissionBy(column, value) {
-    return connection('missions')
+    return Mission.query()
         .where(column, value)
         .select('*')
         .first();
 }
 
 async function findMissionByAnimal(animalId, missionName) {
-    return connection('missions')
+    return Mission.query()
         .where('animal_id', animalId)
         .where('name', missionName)
         .select('*')
@@ -16,7 +19,7 @@ async function findMissionByAnimal(animalId, missionName) {
 }
 
 async function findAnimalBy(column, value) {
-    return connection('animals')
+    return Animal.query()
         .where(column, value)
         .select('*')
         .first();
@@ -2090,6 +2093,8 @@ async function wildBoarMissions() {
 }
 
 exports.seed = function seed(knex) {
+    Model.knex(knex);
+
     return knex('objectives').del()
         .then(async () => {
             await knex('objectives').insert(await alpineIbexObjectives());
