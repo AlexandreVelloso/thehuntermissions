@@ -21,6 +21,10 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: auto;
+}
+
 .back-link {
   display: flex;
   align-items: center;
