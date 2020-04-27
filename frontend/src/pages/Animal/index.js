@@ -99,7 +99,7 @@ export default function Animal() {
     }
 
     function changeObjectivesCheckbox(missionId) {
-        const animalChanged = animal.missions.map((mission) => {
+        const missionsChanged = animal.missions.map((mission) => {
 
             if (mission.id === missionId) {
                 const objectives = mission.objectives.map((objective) => {
@@ -113,6 +113,10 @@ export default function Animal() {
             return mission;
         });
 
+        const animalChanged = {
+            ...animal
+        }
+        animalChanged.missions = missionsChanged;
         setAnimal(animalChanged);
     }
 
