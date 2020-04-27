@@ -75,7 +75,8 @@ module.exports = {
 
         if (objectivesToPatch.length > 0) {
             await UserObjective.query()
-                .where('objective_id', 'in', objectivesToPatch);
+                .where('objective_id', 'in', objectivesToPatch)
+                .update({ completed });
         }
 
         if (objectivesToInsert.length > 0) {
