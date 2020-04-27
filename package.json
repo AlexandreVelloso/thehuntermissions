@@ -1,5 +1,5 @@
 {
-  "name": "the-hunter-missions",
+  "name": "thehuntermissions",
   "version": "1.0.0",
   "description": "Backend api",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexandreVelloso/the-hunter-missions.git"
+    "url": "git+https://github.com/AlexandreVelloso/thehuntermissions.git"
   },
   "author": "Alexandre Velloso",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AlexandreVelloso/the-hunter-missions/issues"
+    "url": "https://github.com/AlexandreVelloso/thehuntermissions/issues"
   },
-  "homepage": "https://github.com/AlexandreVelloso/the-hunter-missions#readme",
+  "homepage": "https://github.com/AlexandreVelloso/thehuntermissions#readme",
   "dependencies": {
     "bcrypt": "^4.0.1",
     "celebrate": "^12.1.0",
