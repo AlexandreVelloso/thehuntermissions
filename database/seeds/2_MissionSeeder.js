@@ -1,7 +1,6 @@
 const { Model } = require('objection');
 
 const Animal = require('../models/Animal');
-const Mission = require('../models/Mission');
 
 async function findAnimalBy(column, value) {
     return Animal.query()
