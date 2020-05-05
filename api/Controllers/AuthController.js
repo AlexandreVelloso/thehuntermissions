@@ -63,4 +63,42 @@ module.exports = {
         });
     },
 
+    async resetPassword(req, res) {
+        const { token, password, confirmPassword } = req.body;
+
+        let email;
+
+        try {
+            email = jwtToken.verify(token).email;
+        } catch (err) {
+            return res.status(400).json({
+                error: 'Invalid token',
+            });
+        }
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                error: 'The passwords doesn\'t match',
+            });
+        }
+
+        const user = await User.query()
+            .where('email', email)
+            .first();
+
+        if (!user) {
+            return res.status(400).json({
+                error: 'User not found',
+            });
+        }
+
+        await User.query()
+            .where('email', email)
+            .patch({
+                password,
+            });
+
+        return res.status(200).end();
+    },
+
 };

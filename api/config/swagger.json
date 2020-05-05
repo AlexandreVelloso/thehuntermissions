@@ -135,6 +135,53 @@
                 }
             }
         },
+        "/resetPassword": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset user password",
+                "description": "",
+                "operationId": "resetPassword",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Reset password object",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "token",
+                                "password",
+                                "confirmPassword"
+                            ],
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "confirmPassword": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Request error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/forgotPassword": {
             "post": {
                 "tags": [
