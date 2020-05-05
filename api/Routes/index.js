@@ -6,6 +6,7 @@ const jwtMiddleware = require('../Middleware/jwtMiddleware');
 
 router.use('/api', require('./SwaggerRoutes'));
 router.use('/api', require('./AuthRoutes'));
+router.use('/api', require('./ForgotPasswordRoutes'));
 router.use('/api', jwtMiddleware, require('./AnimalRoutes'));
 router.use('/api', jwtMiddleware, require('./LastMissionRoutes'));
 router.use('/api', jwtMiddleware, require('./WeaponRoutes'));

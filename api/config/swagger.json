@@ -17,6 +17,10 @@
             "description": "Authenticate a user"
         },
         {
+            "name": "ForgotPassword",
+            "description": "Send an email to reset the user password"
+        },
+        {
             "name": "LastMission",
             "description": "Only the animals last mission"
         },
@@ -126,6 +130,45 @@
                         "description": "Successful operation",
                         "schema": {
                             "$ref": "#/definitions/UserLoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/forgotPassword": {
+            "post": {
+                "tags": [
+                    "ForgotPassword"
+                ],
+                "summary": "Send an email to reset user password",
+                "description": "",
+                "operationId": "forgotPassword",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Forgot password request",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Email not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
                         }
                     }
                 }
