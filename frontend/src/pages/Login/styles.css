@@ -56,3 +56,9 @@
 .login-container form button:disabled {
     background: rgb(209, 159, 119);
 }
+
+.aboveLogin {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
