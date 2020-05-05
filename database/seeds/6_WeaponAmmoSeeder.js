@@ -35,7 +35,7 @@ async function insertData(knex, ammoName, weaponsArray) {
 }
 
 async function cableBackedBowArrows(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Cable-backed Bow Arrows',
         [
             'Cable-backed Bow',
@@ -43,7 +43,7 @@ async function cableBackedBowArrows(knex) {
 }
 
 async function compoundArrowsRedTracerFlare(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Compound Arrows (Red Tracer Flare)',
         [
             'Compound Bow "Snakebite"',
@@ -66,7 +66,7 @@ async function compoundArrowsStandardBroadhead(knex) {
 }
 
 async function crossbowArrows(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Crossbow Arrows',
         [
             'Tenpoint Carbon Fusion Crossbow',
@@ -75,7 +75,7 @@ async function crossbowArrows(knex) {
 }
 
 async function crossbowArrowsBlueTracerFlare(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Crossbow Arrows (Blue Tracer Flare)',
         [
             'Tenpoint Carbon Fusion Crossbow',
@@ -84,7 +84,7 @@ async function crossbowArrowsBlueTracerFlare(knex) {
 }
 
 async function crossbowBolts(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Crossbow Bolts',
         [
             'Crossbow Pistol',
@@ -162,7 +162,7 @@ async function dot12GAShellsSlug(knex) {
 }
 
 async function dot16GABirdshotShells(knex) {
-    insertData(knex,
+    await insertData(knex,
         '16 GA Birdshot Shells',
         [
             '16 GA Side By Side Shotgun',
@@ -172,7 +172,7 @@ async function dot16GABirdshotShells(knex) {
 }
 
 async function dot16GABuckshotShells(knex) {
-    insertData(knex,
+    await insertData(knex,
         '16 GA Buckshot Shells',
         [
             '16 GA Side By Side Shotgun',
@@ -471,7 +471,7 @@ async function dot9dot3x74RAmmunition(knex) {
 }
 
 async function longbowArrows(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Longbow Arrows',
         [
             'Longbow',
@@ -479,7 +479,7 @@ async function longbowArrows(knex) {
 }
 
 async function recurveArrowsStandardBroadhead(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Recurve Arrows (Standard Broadhead)',
         [
             'Recurve Bow Modern',
@@ -489,7 +489,7 @@ async function recurveArrowsStandardBroadhead(knex) {
 }
 
 async function recurveArrowsOrangeTracerFlare(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Recurve Arrows (Orange Tracer Flare)',
         [
             'Recurve Bow Modern',
@@ -507,7 +507,7 @@ async function silver308Bullets(knex) {
 
 
 async function silverCrossbowBolts(knex) {
-    insertData(knex,
+    await insertData(knex,
         'Silver Crossbow Bolts',
         [
             'Crossbow Pistol Wolfsbane',
