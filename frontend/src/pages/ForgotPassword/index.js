@@ -1,39 +1,29 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './styles.css';
 
 import api from '../../services/api';
 import logo from '../../assets/Logo.jpg';
 
-export default function Register() {
-    const [username, setUsername] = useState('');
+export default function ForgotPassword() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
 
-    async function handleRegister(e) {
+    async function handleForgotPassword(e) {
         e.preventDefault();
 
         try {
             setErrorMessage('');
 
             setLoading(true);
-            const response = await api.post('register', {
-                username,
+            await api.post('forgotPassword', {
                 email,
-                password
             });
+            setSuccessMessage('Please verify your email inbox')
             setLoading(false);
-
-            const token = response.data.accessToken;
-
-            localStorage.setItem('token', token);
-            localStorage.setItem('username', username);
-
-            history.push('/');
         } catch (err) {
             setLoading(false);
             if (!err.response) {
@@ -45,33 +35,28 @@ export default function Register() {
     }
 
     return (
-        <div className="register-container">
+        <div className="forgot-password-container">
             <section className="form">
-                <form onSubmit={handleRegister}>
+                <form onSubmit={handleForgotPassword}>
                     <img src={logo} alt="Logo"></img>
                     {
                         errorMessage &&
                         <div className="errorMessage">{errorMessage}</div>
                     }
+                    {
+                        successMessage &&
+                        <div className="successMessage">{successMessage}</div>
+                    }
                     <input
-                        placeholder="Username"
-                        onChange={e => setUsername(e.target.value)}
-                    />
-                    <input
-                        placeholder="E-mail"
+                        placeholder="Email"
                         onChange={e => setEmail(e.target.value)}
                     />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        onChange={e => setPassword(e.target.value)}
-                    />
                     <button disabled={loading} className="button" type="submit">
-                        Entrar
+                        Reset password
                     </button>
 
                     <Link className="back-link" to="login">
-                        Voltar para o login
+                        Back to login
                     </Link>
                 </form>
             </section>

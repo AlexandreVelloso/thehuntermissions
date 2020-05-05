@@ -62,13 +62,18 @@ export default function Login() {
                         placeholder="Password"
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button onClick={handleLogin} disabled={loading} className="button" type="submit">
-                        Entrar
+                    <button disabled={loading} className="button" type="submit">
+                        Login
                     </button>
 
-                    <Link className="back-link" to="register">
-                        Não tenho cadastro
-                    </Link>
+                    <div className="aboveLogin">
+                        <Link className="back-link" to="forgot-password">
+                            Forgot password
+                        </Link>
+                        <Link className="back-link" to="register">
+                            Register
+                        </Link>
+                    </div>
                 </form>
             </section>
         </div>
