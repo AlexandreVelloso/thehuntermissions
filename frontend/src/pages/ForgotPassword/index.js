@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './styles.css';
 
@@ -9,6 +9,7 @@ import logo from '../../assets/Logo.jpg';
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
     async function handleForgotPassword(e) {
@@ -18,9 +19,10 @@ export default function ForgotPassword() {
             setErrorMessage('');
 
             setLoading(true);
-            const response = await api.post('forgot-password', {
+            await api.post('forgotPassword', {
                 email,
             });
+            setSuccessMessage('Please verify your email inbox')
             setLoading(false);
         } catch (err) {
             setLoading(false);
@@ -40,6 +42,10 @@ export default function ForgotPassword() {
                     {
                         errorMessage &&
                         <div className="errorMessage">{errorMessage}</div>
+                    }
+                    {
+                        successMessage &&
+                        <div className="successMessage">{successMessage}</div>
                     }
                     <input
                         placeholder="Email"

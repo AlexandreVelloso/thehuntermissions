@@ -22,6 +22,11 @@
     color: red;
 }
 
+.successMessage {
+    padding-top: 10px;
+    color: green;
+}
+
 .forgot-password-container form img {
     width: 210px;
 }
@@ -53,6 +58,6 @@
     width: 100%;
 }
 
-.login-container form button:disabled {
+.forgot-password-container form button:disabled {
     background: rgb(209, 159, 119);
 }

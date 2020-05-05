@@ -53,6 +53,6 @@
     width: 100%;
 }
 
-.login-container form button:disabled {
+.register-container form button:disabled {
     background: rgb(209, 159, 119);
 }

@@ -15,7 +15,7 @@ module.exports = {
             });
         }
 
-        if (process.env.NODE_ENV !== 'test') {
+        if (process.env.NODE_ENV === 'production') {
             await SendResetEmailService.sendEmailTo(email);
         }
 
