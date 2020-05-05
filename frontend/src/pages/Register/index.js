@@ -66,7 +66,7 @@ export default function Register() {
                         placeholder="Password"
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button onClick={handleRegister} disabled={loading} className="button" type="submit">
+                    <button disabled={loading} className="button" type="submit">
                         Entrar
                     </button>
 
