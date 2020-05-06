@@ -18,7 +18,7 @@ export default function MyNavBar({ username }) {
         <div className="topnav">
             <Link className="" to="/"><img className="image-link" src={logo} alt="Logo"></img></Link>
             <Link className="menuLink" to="/">Home</Link>
-            <Link className="menuLink" to="/">Weapon</Link>
+            <Link className="menuLink" to="/weapon">Weapon</Link>
             <Link className="menuLink" to="/">Equipament</Link>
 
             <div className="user-info">

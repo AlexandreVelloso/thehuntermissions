@@ -750,6 +750,13 @@
                 },
                 "completed": {
                     "type": "integer"
+                },
+                "weapon_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "have_weapon": {
+                    "type": "integer"
                 }
             }
         },
@@ -774,6 +781,12 @@
                 "updated_at": {
                     "type": "string",
                     "format": "date-time"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "have_weapon": {
+                    "type": "integer"
                 }
             }
         },

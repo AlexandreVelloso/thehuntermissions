@@ -6,11 +6,19 @@ module.exports = {
         const { user } = req.auth;
 
         const objectives = await Objective.query()
-            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
+            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
             // eslint-disable-next-line func-names
             .leftJoin('user_objectives', function () {
                 this.on('objectives.id', 'user_objectives.objective_id')
                     .on('user_objectives.user_id', user.id);
+            })
+            // eslint-disable-next-line func-names
+            .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
+            .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
+            // eslint-disable-next-line func-names
+            .leftJoin('user_weapons', function () {
+                this.on('user_weapons.weapon_id', 'weapons.id')
+                    .on('user_weapons.user_id', user.id);
             });
 
         return res.json(objectives);
@@ -21,11 +29,19 @@ module.exports = {
         const { user } = req.auth;
 
         const objective = await Objective.query()
-            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
+            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
             // eslint-disable-next-line func-names
             .leftJoin('user_objectives', function () {
                 this.on('objectives.id', 'user_objectives.objective_id')
                     .on('user_objectives.user_id', user.id);
+            })
+            // eslint-disable-next-line func-names
+            .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
+            .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
+            // eslint-disable-next-line func-names
+            .leftJoin('user_weapons', function () {
+                this.on('user_weapons.weapon_id', 'weapons.id')
+                    .on('user_weapons.user_id', user.id);
             })
             .where('objectives.id', id)
             .first();

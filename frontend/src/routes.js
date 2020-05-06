@@ -7,6 +7,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Animal from './pages/Animal';
+import Weapon from './pages/Weapon';
 
 export default function Routes({ match }) {
     return (
@@ -17,6 +18,7 @@ export default function Routes({ match }) {
                 <Route path="/register" exact component={Register}></Route>
                 <Route path="/forgot-password" exact component={ForgotPassword}></Route>
                 <Route path="/reset-password" exact component={ResetPassword}></Route>
+                <Route path="/weapon" exact component={Weapon}></Route>
                 <Route path="/animal/:animalId" component={Animal}></Route>
             </Switch>
         </BrowserRouter>

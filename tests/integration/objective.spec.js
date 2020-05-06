@@ -44,7 +44,7 @@ describe('Objectives Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(981);
+        expect(response.body).toHaveLength(987);
 
         const testSchema = {
             $ref: 'objective#/definitions/arrayOfObjectives',
@@ -52,8 +52,6 @@ describe('Objectives Index', () => {
 
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
-
-        expect(response.body).toHaveLength(981);
     });
 
     it('should validate JWT token', async () => {

@@ -1,5 +1,6 @@
 const jwtToken = require('../utils/jwtToken');
 const User = require('../../database/models/User');
+const startWeaponsService = require('../services/StartWeaponsService');
 
 const generateToken = (user) => jwtToken.sign({
     id: user.id,
@@ -51,6 +52,8 @@ module.exports = {
                 username,
                 password,
             });
+
+        await startWeaponsService.addWeapons(user.id);
 
         const accessToken = `Bearer ${generateToken(user)}`;
 

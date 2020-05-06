@@ -296,9 +296,7 @@ async function bighornSheepMissions() {
 }
 
 async function bisonMissions() {
-    const bison = await findAnimalBy('name', 'Bison');
-
-    const firstMission = await findMissionByAnimal(bison.id, 'Off On The Wrong Foot');
+    const firstMission = await findMissionBy('name', 'Off On the Wrong Foot');
     const secondMission = await findMissionBy('name', 'A History Lesson');
     const thrirdMission = await findMissionBy('name', 'The Man Who Saved the Buffalo');
     const fourthMission = await findMissionBy('name', 'Genetic Issues');
