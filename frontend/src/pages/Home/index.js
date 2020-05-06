@@ -55,7 +55,7 @@ export default function Home() {
         const animalsVerified = animals.map(animal => {
             const user_have_weapon = animal.mission.objectives.every(objective => {
                 return objective.weapon_id === null || (
-                    objective.weapon_id !== null && objective.have_weapon !== null
+                    objective.weapon_id && objective.have_weapon
                 );
             });
 

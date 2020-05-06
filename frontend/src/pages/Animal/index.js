@@ -67,7 +67,7 @@ export default function Animal() {
         const missions = animal.missions.map(mission => {
             const user_have_weapon = mission.objectives.every(objective => {
                 return objective.weapon_id === null || (
-                    objective.weapon_id !== null && objective.have_weapon !== null
+                    objective.weapon_id && objective.have_weapon
                 );
             });
 
