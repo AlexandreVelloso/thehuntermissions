@@ -39,6 +39,24 @@
     }
 }
 
+.mission-avaliability {
+    width: 15%;
+    height: 10px;
+    border: 0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.avaliable {
+    background: green;
+}
+
+.buy-gun {
+    background: red;
+}
+
 .home-container ul li {
     background: #fff;
     padding: 12px;

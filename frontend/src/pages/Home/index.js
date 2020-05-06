@@ -27,7 +27,7 @@ export default function Home() {
                 });
                 setLoading(false);
 
-                setAnimals(response.data);
+                setAnimals(verifyUserWeapons(response.data));
             } catch (err) {
                 if (!err.response || err.response.status === 401) {
                     history.push('/login');
@@ -45,10 +45,26 @@ export default function Home() {
                 }
             });
 
-            setAnimals(response.data);
+            setAnimals(verifyUserWeapons(response.data));
         } catch (err) {
 
         }
+    }
+
+    function verifyUserWeapons(animals) {
+        const animalsVerified = animals.map(animal => {
+            const user_have_weapon = animal.mission.objectives.every(objective => {
+                return objective.weapon_id === null || (
+                    objective.weapon_id !== null && objective.have_weapon !== null
+                );
+            });
+
+            animal.mission.user_have_weapon = user_have_weapon;
+
+            return animal;
+        });
+
+        return animalsVerified;
     }
 
     async function updateObjective(objectiveId, completed) {
@@ -124,6 +140,10 @@ export default function Home() {
                 <ul>
                     {animals.map(animal => (
                         <li key={animal.id}>
+                            <p className="avaliability-tags">
+                                {animal.mission.user_have_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {!animal.mission.user_have_weapon && <p className="mission-avaliability buy-gun"></p>}
+                            </p>
                             <div className="animal-title">
                                 <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>
                                 <button onClick={() => handleCompleteMission(animal.mission.id)} disabled={loading}>Complete mission</button>

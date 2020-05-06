@@ -28,6 +28,24 @@
     margin: 32px auto;
 }
 
+.mission-avaliability {
+    width: 7%;
+    height: 10px;
+    border: 0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.avaliable {
+    background: green;
+}
+
+.buy-gun {
+    background: red;
+}
+
 .animal-name {
     text-align: center;
     padding-bottom: 20px;
