@@ -20,8 +20,29 @@
                 },
                 "updated_at": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": [
+                        "null",
+                        "number"
+                    ]
+                },
+                "have_weapon": {
+                    "type": [
+                        "null",
+                        "number"
+                    ]
                 }
-            }
+            },
+            "required": [
+                "id",
+                "name",
+                "price",
+                "created_at",
+                "updated_at",
+                "user_id",
+                "have_weapon"
+            ]
         },
         "arrayOfWeapons": {
             "type": "array",
