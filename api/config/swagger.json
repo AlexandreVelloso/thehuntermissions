@@ -660,6 +660,13 @@
                 },
                 "completed": {
                     "type": "integer"
+                },
+                "weapon_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "have_weapon": {
+                    "type": "integer"
                 }
             }
         },

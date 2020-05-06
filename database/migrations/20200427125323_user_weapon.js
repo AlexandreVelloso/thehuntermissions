@@ -8,7 +8,7 @@ exports.up = function up(knex) {
         table.integer('user_id')
             .unsigned()
             .notNullable();
-        table.boolean('completed')
+        table.boolean('have_weapon')
             .defaultTo(false);
         table.timestamps(true, true);
 

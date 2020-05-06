@@ -32,6 +32,18 @@
                         "null",
                         "number"
                     ]
+                },
+                "weapon_id": {
+                    "type":[
+                        "null",
+                        "number"
+                    ]
+                },
+                "have_weapon": {
+                    "type":[
+                        "null",
+                        "number"
+                    ]
                 }
             },
             "required": [
@@ -40,7 +52,9 @@
                 "mission_id",
                 "created_at",
                 "user_id",
-                "completed"
+                "completed",
+                "weapon_id",
+                "have_weapon"
             ]
         },
         "arrayOfObjectives": {
