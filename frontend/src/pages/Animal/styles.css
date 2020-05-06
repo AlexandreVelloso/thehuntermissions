@@ -28,7 +28,7 @@
     margin: 32px auto;
 }
 
-.mission-avaliability {
+.animal-container .mission-avaliability {
     width: 7%;
     height: 10px;
     border: 0;
@@ -38,11 +38,11 @@
     margin-left: 10px;
 }
 
-.avaliable {
+.animal-container .avaliable {
     background: green;
 }
 
-.buy-gun {
+.animal-container .buy-gun {
     background: red;
 }
 
