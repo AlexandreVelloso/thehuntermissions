@@ -135,6 +135,48 @@
                 }
             }
         },
+        "refreshToken": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Refresh user acces token",
+                "description": "",
+                "operationId": "refreshToken",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Refresh token object",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "refreshToken"
+                            ],
+                            "properties": {
+                                "refreshToken": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Refresh token don't exists",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/resetPassword": {
             "post": {
                 "tags": [
@@ -824,6 +866,9 @@
                     }
                 },
                 "accessToken": {
+                    "type": "string"
+                },
+                "refreshToken": {
                     "type": "string"
                 }
             }

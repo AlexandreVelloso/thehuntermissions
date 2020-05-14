@@ -21,16 +21,17 @@ export default function Register() {
             setErrorMessage('');
 
             setLoading(true);
-            const response = await api.post('register', {
+            const response = await api.post('auth/register', {
                 username,
                 email,
                 password
             });
             setLoading(false);
 
-            const token = response.data.accessToken;
+            const { accessToken, refreshToken } = response.data;
 
-            localStorage.setItem('token', token);
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('username', username);
 
             history.push('/');

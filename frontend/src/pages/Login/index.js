@@ -20,16 +20,17 @@ export default function Login() {
             setErrorMessage('');
 
             setLoading(true);
-            const response = await api.post('login', {
+            const response = await api.post('auth/login', {
                 email,
                 password
             });
             setLoading(false);
 
             const { username } = response.data.user;
-            const token = response.data.accessToken;
+            const { accessToken, refreshToken } = response.data;
 
-            localStorage.setItem('token', token);
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('username', username);
 
             history.push('/');
