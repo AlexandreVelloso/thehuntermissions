@@ -28,7 +28,7 @@ test('Validate schemas', () => {
 describe('Register', () => {
     it('should be able to register user', async () => {
         const response = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send({
                 email: 'a@a.com',
                 username: 'aa',
@@ -57,11 +57,11 @@ describe('Register', () => {
         };
 
         await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send(user);
 
         const response = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send(user);
 
         expect(response.status).toBe(400);
@@ -88,7 +88,7 @@ describe('Login', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send(user);
     });
 
@@ -98,7 +98,7 @@ describe('Login', () => {
 
     it('should login a user that is registered', async () => {
         const response = await request(app)
-            .post('/api/login')
+            .post('/api/auth/login')
             .send({
                 email: user.email,
                 password: user.password,
@@ -120,7 +120,7 @@ describe('Login', () => {
 
     it('should validate user credentials', async () => {
         const response = await request(app)
-            .post('/api/login')
+            .post('/api/auth/login')
             .send({
                 email: 'wrong@email.com',
                 password: 'wrong',
@@ -150,7 +150,7 @@ describe('Reset password', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send(user);
     });
 
@@ -162,7 +162,7 @@ describe('Reset password', () => {
         const token = jwtToken.sign({ email: 'a@a.com' });
 
         const response = await request(app)
-            .post('/api/resetPassword')
+            .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
                 confirmPassword: 'newPassword',
@@ -176,7 +176,7 @@ describe('Reset password', () => {
         const token = jwtToken.sign({ email: 'a@a.com' });
 
         const response = await request(app)
-            .post('/api/resetPassword')
+            .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
                 confirmPassword: 'password',
@@ -196,7 +196,7 @@ describe('Reset password', () => {
 
     it('should give error when the token is invalid', async () => {
         const response = await request(app)
-            .post('/api/resetPassword')
+            .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
                 confirmPassword: 'newPassword',
@@ -218,7 +218,7 @@ describe('Reset password', () => {
         const token = jwtToken.sign({ email: 'invalid@email.com' });
 
         const response = await request(app)
-            .post('/api/resetPassword')
+            .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
                 confirmPassword: 'newPassword',
@@ -240,7 +240,7 @@ describe('Reset password', () => {
         const token = jwtToken.sign({ email: 'a@a.com' });
 
         await request(app)
-            .post('/api/resetPassword')
+            .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
                 confirmPassword: 'newPassword',
@@ -248,7 +248,7 @@ describe('Reset password', () => {
             });
 
         const oldPasswordAttemptResponse = await request(app)
-            .post('/api/login')
+            .post('/api/auth/login')
             .send({
                 email: user.email,
                 password: user.password,
@@ -257,7 +257,7 @@ describe('Reset password', () => {
         expect(oldPasswordAttemptResponse.status).toBe(400);
 
         const newPasswordAttemptResponse = await request(app)
-            .post('/api/login')
+            .post('/api/auth/login')
             .send({
                 email: user.email,
                 password: 'newPassword',

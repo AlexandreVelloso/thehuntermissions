@@ -29,7 +29,9 @@ export default function Home() {
 
                 setAnimals(verifyUserWeapons(response.data));
             } catch (err) {
-                if (!err.response || err.response.status === 401) {
+                if (!err.response) {
+                    alert('Error when try to connect to server');
+                } else if (err.response.status === 401) {
                     history.push('/login');
                 }
             }
