@@ -138,6 +138,66 @@ describe('Login', () => {
     });
 });
 
+describe('Refresh token', () => {
+    let user;
+
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                email: 'a@a.com',
+                username: 'aa',
+                password: '1234',
+            });
+
+        user = response.body;
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
+    it('should reset user token', async () => {
+        const response = await request(app)
+            .post('/api/auth/refresh')
+            .send({
+                refreshToken: user.refresh_token,
+            });
+
+        expect(response.status).toBe(200);
+
+        const testSchema = {
+            $ref: 'loginResponse#/definitions/login',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+
+        expect(user.accessToken).not.toEqual(response.body.accessToken);
+    });
+
+    it('should fail when not found the refresh token', async () => {
+        const response = await request(app)
+            .post('/api/auth/refresh')
+            .send({
+                refreshToken: 'invalidToken',
+            });
+
+        expect(response.status).toBe(401);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('Invalid refresh token');
+    });
+});
+
 describe('Reset password', () => {
     const user = {
         email: 'a@a.com',

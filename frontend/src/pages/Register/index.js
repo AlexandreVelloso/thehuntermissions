@@ -28,9 +28,10 @@ export default function Register() {
             });
             setLoading(false);
 
-            const token = response.data.accessToken;
+            const { accessToken, refreshToken } = response.data;
 
-            localStorage.setItem('token', token);
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('username', username);
 
             history.push('/');
