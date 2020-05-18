@@ -4,15 +4,6 @@ const app = require('../../api/app');
 const connection = require('../../database/connection');
 const jwtToken = require('../../api/utils/jwtToken');
 
-beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
-});
-
-afterEach(async () => {
-    await connection.migrate.rollback();
-});
-
 const errorSchema = require('../schemas/ErrorSchema.json');
 const loginResponseSchema = require('../schemas/LoginResponseSchema.json');
 
@@ -26,9 +17,18 @@ test('Validate schemas', () => {
 });
 
 describe('Register', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should be able to register user', async () => {
         const response = await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send({
                 email: 'a@a.com',
                 username: 'aa',
@@ -57,11 +57,11 @@ describe('Register', () => {
         };
 
         await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send(user);
 
         const response = await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send(user);
 
         expect(response.status).toBe(400);
@@ -88,7 +88,7 @@ describe('Login', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send(user);
     });
 
@@ -146,7 +146,7 @@ describe('Refresh token', () => {
         await connection.migrate.latest();
 
         const response = await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send({
                 email: 'a@a.com',
                 username: 'aa',
@@ -164,7 +164,7 @@ describe('Refresh token', () => {
         const response = await request(app)
             .post('/api/auth/refresh')
             .send({
-                refreshToken: user.refresh_token,
+                refreshToken: user.refreshToken,
             });
 
         expect(response.status).toBe(200);
@@ -175,8 +175,6 @@ describe('Refresh token', () => {
 
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
-
-        expect(user.accessToken).not.toEqual(response.body.accessToken);
     });
 
     it('should fail when not found the refresh token', async () => {
@@ -210,7 +208,7 @@ describe('Reset password', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/api/auth/register')
+            .post('/api/auth/register')
             .send(user);
     });
 
