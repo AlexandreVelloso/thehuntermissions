@@ -16,7 +16,7 @@ beforeAll(async () => {
     await connection.seed.run();
 
     const response = await request(app)
-        .post('/api/register')
+        .post('/api/auth/register')
         .send({
             username: 'user',
             email: 'user@email.com',

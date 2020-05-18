@@ -8,7 +8,7 @@ beforeAll(async () => {
     await connection.migrate.latest();
 
     await request(app)
-        .post('/api/register')
+        .post('/api/auth/register')
         .send({
             username: 'user',
             email: 'user@email.com',

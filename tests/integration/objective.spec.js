@@ -14,7 +14,7 @@ beforeAll(async () => {
     await connection.seed.run();
 
     const response = await request(app)
-        .post('/api/register')
+        .post('/api/auth/register')
         .send({
             username: 'user',
             email: 'user@email.com',
@@ -181,7 +181,7 @@ describe('Test objectives for two users', () => {
         await connection.seed.run();
 
         const response = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send({
                 username: 'user',
                 email: 'user@email.com',
@@ -191,7 +191,7 @@ describe('Test objectives for two users', () => {
         user = response.body;
 
         const response2 = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send({
                 username: 'user2',
                 email: 'user2@email.com',

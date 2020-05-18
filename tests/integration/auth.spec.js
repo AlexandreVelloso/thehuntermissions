@@ -28,7 +28,7 @@ test('Validate schemas', () => {
 describe('Register', () => {
     it('should be able to register user', async () => {
         const response = await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send({
                 email: 'a@a.com',
                 username: 'aa',
@@ -57,11 +57,11 @@ describe('Register', () => {
         };
 
         await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send(user);
 
         const response = await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send(user);
 
         expect(response.status).toBe(400);
@@ -88,7 +88,7 @@ describe('Login', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send(user);
     });
 
@@ -146,7 +146,7 @@ describe('Refresh token', () => {
         await connection.migrate.latest();
 
         const response = await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send({
                 email: 'a@a.com',
                 username: 'aa',
@@ -210,7 +210,7 @@ describe('Reset password', () => {
         await connection.migrate.latest();
 
         await request(app)
-            .post('/api/auth/register')
+            .post('/api/api/auth/register')
             .send(user);
     });
 
