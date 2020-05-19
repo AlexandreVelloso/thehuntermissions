@@ -58,7 +58,7 @@ describe('Animals Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(49);
+        expect(response.body).toHaveLength(48);
 
         const testSchema = {
             $ref: 'animal#/definitions/arrayOfAnimals',

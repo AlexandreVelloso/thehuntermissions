@@ -3,7 +3,6 @@ exports.seed = (knex) => knex('animals').del()
     .then(() => knex('animals').insert([
         { name: 'All Ducks' },
         { name: 'Alpine Ibex' },
-        { name: 'American Black Duck' },
         { name: 'Arctic Fox' },
         { name: 'Banteng' },
         { name: 'Bighorn Sheep' },
