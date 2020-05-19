@@ -8,6 +8,16 @@ const objectiveSchema = require('../schemas/ObjectiveSchema.json');
 const missionSchema = require('../schemas/MissionSchema.json');
 const animalSchema = require('../schemas/AnimalSchema.json');
 
+function objectivesHasDuplicates(objectives) {
+    for (let i = 0; i < objectives.length - 1; i += 1) {
+        if (objectives[i].id === objectives[i + 1].id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 let user;
 
 beforeAll(async () => {
@@ -77,6 +87,20 @@ describe('Animals Index', () => {
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Invalid token');
     });
+
+    it('should not repeat objective', async () => {
+        const response = await request(app)
+            .get('/api/animals')
+            .set('Authorization', user.accessToken);
+
+        const animal = response.body[1];
+        const { missions } = animal;
+
+        const objectivesToTest = missions[7].objectives;
+        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
+
+        expect(hasDuplicates).toBe(false);
+    });
 });
 
 describe('Animals Get', () => {
@@ -122,5 +146,18 @@ describe('Animals Get', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Invalid token');
+    });
+
+    it('should not repeat objective', async () => {
+        const response = await request(app)
+            .get('/api/animals/2')
+            .set('Authorization', user.accessToken);
+
+        const { missions } = response.body;
+
+        const objectivesToTest = missions[7].objectives;
+        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
+
+        expect(hasDuplicates).toBe(false);
     });
 });

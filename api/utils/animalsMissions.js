@@ -1,8 +1,11 @@
+const { removeDuplicates } = require('./removeObjectivesDuplicates');
+
 // eslint-disable-next-line max-len
 const isAllObjectivesCompleted = (objectives) => objectives.every((objective) => objective.completed);
 
-// eslint-disable-next-line max-len
-const getLastMission = (missions) => missions.find((mission) => !isAllObjectivesCompleted(mission.objectives));
+const getLastMission = (missions) => removeDuplicates(
+    missions.find((mission) => !isAllObjectivesCompleted(mission.objectives)),
+);
 
 const getAnimalsLastMission = (animals) => {
     const animalsLastMissions = [];

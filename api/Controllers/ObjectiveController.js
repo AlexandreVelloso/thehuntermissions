@@ -1,11 +1,12 @@
 const Objective = require('../../database/models/Objective');
 const UserObjective = require('../../database/models/UserObjective');
+const { removeObjectivesDuplicates } = require('../utils/removeObjectivesDuplicates');
 
 module.exports = {
     async index(req, res) {
         const { user } = req.auth;
 
-        const objectives = await Objective.query()
+        let objectives = await Objective.query()
             .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
             // eslint-disable-next-line func-names
             .leftJoin('user_objectives', function () {
@@ -20,6 +21,8 @@ module.exports = {
                 this.on('user_weapons.weapon_id', 'weapons.id')
                     .on('user_weapons.user_id', user.id);
             });
+
+        objectives = removeObjectivesDuplicates(objectives);
 
         return res.json(objectives);
     },
