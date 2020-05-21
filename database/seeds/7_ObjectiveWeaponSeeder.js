@@ -38,15 +38,13 @@ async function addWeaponsObjectives(knex, weapons, objectives) {
     }
 }
 
-async function createObjectiveWeapon(knex, weaponName) {
-    const weapons = await Weapon.query()
-        .whereIn('name', [
-            weaponName,
-        ]);
+async function createObjectivesWeaponsForAllWeapons(knex) {
+    const weapons = await Weapon.query();
 
-    const objectives = await findObjectivesByName(weaponName);
-
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await weapons.forEach(async (weapon) => {
+        const objectives = await findObjectivesByName(weapon.name);
+        await addWeaponsObjectives(knex, [weapon], objectives);
+    });
 }
 
 async function dot17HMRHV(knex) {
@@ -286,45 +284,258 @@ async function dot308Anschuts(knex) {
     await addWeaponsObjectives(knex, weapons, objectives);
 }
 
+async function dot308RivalHandgun(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '308 "Rival" Handgun',
+        ]);
+
+    const objectives = await findObjectivesByName('308 "Rival" Handgun');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+
+async function any243or223(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '243 Bolt Action Rifle',
+            '223 Bolt Action Rifle',
+            '223 Semi-Automatic Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('any .243 or .223 rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function arcticFoxRevolvers(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '357 Revolver',
+        ]);
+
+    const objectives = await findObjectivesByName('Harvest an Arctic Fox with any permitted revolver.');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function snakebiteMissions(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Snakebite Compound Bow',
+        ]);
+
+    const objectives = await findObjectivesByName('"Snakebite" Compound Bow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot223Ammunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '223 Bolt Action Rifle',
+            '223 Semi-Automatic Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('223 ammunition');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function feralGoatPistols(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '357 Revolver',
+            '10mm Semi-Automatic Pistol',
+            '44 Magnum Revolver',
+            '50 Inline Muzzleloading Pistol',
+        ]);
+
+    const objectives = await findObjectivesByName('Harvest a Feral Goat with 100% Harvest Value, using any ethical pistol or revolver.');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function parkerPython(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Parker Python Compound Bow',
+        ]);
+
+    const objectives = await findObjectivesByName('Compound Bow "Parker Python');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function sideBySide(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'SxS Shotgun',
+        ]);
+
+    const objectives = await findObjectivesByName('Side by Side shotgun');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot270rifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '270 Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.270 rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot3006rifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '30-06 Bolt Action Rifle',
+            '30-06 Lever Action Rifle',
+            '30-06 Stutzen Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.30-06 rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot357Handgun(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '357 Revolver',
+        ]);
+
+    const objectives = await findObjectivesByName('.357 Handgun');
+    const objectives2 = await findObjectivesByName('.357 Magnum');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectives2);
+}
+
+async function k98kBoltActionRifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '8x57 IS K98k Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('8x57 K98k Bolt Action Rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function anschtzRifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '8x57 IS Anschütz 1780 D FL Bolt Action Rifle',
+            '9.3x62 Anschütz 1780 D FL Bolt Action Rifle',
+            '308 Anschütz 1780 D FL Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('Anchütz rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot8x57Ammunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '8x57 IS Anschütz 1780 D FL Bolt Action Rifle',
+            '8x57 IS K98k Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('8x57 ammunition');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function any4570Rifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '45-70 Buffalo Rifle',
+            '45-70 Government Lever Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.45-70 rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot3006Ammunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '30-06 Bolt Action Rifle',
+            '30-06 Lever Action Rifle',
+            '30-06 Stutzen Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.30-06 ammunition');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function rockMountainElkPermitedRifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '45-70 Buffalo Rifle',
+            '45-70 Government Lever Action Rifle',
+            '405 Lever Action Rifle',
+            '340 Weatherby Magnum Bolt Action Rifle',
+            '300 Bolt Action Rifle',
+            '9.3x62 Anschütz 1780 D FL Bolt Action Rifle',
+            '9.3x74R O/U Break Action Rifle',
+            '7mm Magnum Break Action Rifle',
+            '7mm Magnum Bullpup Rifle',
+            '30 R O/U Break Action Rifle',
+            '8x57 IS Anschütz 1780 D FL Bolt Action Rifle',
+            '8x57 IS K98k Bolt Action Rifle',
+            '303 British Bolt Action Rifle',
+            '308 Bolt Action Rifle',
+            '30-06 Lever Action Rifle',
+            '30-06 Bolt Action Rifle',
+            '30-06 Stutzen Bolt Action Rifle',
+            '7.62x54R Bolt Action Rifle',
+            '7x64mm Bolt Action Rifle',
+            '7mm-08 Scout Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('Harvest a male Rocky Mountain Elk with more than 12 typical points using any ethical rifle ammunition.');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot454Ammunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '454 Revolver',
+        ]);
+
+    const objectives = await findObjectivesByName('.454 ammunition');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function waterBuffaloAnyMuzeloaderAmmunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '50 Inline Muzzleloader',
+            '50 Inline Muzzleloading Pistol',
+        ]);
+
+    const objectives = await findObjectivesByName('Finally, harvest a charging Water Buffalo with any ethical Muzzleloader ammo.');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
 exports.seed = (knex) => {
     Model.knex(knex);
 
     return knex('objectives_weapons').del()
         .then(async () => {
-            await createObjectiveWeapon(knex, '12 GA Blaser F3 Game O/U Shotgun');
-            await createObjectiveWeapon(knex, '12 GA Pump Action Shotgun');
-            await createObjectiveWeapon(knex, '12 GA Single Shot Shotgun');
-            await createObjectiveWeapon(knex, '20 GA Semi-Automatic Shotgun');
-            await createObjectiveWeapon(knex, '22 Air Rifle');
-            await createObjectiveWeapon(knex, '22 Pistol');
-            await createObjectiveWeapon(knex, '223 Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '243 Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '270 Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '30-06 Lever Action Rifle');
-            await createObjectiveWeapon(knex, '30-30 Lever Action Rifle');
-            await createObjectiveWeapon(knex, '300 Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '303 British Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '308 Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '340 Weatherby Magnum Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '357 Revolver');
-            await createObjectiveWeapon(knex, '44 Magnum Revolver');
-            await createObjectiveWeapon(knex, '454 Revolver');
-            await createObjectiveWeapon(knex, '50 Cap Lock Muzzleloader');
-            await createObjectiveWeapon(knex, '6.5x55 Blaser R8 Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '7mm Magnum Bullpup Rifle');
-            await createObjectiveWeapon(knex, '8x57 IS Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '8x57 IS K98k Bolt Action Rifle');
-            await createObjectiveWeapon(knex, '9.3x62 Anschütz 1780 D FL Bolt Action Rifle');
-            await createObjectiveWeapon(knex, 'Cable-backed Bow');
-            await createObjectiveWeapon(knex, 'Crossbow Pistol');
-            await createObjectiveWeapon(knex, 'Heavy Recurve Bow');
-            await createObjectiveWeapon(knex, 'Inline Muzzleloader');
-            await createObjectiveWeapon(knex, 'Longbow');
-            await createObjectiveWeapon(knex, 'Parker Python Compound Bow');
-            await createObjectiveWeapon(knex, 'Recurve Bow');
-            await createObjectiveWeapon(knex, 'Snakebite Compound Bow');
-            await createObjectiveWeapon(knex, 'SxS Shotgun');
-            await createObjectiveWeapon(knex, 'Tenpoint Carbon Fusion Crossbow');
+            await createObjectivesWeaponsForAllWeapons(knex);
             await dot17HMRHV(knex);
             await dot308SingleShotHandgun(knex);
             await dot4570Government(knex);
@@ -342,5 +553,24 @@ exports.seed = (knex) => {
             await dot300Rifle(knex);
             await pumpAction(knex);
             await dot308Anschuts(knex);
+            await dot308RivalHandgun(knex);
+            await any243or223(knex);
+            await arcticFoxRevolvers(knex);
+            await snakebiteMissions(knex);
+            await dot223Ammunition(knex);
+            await feralGoatPistols(knex);
+            await parkerPython(knex);
+            await sideBySide(knex);
+            await dot270rifle(knex);
+            await dot357Handgun(knex);
+            await k98kBoltActionRifle(knex);
+            await anschtzRifle(knex);
+            await dot8x57Ammunition(knex);
+            await any4570Rifle(knex);
+            await dot3006Ammunition(knex);
+            await rockMountainElkPermitedRifle(knex);
+            await dot454Ammunition(knex);
+            await waterBuffaloAnyMuzeloaderAmmunition(knex);
+            await dot3006rifle(knex);
         });
 };

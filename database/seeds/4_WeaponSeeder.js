@@ -1,6 +1,7 @@
 
 exports.seed = (knex) => knex('weapons').del()
     .then(() => knex('weapons').insert([
+        { name: '10mm Semi-Automatic Pistol', price: 0 },
         { name: '12 GA Blaser F3 Game O/U Shotgun', price: 0 },
         { name: '12 GA Pump Action Shotgun', price: 0 },
         { name: '12 GA Single Shot Shotgun', price: 0 },
@@ -41,6 +42,8 @@ exports.seed = (knex) => knex('weapons').del()
         { name: '6.5x55 Bolt Action Rifle', price: 0 },
         { name: '7mm Magnum Break Action Rifle', price: 0 },
         { name: '7mm Magnum Bullpup Rifle', price: 0 },
+        { name: '7mm-08 Scout Bolt Action Rifle', price: 0 },
+        { name: '7.62x54R Bolt Action Rifle', price: 0 },
         { name: '7x64mm Bolt Action Rifle', price: 0 },
         { name: '8x57 IS Anschütz 1780 D FL Bolt Action Rifle', price: 0 },
         { name: '8x57 IS K98k Bolt Action Rifle', price: 0 },
