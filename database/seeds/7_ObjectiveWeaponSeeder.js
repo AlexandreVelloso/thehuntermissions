@@ -11,27 +11,23 @@ async function findAmmoByName(name) {
         .first();
 }
 
-async function findWeaponBy(column, value) {
-    return Weapon.query()
-        .where(column, value)
-        .select('*')
-        .first();
-}
-
-async function findObjectivesByWeapon(weapon) {
+async function findObjectivesByName(weapon) {
     return Objective.query()
         .where('name', 'like', `%${weapon}%`)
         .select('*');
 }
 
-async function createObjectiveWeapon(knex, weaponName) {
-    const weapon = await findWeaponBy('name', weaponName);
-    const objectives = await findObjectivesByWeapon(weapon.name);
+async function addWeaponsObjectives(knex, weapons, objectives) {
+    const weaponObjectives = [];
 
-    const weaponObjectives = objectives.map((objective) => ({
-        objective_id: objective.id,
-        weapon_id: weapon.id,
-    }));
+    objectives.forEach((objective) => {
+        weapons.forEach((weapon) => {
+            weaponObjectives.push({
+                objective_id: objective.id,
+                weapon_id: weapon.id,
+            });
+        });
+    });
 
     if (process.env.NODE_ENV === 'production') {
         await knex('objectives_weapons')
@@ -40,6 +36,17 @@ async function createObjectiveWeapon(knex, weaponName) {
         await ObjectiveWeapon.query()
             .insertGraph(weaponObjectives);
     }
+}
+
+async function createObjectiveWeapon(knex, weaponName) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            weaponName,
+        ]);
+
+    const objectives = await findObjectivesByName(weaponName);
+
+    await addWeaponsObjectives(knex, weapons, objectives);
 }
 
 async function dot17HMRHV(knex) {
@@ -50,26 +57,9 @@ async function dot17HMRHV(knex) {
         .join('weapons_ammos', 'weapons_ammos.weapon_id', 'weapons.id')
         .where('ammo_id', ammo.id);
 
-    const objectives = await findObjectivesByWeapon('17 HMR HV Ammunition');
+    const objectives = await findObjectivesByName('17 HMR HV Ammunition');
 
-    const weaponObjectives = [];
-
-    objectives.forEach((objective) => {
-        weapons.forEach((weapon) => {
-            weaponObjectives.push({
-                objective_id: objective.id,
-                weapon_id: weapon.id,
-            });
-        });
-    });
-
-    if (process.env.NODE_ENV === 'production') {
-        await knex('objectives_weapons')
-            .insert(weaponObjectives);
-    } else {
-        await ObjectiveWeapon.query()
-            .insertGraph(weaponObjectives);
-    }
+    await addWeaponsObjectives(knex, weapons, objectives);
 }
 
 async function dot308SingleShotHandgun(knex) {
@@ -80,47 +70,22 @@ async function dot308SingleShotHandgun(knex) {
             '308 "Wolfsbane" Handgun',
         ]);
 
-    const objectives = await findObjectivesByWeapon('308 Single Shot Handgun');
+    const objectives = await findObjectivesByName('308 Single Shot Handgun');
 
-    const weaponObjectives = [];
-
-    objectives.forEach((objective) => {
-        weapons.forEach((weapon) => {
-            weaponObjectives.push({
-                objective_id: objective.id,
-                weapon_id: weapon.id,
-            });
-        });
-    });
-
-    if (process.env.NODE_ENV === 'production') {
-        await knex('objectives_weapons')
-            .insert(weaponObjectives);
-    } else {
-        await ObjectiveWeapon.query()
-            .insertGraph(weaponObjectives);
-    }
+    addWeaponsObjectives(knex, weapons, objectives);
 }
 
 async function dot4570Government(knex) {
-    const weapon = await Weapon.query()
-        .where('name', 'like', '%45-70 Government%')
-        .first();
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '45-70 Government Lever Action Rifle',
+        ]);
 
-    const objectives = await findObjectivesByWeapon('45-70 Government');
+    const objectives = await findObjectivesByName('45-70 Government');
+    const objectives2 = await findObjectivesByName('45-70 Lever Action Rifle');
 
-    const weaponObjectives = objectives.map((objective) => ({
-        objective_id: objective.id,
-        weapon_id: weapon.id,
-    }));
-
-    if (process.env.NODE_ENV === 'production') {
-        await knex('objectives_weapons')
-            .insert(weaponObjectives);
-    } else {
-        await ObjectiveWeapon.query()
-            .insertGraph(weaponObjectives);
-    }
+    addWeaponsObjectives(knex, weapons, objectives);
+    addWeaponsObjectives(knex, weapons, objectives2);
 }
 
 async function dot7mmBreakActionRifle(knex) {
@@ -130,26 +95,195 @@ async function dot7mmBreakActionRifle(knex) {
             '7mm Magnum Bullpup Rifle',
         ]);
 
-    const objectives = await findObjectivesByWeapon('7mm Break Action Rifle');
+    const objectives = await findObjectivesByName('7mm Break Action Rifle');
 
-    const weaponObjectives = [];
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
 
-    objectives.forEach((objective) => {
-        weapons.forEach((weapon) => {
-            weaponObjectives.push({
-                objective_id: objective.id,
-                weapon_id: weapon.id,
-            });
-        });
-    });
+async function tracerArrows(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Snakebite Compound Bow',
+            'Parker Python Compound Bow',
+            'Compound Bow Red Dragon',
+            'Compound Bow Pulsar',
+            'Heavy Recurve Bow',
+            'Recurve Bow',
+            'Tenpoint Carbon Fusion Crossbow',
+            'Reverse Draw Crossbow',
+        ]);
 
-    if (process.env.NODE_ENV === 'production') {
-        await knex('objectives_weapons')
-            .insert(weaponObjectives);
-    } else {
-        await ObjectiveWeapon.query()
-            .insertGraph(weaponObjectives);
-    }
+    const objectives = await findObjectivesByName('tracer arrow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot7mmAmmunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '7mm Magnum Bullpup Rifle',
+            '7mm Magnum Break Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('7 mm ammunition');
+    const objectives2 = await findObjectivesByName('7mm Magnum ammunition');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectives2);
+}
+
+async function anyShotgun(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '10 GA Lever Action Shotgun',
+            '12 GA Pump Action Shotgun',
+            '12 GA Side by Side Shotgun',
+            '12 GA Blaser F3 Game O/U Shotgun',
+            '12 GA Single Shot Shotgun',
+            '16 GA Side By Side Shotgun',
+            '20 GA Semi-Automatic Shotgun',
+            '16GA/9.3x74R Drilling',
+        ]);
+
+    const objectives = await findObjectivesByName('any shotgun');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function buckshot(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '10 GA Lever Action Shotgun',
+            '12 GA Pump Action Shotgun',
+            '12 GA Side by Side Shotgun',
+            '12 GA Blaser F3 Game O/U Shotgun',
+            '12 GA Single Shot Shotgun',
+            '16 GA Side By Side Shotgun',
+            '20 GA Semi-Automatic Shotgun',
+            '16GA/9.3x74R Drilling',
+        ]);
+
+    const objectives = await findObjectivesByName('buckshot');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function slug(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '10 GA Lever Action Shotgun',
+            '12 GA Pump Action Shotgun',
+            '12 GA Side by Side Shotgun',
+            '12 GA Blaser F3 Game O/U Shotgun',
+            '12 GA Single Shot Shotgun',
+            '16GA/9.3x74R Drilling',
+        ]);
+
+    const objectives = await findObjectivesByName('slug');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function anyBow(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Heavy Recurve Bow',
+            'Recurve Bow',
+            'Longbow',
+            'Cable-backed Bow',
+        ]);
+
+    const objectives = await findObjectivesByName('any bow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function anyCompoundBow(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Snakebite Compound Bow',
+            'Parker Python Compound Bow',
+            'Compound Bow Pulsar',
+            'Compound Bow Red Dragon',
+        ]);
+
+    const objectives = await findObjectivesByName('any Compound Bow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function anyCrossbow(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Crossbow Pistol',
+            'Reverse Draw Crossbow',
+            'Tenpoint Carbon Fusion Crossbow',
+        ]);
+
+    const objectives = await findObjectivesByName('any crossbow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function bowOrCrossbow(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            'Crossbow Pistol',
+            'Reverse Draw Crossbow',
+            'Tenpoint Carbon Fusion Crossbow',
+            'Heavy Recurve Bow',
+            'Recurve Bow',
+            'Longbow',
+            'Cable-backed Bow',
+        ]);
+
+    const objectives = await findObjectivesByName('bow or crossbow');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function bisonRevolvers(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '454 Revolver',
+        ]);
+
+    const objectives = await findObjectivesByName('Harvest the male Bison "Buffalo Bill" last seen at the "Windy Hill" (X: -6464, Y: -10096) using any permitted revolver without a scope.');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot300Rifle(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '300 Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.300 Rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function pumpAction(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '12 GA Pump Action Shotgun',
+        ]);
+
+    const objectives = await findObjectivesByName('Pump-Action Shotgun');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot308Anschuts(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '308 Anschütz 1780 D FL Bolt Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('308 Anschütz Rifle');
+
+    await addWeaponsObjectives(knex, weapons, objectives);
 }
 
 exports.seed = (knex) => {
@@ -195,5 +329,18 @@ exports.seed = (knex) => {
             await dot308SingleShotHandgun(knex);
             await dot4570Government(knex);
             await dot7mmBreakActionRifle(knex);
+            await tracerArrows(knex);
+            await dot7mmAmmunition(knex);
+            await anyShotgun(knex);
+            await buckshot(knex);
+            await slug(knex);
+            await anyBow(knex);
+            await anyCompoundBow(knex);
+            await anyCrossbow(knex);
+            await bowOrCrossbow(knex);
+            await bisonRevolvers(knex);
+            await dot300Rifle(knex);
+            await pumpAction(knex);
+            await dot308Anschuts(knex);
         });
 };
