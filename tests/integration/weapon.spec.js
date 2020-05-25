@@ -5,26 +5,6 @@ const connection = require('../../database/connection');
 
 let user;
 
-beforeAll(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
-    await connection.seed.run();
-
-    const response = await request(app)
-        .post('/api/register')
-        .send({
-            username: 'user',
-            email: 'user@email.com',
-            password: '1234',
-        });
-
-    user = response.body;
-});
-
-afterAll(async () => {
-    await connection.migrate.rollback();
-});
-
 const errorSchema = require('../schemas/ErrorSchema.json');
 const weaponSchema = require('../schemas/WeaponSchema.json');
 
@@ -38,6 +18,26 @@ test('Validate schemas', () => {
 });
 
 describe('Weapons Index', () => {
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+
+        user = response.body;
+    });
+
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should list all weapons', async () => {
         await connection.seed.run();
 
@@ -46,7 +46,7 @@ describe('Weapons Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(55);
+        expect(response.body).toHaveLength(58);
 
         const testSchema = {
             $ref: 'weapon#/definitions/arrayOfWeapons',
@@ -73,6 +73,26 @@ describe('Weapons Index', () => {
 });
 
 describe('Weapons Get', () => {
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+
+        user = response.body;
+    });
+
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should retrieve a weapon from a user', async () => {
         const response = await request(app)
             .get('/api/weapons/1')
@@ -114,6 +134,26 @@ describe('Weapons Get', () => {
 });
 
 describe('Weapons Update', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+
+        user = response.body;
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should update weapon', async () => {
         const responseOld = await request(app)
             .get('/api/weapons/1')
@@ -183,7 +223,7 @@ describe('Test weapons for two users', () => {
         await connection.seed.run();
 
         const response = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send({
                 username: 'user',
                 email: 'user@email.com',
@@ -193,7 +233,7 @@ describe('Test weapons for two users', () => {
         user = response.body;
 
         const response2 = await request(app)
-            .post('/api/register')
+            .post('/api/auth/register')
             .send({
                 username: 'user2',
                 email: 'user2@email.com',
@@ -225,11 +265,11 @@ describe('Test weapons for two users', () => {
 
         const firstWeaponUser1 = response1.body[0];
         expect(firstWeaponUser1.user_id).toBe(1);
-        expect(firstWeaponUser1.completed).toBe(1);
+        expect(firstWeaponUser1.have_weapon).toBe(1);
 
         const firstWeaponUser2 = response2.body[0];
         expect(firstWeaponUser2.user_id).toBe(null);
-        expect(firstWeaponUser2.completed).toBe(null);
+        expect(firstWeaponUser2.have_weapon).toBe(null);
     });
 
     it('should have different results for weapons gets', async () => {
@@ -243,10 +283,10 @@ describe('Test weapons for two users', () => {
 
         const firstWeaponUser1 = response1.body;
         expect(firstWeaponUser1.user_id).toBe(1);
-        expect(firstWeaponUser1.completed).toBe(1);
+        expect(firstWeaponUser1.have_weapon).toBe(1);
 
         const firstWeaponUser2 = response2.body;
         expect(firstWeaponUser2.user_id).toBe(null);
-        expect(firstWeaponUser2.completed).toBe(null);
+        expect(firstWeaponUser2.have_weapon).toBe(null);
     });
 });

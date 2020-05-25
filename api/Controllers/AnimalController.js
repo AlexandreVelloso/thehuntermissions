@@ -1,10 +1,11 @@
 const Animal = require('../../database/models/Animal');
+const { removeDuplicates } = require('../utils/removeObjectivesDuplicates');
 
 module.exports = {
     async index(req, res) {
         const { user } = req.auth;
 
-        const animals = await Animal.query()
+        let animals = await Animal.query()
             .withGraphFetched('missions.objectives')
             .modifyGraph('missions.objectives', (builder) => {
                 builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
@@ -22,6 +23,12 @@ module.exports = {
                             .on('user_weapons.user_id', user.id);
                     });
             });
+
+        animals = animals.map((animal) => {
+            // eslint-disable-next-line no-param-reassign
+            animal.missions = removeDuplicates(animal.missions);
+            return animal;
+        });
 
         return res.json(animals);
     },
@@ -57,6 +64,8 @@ module.exports = {
                     error: 'Animal not found',
                 });
         }
+
+        animal.missions = removeDuplicates(animal.missions);
 
         return res.json(animal);
     },

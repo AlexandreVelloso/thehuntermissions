@@ -8,6 +8,16 @@ const objectiveSchema = require('../schemas/ObjectiveSchema.json');
 const missionSchema = require('../schemas/MissionSchema.json');
 const lastMissionSchema = require('../schemas/LastMissionSchema.json');
 
+function objectivesHasDuplicates(objectives) {
+    for (let i = 0; i < objectives.length - 1; i += 1) {
+        if (objectives[i].id === objectives[i + 1].id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 let user;
 
 beforeAll(async () => {
@@ -16,7 +26,7 @@ beforeAll(async () => {
     await connection.seed.run();
 
     const response = await request(app)
-        .post('/api/register')
+        .post('/api/auth/register')
         .send({
             username: 'user',
             email: 'user@email.com',
@@ -143,5 +153,50 @@ describe('LastMissions when update', () => {
         expect(lastMissionOldId).not.toEqual(lastMissionNewId);
         expect(lastMissionOld.mission.animal_id)
             .toEqual(lastMissionNew.mission.animal_id);
+    });
+});
+
+describe('LastMissions test duplicates', () => {
+    beforeAll(async () => {
+        const requests = [];
+
+        for (let missionId = 11; missionId <= 17; missionId += 1) {
+            requests.push(
+                request(app)
+                    .put(`/api/missions/${missionId}`)
+                    .set('Authorization', user.accessToken)
+                    .send({
+                        completed: true,
+                    }),
+            );
+        }
+
+        await Promise.all(requests);
+    });
+
+    it('Index last mission should not repeat objectives', async () => {
+        const response = await request(app)
+            .get('/api/lastMissions')
+            .set('Authorization', user.accessToken);
+
+        const { mission } = response.body[1];
+        const objectivesToTest = mission.objectives;
+
+        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
+
+        expect(hasDuplicates).toBe(false);
+    });
+
+    it('Get last mission should not repeat objectives', async () => {
+        const response = await request(app)
+            .get('/api/lastMissions/2')
+            .set('Authorization', user.accessToken);
+
+        const { mission } = response.body;
+        const objectivesToTest = mission.objectives;
+
+        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
+
+        expect(hasDuplicates).toBe(false);
     });
 });
