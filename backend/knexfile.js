@@ -1,17 +1,19 @@
 // Update with your config settings.
 
+const appRoot = require('app-root-path');
+
 module.exports = {
 
     development: {
         client: 'sqlite3',
         connection: {
-            filename: './database/dev.sqlite',
+            filename: `${appRoot}/database/dev.sqlite`,
         },
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
         useNullAsDefault: true,
     },
@@ -20,10 +22,10 @@ module.exports = {
         client: 'sqlite3',
         connection: ':memory:',
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
         useNullAsDefault: true,
     },
@@ -57,10 +59,10 @@ module.exports = {
             max: 5,
         },
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
     },
 
