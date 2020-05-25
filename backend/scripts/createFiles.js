@@ -1,5 +1,5 @@
 const fs = require('fs');
-const connection = require('./database/connection');
+const connection = require('../database/connection');
 
 const generateRandomString = (length) => {
     let result = '';

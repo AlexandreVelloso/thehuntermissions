@@ -1,17 +1,19 @@
 // Update with your config settings.
 
+const appRoot = require('app-root-path');
+
 module.exports = {
 
     development: {
         client: 'sqlite3',
         connection: {
-            filename: './database/dev.sqlite',
+            filename: `${appRoot}/database/dev.sqlite`,
         },
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
         useNullAsDefault: true,
     },
@@ -20,10 +22,10 @@ module.exports = {
         client: 'sqlite3',
         connection: ':memory:',
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
         useNullAsDefault: true,
     },
@@ -47,20 +49,20 @@ module.exports = {
     production: {
         client: 'mysql',
         connection: {
-            host: 'brbaex93leeqblrd4wz7-mysql.services.clever-cloud.com',
-            database: 'brbaex93leeqblrd4wz7',
-            user: 'ukjjbcrcibz36pzy',
-            password: 'I4x7BsexIKGTTSgGW4Vp',
+            host: 'b652damgtxm2iidftpqq-mysql.services.clever-cloud.com',
+            database: 'b652damgtxm2iidftpqq',
+            user: 'ugj2qayct063ewjh',
+            password: 'RP1Bo0rlOqLd6jWKj1qM',
         },
         pool: {
             min: 1,
             max: 5,
         },
         migrations: {
-            directory: './database/migrations',
+            directory: `${appRoot}/database/migrations`,
         },
         seeds: {
-            directory: './database/seeds',
+            directory: `${appRoot}/database/seeds`,
         },
     },
 

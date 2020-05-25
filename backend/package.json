@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/AlexandreVelloso/thehuntermissions#readme",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "bcrypt": "^4.0.1",
     "celebrate": "^12.1.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
+    "csv-parse": "^4.10.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
