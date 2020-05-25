@@ -46,7 +46,7 @@ describe('Weapons Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(58);
+        expect(response.body).toHaveLength(61);
 
         const testSchema = {
             $ref: 'weapon#/definitions/arrayOfWeapons',
