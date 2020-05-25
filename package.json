@@ -4,6 +4,7 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
+    "start": "NODE_ENV=production node backend/index.js",
     "test": "cd backend && npm test",
     "heroku-prebuild": "cd frontend && npm install --only=dev && npm install && npm run build"
   },
