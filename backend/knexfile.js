@@ -49,10 +49,10 @@ module.exports = {
     production: {
         client: 'mysql',
         connection: {
-            host: 'brbaex93leeqblrd4wz7-mysql.services.clever-cloud.com',
-            database: 'brbaex93leeqblrd4wz7',
-            user: 'ukjjbcrcibz36pzy',
-            password: 'I4x7BsexIKGTTSgGW4Vp',
+            host: 'b652damgtxm2iidftpqq-mysql.services.clever-cloud.com',
+            database: 'b652damgtxm2iidftpqq',
+            user: 'ugj2qayct063ewjh',
+            password: 'RP1Bo0rlOqLd6jWKj1qM',
         },
         pool: {
             min: 1,
