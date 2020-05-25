@@ -4,7 +4,7 @@
   "description": "",
   "main": "backend/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node backend/index.js",
+    "start": "node backend/index.js",
     "test": "cd backend && npm test",
     "heroku-prebuild": "cd frontend && npm install --only=dev && npm install && npm run build && cd ../backend && npm install"
   },
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/AlexandreVelloso/thehuntermissions/issues"
   },
-  "homepage": "https://github.com/AlexandreVelloso/thehuntermissions#readme"
+  "homepage": "https://github.com/AlexandreVelloso/thehuntermissions#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
