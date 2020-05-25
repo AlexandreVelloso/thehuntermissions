@@ -1,5 +1,5 @@
 -- User Weapons
-SELECT u.email, o.name, completed, count(o.name) AS count_duplicated
+SELECT u.email, o.name AS objective_name, completed, count(o.name) AS count_duplicated
 FROM users u
 JOIN user_objectives uo ON u.id = uo.user_id
 JOIN objectives o ON o.id = uo.objective_id
