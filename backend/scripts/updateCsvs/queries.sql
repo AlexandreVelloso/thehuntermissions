@@ -1,3 +1,6 @@
+-- Users
+SELECT * FROM users;
+
 -- User Weapons
 SELECT u.email, o.name AS objective_name, completed, count(o.name) AS count_duplicated
 FROM users u
