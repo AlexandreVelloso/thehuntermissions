@@ -41,6 +41,7 @@ exports.seed = (knex) => knex('animals').del()
         { name: 'Rusa Deer' },
         { name: 'Sambar Deer' },
         { name: 'Sitka Deer' },
+        { name: 'Snow Goose' },
         { name: 'Snowshoe Hare' },
         { name: 'Turkey' },
         { name: 'Water Buffalo' },

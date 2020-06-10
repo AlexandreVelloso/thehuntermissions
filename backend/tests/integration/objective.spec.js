@@ -44,7 +44,7 @@ describe('Objectives Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(981);
+        expect(response.body).toHaveLength(1013);
 
         const testSchema = {
             $ref: 'objective#/definitions/arrayOfObjectives',

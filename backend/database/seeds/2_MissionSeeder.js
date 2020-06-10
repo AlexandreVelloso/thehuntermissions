@@ -1401,6 +1401,43 @@ async function sitkaDeerMissions() {
     ];
 }
 
+async function snowGooseMissions() {
+    const snowGoose = await findAnimalBy('name', 'Snow Goose');
+
+    return [
+        {
+            name: 'When Snow Falls, Nature Listens', reward: 100, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Geese of a Feather', reward: 200, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Meat Market', reward: 300, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'The Fat Of The Land', reward: 400, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Let It Snow, Let It Snow, Let It Snow', reward: 600, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Blind Call', reward: 800, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'A Fox With An Eagle Eye', reward: 1000, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Catch .22', reward: 1200, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'Snowflakes Are Kisses From Heaven', reward: 1800, hint: '', animal_id: snowGoose.id,
+        },
+        {
+            name: 'A Bad Deed Written On Snow', reward: 3600, hint: '', animal_id: snowGoose.id,
+        },
+    ];
+}
+
 async function snowShoeHareMissions() {
     const snowShoeHare = await findAnimalBy('name', 'Snowshoe Hare');
 
@@ -1652,6 +1689,7 @@ exports.seed = (knex) => {
             await knex('missions').insert(await rusaDeerMissions());
             await knex('missions').insert(await sambarDeerMissions());
             await knex('missions').insert(await sitkaDeerMissions());
+            await knex('missions').insert(await snowGooseMissions());
             await knex('missions').insert(await snowShoeHareMissions());
             await knex('missions').insert(await turkeyMissions());
             await knex('missions').insert(await waterBuffaloMissions());

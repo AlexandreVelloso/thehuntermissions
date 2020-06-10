@@ -49,7 +49,7 @@ describe('Missions Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(436);
+        expect(response.body).toHaveLength(446);
 
         const testSchema = {
             $ref: 'mission#/definitions/arrayOfMissions',

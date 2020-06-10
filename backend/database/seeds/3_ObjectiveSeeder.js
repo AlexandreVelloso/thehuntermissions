@@ -1838,6 +1838,63 @@ async function sitkaDeerMissions() {
     ];
 }
 
+async function snowGooseMissions() {
+    const firstMission = await findMissionBy('name', 'When Snow Falls, Nature Listens');
+    const secondMission = await findMissionBy('name', 'Geese of a Feather');
+    const thrirdMission = await findMissionBy('name', 'Meat Market');
+    const fourthMission = await findMissionBy('name', 'The Fat Of The Land');
+    const fifthMission = await findMissionBy('name', 'Let It Snow, Let It Snow, Let It Snow');
+    const sixthMission = await findMissionBy('name', 'Blind Call');
+    const seventhMission = await findMissionBy('name', 'A Fox With An Eagle Eye');
+    const eighthMission = await findMissionBy('name', 'Catch .22');
+    const ninthMission = await findMissionBy('name', 'Snowflakes Are Kisses From Heaven');
+    const tenthMission = await findMissionBy('name', 'A Bad Deed Written On Snow');
+
+    return [
+        { name: 'ID the call of a Snow Goose', mission_id: firstMission.id },
+        { name: 'Then ID the droppings of a Snow Goose in the same hunt.', mission_id: firstMission.id },
+
+        { name: 'Harvest an airborne Snow Goose.', mission_id: secondMission.id },
+        { name: 'Then harvest another airborne Snow Goose in the same hunt.', mission_id: secondMission.id },
+        { name: 'Then harvest an airborne Snow Goose (Blue color variation) in the same hunt.', mission_id: secondMission.id },
+
+        { name: 'Harvest an airborne Snow Goose weighing at least 3.2 kg (Approx. 7 lbs).', mission_id: thrirdMission.id },
+        { name: 'Then harvest another airborne Snow Goose weighing at least 3.2 kg (Approx. 7 lbs) in the same hunt.', mission_id: thrirdMission.id },
+        { name: 'Then harvest another airborne Snow Goose weighing at least 3.2 kg (Approx. 7 lbs) in the same hunt.', mission_id: thrirdMission.id },
+
+        { name: 'Harvest an airborne Snow Goose scoring at least 3500.', mission_id: fourthMission.id },
+        { name: 'Then harvest another airborne Snow Goose scoring at least 3500 in the same hunt.', mission_id: fourthMission.id },
+        { name: 'Then harvest another airborne Snow Goose scoring at least 3500 in the same hunt.', mission_id: fourthMission.id },
+
+        { name: 'Harvest an airborne Snow Goose using a 12 GA Single Shot Shotgun.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 12 GA Single Shot Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 12 GA Single Shot Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 12 GA Pump Action Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 12 GA Pump Action Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 12 GA Pump Action Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 20 GA Semi-Automatic Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 20 GA Semi-Automatic Shotgun in the same hunt.', mission_id: fifthMission.id },
+        { name: 'Then harvest another airborne Snow Goose using a 20 GA Semi-Automatic Shotgun in the same hunt.', mission_id: fifthMission.id },
+
+        { name: 'Harvest an airborne Snow Goose from a Waterfowl Blind at a maximum distance of 15 meter (approx. 49 ft.).', mission_id: sixthMission.id },
+        { name: 'Then harvest another airborne Snow Goose from a Waterfowl Blind at a maximum distance of 15 meter (approx. 49 ft.) in the same hunt.', mission_id: sixthMission.id },
+        { name: 'Then harvest another airborne Snow Goose from a Waterfowl Blind at a maximum distance of 15 meter (approx. 49 ft.) in the same hunt.', mission_id: sixthMission.id },
+        { name: 'Then harvest another airborne Snow Goose from a Waterfowl Blind at a maximum distance of 15 meter (approx. 49 ft.) in the same hunt.', mission_id: sixthMission.id },
+
+        { name: 'Harvest an airborne Snow Goose from a minimum of 60 meters (approx. 197 feet).', mission_id: seventhMission.id },
+        { name: 'Harvest another airborne Snow Goose from a minimum of 70 meters (approx. 230 feet) in the same hunt.', mission_id: seventhMission.id },
+        { name: 'Harvest another airborne Snow Goose from a minimum of 80 meters (approx. 262 feet) in the same hunt.', mission_id: seventhMission.id },
+
+        { name: 'Harvest an airborne Snow Goose using a .22 ammo.', mission_id: eighthMission.id },
+        { name: 'Harvest another airborne Snow Goose using a .22 ammo in the same hunt.', mission_id: eighthMission.id },
+        { name: 'Harvest another airborne Snow Goose using a .22 ammo in the same hunt.', mission_id: eighthMission.id },
+
+        { name: 'Harvest an airborne Snow Goose under 15 meters (approx. 49 feet) without using a Waterfowl Blind.', mission_id: ninthMission.id },
+
+        { name: 'Harvest an airborne Snow Goose (blue color variation) using any Compound Bow.', mission_id: tenthMission.id },
+    ];
+}
+
 async function snowshoeHareMissions() {
     const firstMission = await findMissionBy('name', 'Smelly Evidence');
     const secondMission = await findMissionBy('name', 'Finding the Intruder');
@@ -2137,6 +2194,7 @@ exports.seed = function seed(knex) {
             await knex('objectives').insert(await rusaDeerMissions());
             await knex('objectives').insert(await sambarDeerMissions());
             await knex('objectives').insert(await sitkaDeerMissions());
+            await knex('objectives').insert(await snowGooseMissions());
             await knex('objectives').insert(await snowshoeHareMissions());
             await knex('objectives').insert(await turkeyMissions());
             await knex('objectives').insert(await waterBuffaloMissions());

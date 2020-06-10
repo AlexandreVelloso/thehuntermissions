@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest --forceExit --detectOpenHandles",
-    "lint": "npx eslint",
-    "db_reset": "npx knex migrate:rollback && knex migrate:latest && knex seed:run"
+    "lint": "eslint",
+    "db_reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },
   "repository": {
     "type": "git",
