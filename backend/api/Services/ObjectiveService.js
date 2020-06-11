@@ -1,5 +1,6 @@
 const Objective = require('../../database/models/Objective');
 const Weapon = require('../../database/models/Weapon');
+const UserObjective = require('../../database/models/UserObjective');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
 
 const userHaveObjectiveWeapon = async (objectiveId, userId) => {

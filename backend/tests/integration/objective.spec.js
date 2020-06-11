@@ -8,26 +8,6 @@ const objectiveSchema = require('../schemas/ObjectiveSchema.json');
 
 let user;
 
-beforeAll(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
-    await connection.seed.run();
-
-    const response = await request(app)
-        .post('/api/auth/register')
-        .send({
-            username: 'user',
-            email: 'user@email.com',
-            password: '1234',
-        });
-
-    user = response.body;
-});
-
-afterAll(async () => {
-    await connection.migrate.rollback();
-});
-
 expect.extend(matchersWithOptions({
     schemas: [objectiveSchema, errorSchema],
 }));
@@ -38,6 +18,26 @@ test('Validate schemas', () => {
 });
 
 describe('Objectives Index', () => {
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+    
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+    
+        user = response.body;
+    });
+
     it('should list all objectives from user', async () => {
         const response = await request(app)
             .get('/api/objectives')
@@ -71,6 +71,26 @@ describe('Objectives Index', () => {
 });
 
 describe('Objectives Get', () => {
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+    
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+    
+        user = response.body;
+    });
+
     it('should retrieve a object from a user', async () => {
         const response = await request(app)
             .get('/api/objectives/1')
@@ -112,6 +132,26 @@ describe('Objectives Get', () => {
 });
 
 describe('Objectives Update', () => {
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+    
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'user',
+                email: 'user@email.com',
+                password: '1234',
+            });
+    
+        user = response.body;
+    });
+
     it('should update objective', async () => {
         const responseOld = await request(app)
             .get('/api/objectives/1')
@@ -175,6 +215,10 @@ describe('Objectives Update', () => {
 describe('Test objectives for two users', () => {
     let user2;
 
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
@@ -206,10 +250,6 @@ describe('Test objectives for two users', () => {
             .send({
                 completed: true,
             });
-    });
-
-    afterEach(async () => {
-        await connection.migrate.rollback();
     });
 
     it('should have different results for objectives indexes', async () => {

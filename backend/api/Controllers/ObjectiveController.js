@@ -24,13 +24,13 @@ module.exports = {
         }
     },
 
-    async update(req, res) {
+    async update(req, res, next) {
         const { id } = req.params;
         const { completed } = req.body;
         const { user } = req.auth;
 
         try {
-            await ObjectiveService.update(id, completed, user);
+            await ObjectiveService.update(id, completed, user.id);
             return res.status(204).end();
         } catch (err) {
             next(err);
