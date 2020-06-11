@@ -1,101 +1,39 @@
-const Objective = require('../../database/models/Objective');
-const UserObjective = require('../../database/models/UserObjective');
-const { removeObjectivesDuplicates } = require('../utils/removeObjectivesDuplicates');
+const ObjectiveService = require('../Services/ObjectiveService');
 
 module.exports = {
-    async index(req, res) {
+    async index(req, res, next) {
         const { user } = req.auth;
 
-        let objectives = await Objective.query()
-            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
-            // eslint-disable-next-line func-names
-            .leftJoin('user_objectives', function () {
-                this.on('objectives.id', 'user_objectives.objective_id')
-                    .on('user_objectives.user_id', user.id);
-            })
-            // eslint-disable-next-line func-names
-            .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
-            .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
-            // eslint-disable-next-line func-names
-            .leftJoin('user_weapons', function () {
-                this.on('user_weapons.weapon_id', 'weapons.id')
-                    .on('user_weapons.user_id', user.id);
-            });
-
-        objectives = removeObjectivesDuplicates(objectives);
-
-        return res.json(objectives);
-    },
-
-    async get(req, res) {
-        const { id } = req.params;
-        const { user } = req.auth;
-
-        const objective = await Objective.query()
-            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
-            // eslint-disable-next-line func-names
-            .leftJoin('user_objectives', function () {
-                this.on('objectives.id', 'user_objectives.objective_id')
-                    .on('user_objectives.user_id', user.id);
-            })
-            // eslint-disable-next-line func-names
-            .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
-            .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
-            // eslint-disable-next-line func-names
-            .leftJoin('user_weapons', function () {
-                this.on('user_weapons.weapon_id', 'weapons.id')
-                    .on('user_weapons.user_id', user.id);
-            })
-            .where('objectives.id', id)
-            .first();
-
-        if (!objective) {
-            return res.status(404)
-                .json({
-                    error: 'Objective not found',
-                });
+        try {
+            const objectives = await ObjectiveService.index(user.id);
+            return res.json(objectives);
+        } catch (err) {
+            next(err);
         }
-
-        return res.json(objective);
     },
 
-    async update(req, res) {
+    async get(req, res, next) {
+        const { id: objectiveId } = req.params;
+        const { user } = req.auth;
+
+        try {
+            const objective = await ObjectiveService.get(objectiveId, user.id);
+            return res.json(objective);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    async update(req, res, next) {
         const { id } = req.params;
         const { completed } = req.body;
         const { user } = req.auth;
 
-        const objective = await Objective.query()
-            .where('id', id)
-            .first();
-
-        if (!objective) {
-            return res.status(404)
-                .json({
-                    error: 'Objective not found',
-                });
+        try {
+            await ObjectiveService.update(id, completed, user.id);
+            return res.status(204).end();
+        } catch (err) {
+            next(err);
         }
-
-        const userObjective = await UserObjective.query()
-            .where('objective_id', id)
-            .where('user_id', user.id)
-            .first();
-
-        if (userObjective) {
-            await UserObjective.query()
-                .where('objective_id', id)
-                .where('user_id', user.id)
-                .patch({
-                    completed,
-                });
-        } else {
-            await UserObjective.query()
-                .insert({
-                    objective_id: objective.id,
-                    user_id: user.id,
-                    completed,
-                });
-        }
-
-        return res.status(204).end();
     },
 };

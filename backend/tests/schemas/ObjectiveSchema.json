@@ -33,16 +33,9 @@
                         "number"
                     ]
                 },
-                "weapon_id": {
-                    "type":[
-                        "null",
-                        "number"
-                    ]
-                },
                 "have_weapon": {
                     "type":[
-                        "null",
-                        "number"
+                        "boolean"
                     ]
                 }
             },
@@ -53,7 +46,6 @@
                 "created_at",
                 "user_id",
                 "completed",
-                "weapon_id",
                 "have_weapon"
             ]
         },
