@@ -57,6 +57,25 @@ module.exports = {
         return objective;
     },
 
+    async getObjectivesByMissionId(missionId, userId) {
+        const objectives = await Objective.query()
+            .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
+            .join('missions', 'missions.id', 'objectives.mission_id')
+            // eslint-disable-next-line func-names
+            .leftJoin('user_objectives', function () {
+                this.on('objectives.id', 'user_objectives.objective_id')
+                    .on('user_objectives.user_id', userId);
+            })
+            .where('missions.id', missionId);
+
+        for (let index = 0; index < objectives.length; index++) {
+            const objectiveId = objectives[index].id;
+            objectives[index].have_weapon = await userHaveObjectiveWeapon(objectiveId, userId);
+        }
+
+        return objectives;
+    },
+
     async update(objectiveId, objectiveCompleted, userId) {
         const objective = await Objective.query()
             .where('id', objectiveId)

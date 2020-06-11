@@ -2,6 +2,7 @@ const Mission = require('../../database/models/Mission');
 const Objective = require('../../database/models/Objective');
 const UserObjective = require('../../database/models/UserObjective');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
+const ObjectiveService = require('../Services/ObjectiveService');
 
 module.exports = {
     async index(userId) {
@@ -21,21 +22,16 @@ module.exports = {
 
     async get(missionId, userId) {
         const mission = await Mission.query()
-            .withGraphFetched('objectives')
-            .modifyGraph('objectives', (builder) => {
-                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_objectives', function () {
-                        this.on('objectives.id', 'user_objectives.objective_id')
-                            .on('user_objectives.user_id', userId);
-                    });
-            })
-            .where('missions.id', missionId)
+            .where('id', missionId)
             .first();
 
         if (!mission) {
             throw new EntityNotFoundException('Mission not found');
         }
+
+        const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
+
+        mission.objectives = objectives;
 
         return mission;
     },
