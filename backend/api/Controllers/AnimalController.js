@@ -1,72 +1,26 @@
-const Animal = require('../../database/models/Animal');
-const { removeDuplicates } = require('../utils/removeObjectivesDuplicates');
+const AnimalService = require('../Services/AnimalService');
 
 module.exports = {
-    async index(req, res) {
+    async index(req, res, next) {
         const { user } = req.auth;
 
-        let animals = await Animal.query()
-            .withGraphFetched('missions.objectives')
-            .modifyGraph('missions.objectives', (builder) => {
-                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_objectives', function () {
-                        this.on('objectives.id', 'user_objectives.objective_id')
-                            .on('user_objectives.user_id', user.id);
-                    })
-                    // eslint-disable-next-line func-names
-                    .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
-                    .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_weapons', function () {
-                        this.on('user_weapons.weapon_id', 'weapons.id')
-                            .on('user_weapons.user_id', user.id);
-                    });
-            });
-
-        animals = animals.map((animal) => {
-            // eslint-disable-next-line no-param-reassign
-            animal.missions = removeDuplicates(animal.missions);
-            return animal;
-        });
-
-        return res.json(animals);
+        try {
+            const animals = await AnimalService.index(user.id);
+            return res.json(animals);
+        } catch (err) {
+            next(err);
+        }
     },
 
-    async get(req, res) {
-        const { id } = req.params;
+    async get(req, res, next) {
+        const { id: animalId } = req.params;
         const { user } = req.auth;
 
-        const animal = await Animal.query()
-            .withGraphFetched('missions.objectives')
-            .modifyGraph('missions.objectives', (builder) => {
-                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed', 'weapons.id as weapon_id', 'user_weapons.have_weapon')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_objectives', function () {
-                        this.on('objectives.id', 'user_objectives.objective_id')
-                            .on('user_objectives.user_id', user.id);
-                    })
-                    // eslint-disable-next-line func-names
-                    .leftJoin('objectives_weapons', 'objectives_weapons.objective_id', 'objectives.id')
-                    .leftJoin('weapons', 'weapons.id', 'objectives_weapons.weapon_id')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_weapons', function () {
-                        this.on('user_weapons.weapon_id', 'weapons.id')
-                            .on('user_weapons.user_id', user.id);
-                    });
-            })
-            .where('animals.id', id)
-            .first();
-
-        if (!animal) {
-            return res.status(404)
-                .json({
-                    error: 'Animal not found',
-                });
+        try {
+            const animal = await AnimalService.get(animalId, user.id);
+            return res.json(animal);
+        } catch (err) {
+            next(err);
         }
-
-        animal.missions = removeDuplicates(animal.missions);
-
-        return res.json(animal);
     },
 };

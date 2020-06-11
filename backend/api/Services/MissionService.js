@@ -8,7 +8,7 @@ module.exports = {
     async index(userId) {
         const missions = await Mission.query();
 
-        for(let index = 0; index < missions.length; index +=1){
+        for (let index = 0; index < missions.length; index += 1) {
             const missionId = missions[index].id;
 
             const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
@@ -33,6 +33,23 @@ module.exports = {
         mission.objectives = objectives;
 
         return mission;
+    },
+
+    async getMissionsByAnimal(animalId, userId) {
+        const missions = await Mission.query()
+            .select('missions.*')
+            .join('animals', 'animals.id', 'missions.animal_id')
+            .where('animals.id', animalId);
+
+        for (let index = 0; index < missions.length; index += 1) {
+            const missionId = missions[index].id;
+
+            const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
+
+            missions[index].objectives = objectives;
+        }
+
+        return missions;
     },
 
     async update(missionId, missionCompleted, userId) {
