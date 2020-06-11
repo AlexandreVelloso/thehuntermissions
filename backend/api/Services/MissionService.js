@@ -6,16 +6,15 @@ const ObjectiveService = require('../Services/ObjectiveService');
 
 module.exports = {
     async index(userId) {
-        const missions = await Mission.query()
-            .withGraphFetched('objectives')
-            .modifyGraph('objectives', (builder) => {
-                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
-                    // eslint-disable-next-line func-names
-                    .leftJoin('user_objectives', function () {
-                        this.on('objectives.id', 'user_objectives.objective_id')
-                            .on('user_objectives.user_id', userId);
-                    });
-            });
+        const missions = await Mission.query();
+
+        for(let index = 0; index < missions.length; index +=1){
+            const missionId = missions[index].id;
+
+            const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
+
+            missions[index].objectives = objectives;
+        }
 
         return missions;
     },
