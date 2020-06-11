@@ -58,7 +58,7 @@ describe('LastMissions Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(42);
+        expect(response.body).toHaveLength(43);
 
         const testSchema = {
             $ref: 'lastMission#/definitions/arrayOfLastMissions',
