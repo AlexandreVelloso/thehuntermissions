@@ -70,7 +70,11 @@ describe('Animals Index', () => {
         const firstAnimal = response.body[0];
         const firstMission = firstAnimal.missions[0];
         const { objectives } = firstMission;
+        
         expect(objectives).toHaveLength(4);
+        expect(objectives[0].user_id).toBe(null);
+        expect(objectives[0].completed).toBe(null);
+        expect(objectives[0].have_weapon).toBe(true);
     });
 
     it('should validate JWT token', async () => {
@@ -121,7 +125,11 @@ describe('Animals Get', () => {
         const animal = response.body;
         const firstMission = animal.missions[0];
         const { objectives } = firstMission;
+
         expect(objectives).toHaveLength(4);
+        expect(objectives[0].user_id).toBe(null);
+        expect(objectives[0].completed).toBe(null);
+        expect(objectives[0].have_weapon).toBe(true);
     });
 
     it('should give error when not find animal', async () => {

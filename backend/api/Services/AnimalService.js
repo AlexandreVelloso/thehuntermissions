@@ -1,5 +1,6 @@
 const Animal = require('../../database/models/Animal');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
+const userHaveAllObjectiveWeapons = require('../utils/userHaveAllObjectiveWeapons');
 
 module.exports = {
     async index(userId) {
@@ -26,7 +27,30 @@ module.exports = {
                                     });
                             })
                     })
-            })
+            });
+
+        for (let animalIndex = 0; animalIndex < animals.length; animalIndex += 1) {
+
+            const missionsLength = animals[animalIndex].missions.length;
+            for (let missionIndex = 0; missionIndex < missionsLength; missionIndex += 1) {
+
+                const objectivesLength = animals[animalIndex].missions[missionIndex].objectives.length;
+
+                for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
+                    const weapons = animals[animalIndex]
+                        .missions[missionIndex]
+                        .objectives[objectivesIndex]
+                        .weapons;
+
+                    animals[animalIndex]
+                        .missions[missionIndex]
+                        .objectives[objectivesIndex]
+                        .have_weapon = userHaveAllObjectiveWeapons(weapons);
+                }
+
+            }
+
+        }
 
         return animals;
     },
@@ -61,6 +85,25 @@ module.exports = {
 
         if (!animal) {
             throw new EntityNotFoundException('Animal not found');
+        }
+
+        const missionsLength = animal.missions.length;
+        for (let missionIndex = 0; missionIndex < missionsLength; missionIndex += 1) {
+
+            const objectivesLength = animal.missions[missionIndex].objectives.length;
+
+            for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
+                const weapons = animal.
+                    missions[missionIndex]
+                    .objectives[objectivesIndex]
+                    .weapons;
+
+                animal
+                    .missions[missionIndex]
+                    .objectives[objectivesIndex]
+                    .have_weapon = userHaveAllObjectiveWeapons(weapons);
+            }
+
         }
 
         return animal;
