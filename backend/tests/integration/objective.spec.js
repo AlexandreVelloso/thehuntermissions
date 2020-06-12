@@ -5,15 +5,17 @@ const connection = require('../../database/connection');
 
 const errorSchema = require('../schemas/ErrorSchema.json');
 const objectiveSchema = require('../schemas/ObjectiveSchema.json');
+const weaponSchema = require('../schemas/WeaponSchema.json');
 
 let user;
 
 expect.extend(matchersWithOptions({
-    schemas: [objectiveSchema, errorSchema],
+    schemas: [objectiveSchema, weaponSchema, errorSchema],
 }));
 
 test('Validate schemas', () => {
     expect(objectiveSchema).toBeValidSchema();
+    expect(weaponSchema).toBeValidSchema();
     expect(errorSchema).toBeValidSchema();
 });
 

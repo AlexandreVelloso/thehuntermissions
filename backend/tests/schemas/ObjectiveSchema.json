@@ -33,8 +33,11 @@
                         "number"
                     ]
                 },
+                "weapons": {
+                    "$ref": "weapon#/definitions/arrayOfWeapons"
+                },
                 "have_weapon": {
-                    "type":[
+                    "type": [
                         "boolean"
                     ]
                 }
@@ -46,6 +49,7 @@
                 "created_at",
                 "user_id",
                 "completed",
+                "weapons",
                 "have_weapon"
             ]
         },
