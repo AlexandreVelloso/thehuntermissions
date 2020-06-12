@@ -58,7 +58,7 @@ describe('Animals Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(48);
+        expect(response.body).toHaveLength(49);
 
         const testSchema = {
             $ref: 'animal#/definitions/arrayOfAnimals',
@@ -69,8 +69,14 @@ describe('Animals Index', () => {
 
         const firstAnimal = response.body[0];
         const firstMission = firstAnimal.missions[0];
+
+        expect(firstMission.user_has_weapon).toBe(true);
+
         const { objectives } = firstMission;
+        
         expect(objectives).toHaveLength(4);
+        expect(objectives[0].user_id).toBe(null);
+        expect(objectives[0].completed).toBe(null);
     });
 
     it('should validate JWT token', async () => {
@@ -120,8 +126,14 @@ describe('Animals Get', () => {
 
         const animal = response.body;
         const firstMission = animal.missions[0];
+
+        expect(firstMission.user_has_weapon).toBe(true);
+
         const { objectives } = firstMission;
+
         expect(objectives).toHaveLength(4);
+        expect(objectives[0].user_id).toBe(null);
+        expect(objectives[0].completed).toBe(null);
     });
 
     it('should give error when not find animal', async () => {

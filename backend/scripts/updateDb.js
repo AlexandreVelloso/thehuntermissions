@@ -15,7 +15,9 @@ const UserObjective = require('../database/models/UserObjective');
 
 
 function readCsv(filename) {
-    const fileData = fs.readFileSync(filename, { encoding: 'utf8' });
+    const fileData = fs.readFileSync(filename, {
+        encoding: 'utf8',
+    });
 
     const records = parse(fileData, {
         columns: true,
@@ -92,6 +94,29 @@ async function insertObjectives(user, objectives, completed) {
     }
 }
 
+async function updateUsers() {
+    const rows = readCsv('./updateCsvs/users.csv');
+
+    for (let i = 0; i < rows.length; i += 1) {
+        const { id, username, email, password, refresh_token, created_at, updated_at } = rows[i];
+
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            await knex('users')
+                .insert({
+                    id,
+                    username,
+                    email,
+                    password,
+                    refresh_token,
+                    created_at,
+                    updated_at,
+                });
+        }
+    }
+}
+
 async function updateUserWeapons() {
     const rows = readCsv('./updateCsvs/users_weapons.csv');
 
@@ -119,6 +144,7 @@ async function updateUserObjectives() {
 }
 
 async function updateDatabase() {
+    await updateUsers();
     await updateUserWeapons();
     await updateUserObjectives();
     await knex.destroy();

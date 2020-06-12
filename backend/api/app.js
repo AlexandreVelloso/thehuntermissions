@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
-const { errors } = require('celebrate');
 const { Model } = require('objection');
 const path = require('path');
 const appRoot = require('app-root-path');
 
 const routes = require('./Routes');
 const knex = require('../database/connection');
+const { handleError } = require('./Helpers/ErrorHandler');
 
 Model.knex(knex);
 
@@ -21,6 +21,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(appRoot.toString(), '../frontend/build', 'index.html'));
 });
 
-app.use(errors());
+app.use(handleError);
 
 module.exports = app;

@@ -24,6 +24,9 @@
                         "number"
                     ]
                 },
+                "user_has_weapon": {
+                    "type": "boolean"
+                },
                 "created_at": {
                     "type": "string"
                 },

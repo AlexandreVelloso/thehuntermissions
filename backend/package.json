@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "jest --forceExit --detectOpenHandles",
-    "lint": "npx eslint",
-    "db_reset": "npx knex migrate:rollback && knex migrate:latest && knex seed:run"
+    "lint": "eslint",
+    "db_reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "bcrypt": "^4.0.1",
-    "celebrate": "^12.1.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "csv-parse": "^4.10.1",

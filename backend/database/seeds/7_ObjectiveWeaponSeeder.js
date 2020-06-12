@@ -295,7 +295,6 @@ async function dot308RivalHandgun(knex) {
     await addWeaponsObjectives(knex, weapons, objectives);
 }
 
-
 async function any243or223(knex) {
     const weapons = await Weapon.query()
         .whereIn('name', [
@@ -341,6 +340,18 @@ async function dot223Ammunition(knex) {
     const objectives = await findObjectivesByName('223 ammunition');
 
     await addWeaponsObjectives(knex, weapons, objectives);
+}
+
+async function dot22Ammunition(knex) {
+    const weapons = await Weapon.query()
+        .whereIn('name', [
+            '22 Pistol',
+            '22 Semi-Automatic Rifle'
+        ]);
+
+        const objectives = await findObjectivesByName('.22 ammo');
+
+        await addWeaponsObjectives(knex, weapons, objectives);
 }
 
 async function feralGoatPistols(knex) {
@@ -558,6 +569,7 @@ exports.seed = (knex) => {
             await arcticFoxRevolvers(knex);
             await snakebiteMissions(knex);
             await dot223Ammunition(knex);
+            await dot22Ammunition(knex);
             await feralGoatPistols(knex);
             await parkerPython(knex);
             await sideBySide(knex);

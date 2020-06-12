@@ -33,17 +33,8 @@
                         "number"
                     ]
                 },
-                "weapon_id": {
-                    "type":[
-                        "null",
-                        "number"
-                    ]
-                },
-                "have_weapon": {
-                    "type":[
-                        "null",
-                        "number"
-                    ]
+                "weapons": {
+                    "$ref": "weapon#/definitions/arrayOfWeapons"
                 }
             },
             "required": [
@@ -53,8 +44,7 @@
                 "created_at",
                 "user_id",
                 "completed",
-                "weapon_id",
-                "have_weapon"
+                "weapons"
             ]
         },
         "arrayOfObjectives": {

@@ -49,16 +49,21 @@ describe('Missions Index', () => {
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveLength(436);
+        expect(response.body).toHaveLength(446);
 
         const testSchema = {
             $ref: 'mission#/definitions/arrayOfMissions',
         };
 
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
+        const missions = response.body;
 
-        const firstMission = response.body[0];
+        expect(testSchema).toBeValidSchema();
+        expect(missions).toMatchSchema(testSchema);
+
+        const firstMission = missions[0];
+
+        expect(firstMission.user_has_weapon).toBe(true);
+
         const { objectives } = firstMission;
 
         expect(objectives).toHaveLength(4);
@@ -94,8 +99,18 @@ describe('Missions Get', () => {
             $ref: 'mission#/definitions/mission',
         };
 
+        const mission = response.body;
+
         expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
+        expect(mission).toMatchSchema(testSchema);
+
+        expect(mission.user_has_weapon).toBe(true);
+
+        const { objectives } = mission;
+
+        expect(objectives).toHaveLength(4);
+        expect(objectives[0].user_id).toBe(null);
+        expect(objectives[0].completed).toBe(null);
     });
 
     it('should give error when not find mission', async () => {

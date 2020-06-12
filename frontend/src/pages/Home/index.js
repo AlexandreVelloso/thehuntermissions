@@ -26,8 +26,7 @@ export default function Home() {
                     }
                 });
                 setLoading(false);
-
-                setAnimals(verifyUserWeapons(response.data));
+                setAnimals(response.data);
             } catch (err) {
                 if (!err.response) {
                     alert('Error when try to connect to server');
@@ -47,26 +46,10 @@ export default function Home() {
                 }
             });
 
-            setAnimals(verifyUserWeapons(response.data));
+            setAnimals(response.data);
         } catch (err) {
 
         }
-    }
-
-    function verifyUserWeapons(animals) {
-        const animalsVerified = animals.map(animal => {
-            const user_have_weapon = animal.mission.objectives.every(objective => {
-                return objective.weapon_id === null || (
-                    objective.weapon_id && objective.have_weapon
-                );
-            });
-
-            animal.mission.user_have_weapon = user_have_weapon;
-
-            return animal;
-        });
-
-        return animalsVerified;
     }
 
     async function updateObjective(objectiveId, completed) {
@@ -143,8 +126,8 @@ export default function Home() {
                     {animals.map(animal => (
                         <li key={animal.id}>
                             <p className="avaliability-tags">
-                                {animal.mission.user_have_weapon && <p className="mission-avaliability avaliable"></p>}
-                                {!animal.mission.user_have_weapon && <p className="mission-avaliability buy-gun"></p>}
+                                {animal.mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {!animal.mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
                             </p>
                             <div className="animal-title">
                                 <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>
