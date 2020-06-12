@@ -1,6 +1,6 @@
 const User = require('../../database/models/User');
 const ValidationException = require('../Exceptions/ValidationException');
-const SendResetEmailService = require('../services/SendResetEmailService');
+const SendResetEmailService = require('../Services/SendResetEmailService');
 
 module.exports = {
     async sendEmail(userEmail) {

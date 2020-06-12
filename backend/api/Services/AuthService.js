@@ -4,7 +4,7 @@ const User = require('../../database/models/User');
 const jwtToken = require('../utils/jwtToken');
 const ValidationException = require("../Exceptions/ValidationException");
 const UnauthorizedOperationException = require("../Exceptions/UnauthorizedOperationException");
-const StartWeaponsService = require('../services/StartWeaponsService');
+const StartWeaponsService = require('../Services/StartWeaponsService');
 
 const generateToken = (user) => jwtToken.sign({
     id: user.id,
