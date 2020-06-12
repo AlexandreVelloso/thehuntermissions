@@ -8,7 +8,6 @@ import express from 'express';
 
 import routes from './Routes';
 import knex from '../database/connection';
-import ErrorHandlerMiddleware from './Middleware/ErrorHandlerMiddleware';
 
 Model.knex(knex);
 
