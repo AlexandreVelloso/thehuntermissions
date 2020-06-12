@@ -2,7 +2,6 @@ const Mission = require('../../database/models/Mission');
 const Objective = require('../../database/models/Objective');
 const UserObjective = require('../../database/models/UserObjective');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
-const ObjectiveService = require('../Services/ObjectiveService');
 const userHaveAllObjectiveWeapons = require('../utils/userHaveAllObjectiveWeapons');
 
 module.exports = {
@@ -81,23 +80,6 @@ module.exports = {
         }
 
         return mission;
-    },
-
-    async getMissionsByAnimal(animalId, userId) {
-        const missions = await Mission.query()
-            .select('missions.*')
-            .join('animals', 'animals.id', 'missions.animal_id')
-            .where('animals.id', animalId);
-
-        for (let index = 0; index < missions.length; index += 1) {
-            const missionId = missions[index].id;
-
-            const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
-
-            missions[index].objectives = objectives;
-        }
-
-        return missions;
     },
 
     async update(missionId, missionCompleted, userId) {

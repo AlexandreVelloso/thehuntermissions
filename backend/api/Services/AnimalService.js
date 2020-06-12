@@ -1,6 +1,5 @@
 const Animal = require('../../database/models/Animal');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
-const MissionService = require('../Services/MissionService');
 
 module.exports = {
     async index(userId) {
