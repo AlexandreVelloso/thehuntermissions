@@ -2,7 +2,7 @@
   "name": "thehuntermissions",
   "version": "1.0.0",
   "description": "",
-  "main": "backend/index.js",
+  "main": "backend/build/index.js",
   "engines": {
     "node": "12.x"
   },
