@@ -3,17 +3,45 @@ const Objective = require('../../database/models/Objective');
 const UserObjective = require('../../database/models/UserObjective');
 const EntityNotFoundException = require('../Exceptions/EntityNotFoundException');
 const ObjectiveService = require('../Services/ObjectiveService');
+const userHaveAllObjectiveWeapons = require('../utils/userHaveAllObjectiveWeapons');
 
 module.exports = {
     async index(userId) {
-        const missions = await Mission.query();
+        const missions = await Mission.query()
+            .select('missions.*')
+            .withGraphFetched('objectives')
+            .modifyGraph('objectives', (builder) => {
+                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
+                    // eslint-disable-next-line func-names
+                    .leftJoin('user_objectives', function () {
+                        this.on('objectives.id', 'user_objectives.objective_id')
+                            .on('user_objectives.user_id', userId);
+                    })
+                    .withGraphFetched('weapons')
+                    .modifyGraph('weapons', (builder) => {
+                        builder.select('weapons.*', 'user_weapons.have_weapon')
+                            // eslint-disable-next-line func-names
+                            .leftJoin('user_weapons', function () {
+                                this.on('weapons.id', 'user_weapons.weapon_id')
+                                    .on('user_weapons.user_id', userId);
+                            });
+                    })
+            })
 
-        for (let index = 0; index < missions.length; index += 1) {
-            const missionId = missions[index].id;
+        for (let missionIndex = 0; missionIndex < missions.length; missionIndex += 1) {
 
-            const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
+            const objectivesLength = missions[missionIndex].objectives.length;
 
-            missions[index].objectives = objectives;
+            for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
+                const weapons = missions[missionIndex]
+                    .objectives[objectivesIndex]
+                    .weapons;
+
+                missions[missionIndex]
+                    .objectives[objectivesIndex]
+                    .have_weapon = userHaveAllObjectiveWeapons(weapons);
+            }
+
         }
 
         return missions;
@@ -21,16 +49,36 @@ module.exports = {
 
     async get(missionId, userId) {
         const mission = await Mission.query()
-            .where('id', missionId)
+            .select('missions.*')
+            .withGraphFetched('objectives')
+            .modifyGraph('objectives', (builder) => {
+                builder.select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
+                    // eslint-disable-next-line func-names
+                    .leftJoin('user_objectives', function () {
+                        this.on('objectives.id', 'user_objectives.objective_id')
+                            .on('user_objectives.user_id', userId);
+                    })
+                    .withGraphFetched('weapons')
+                    .modifyGraph('weapons', (builder) => {
+                        builder.select('weapons.*', 'user_weapons.have_weapon')
+                            // eslint-disable-next-line func-names
+                            .leftJoin('user_weapons', function () {
+                                this.on('weapons.id', 'user_weapons.weapon_id')
+                                    .on('user_weapons.user_id', userId);
+                            });
+                    })
+            })
+            .where('missions.id', missionId)
             .first();
 
         if (!mission) {
             throw new EntityNotFoundException('Mission not found');
         }
 
-        const objectives = await ObjectiveService.getObjectivesByMissionId(missionId, userId);
-
-        mission.objectives = objectives;
+        for (let index = 0; index < mission.objectives.length; index += 1) {
+            const weapons = mission.objectives[index].weapons;
+            mission.objectives[index].have_weapon = userHaveAllObjectiveWeapons(weapons);
+        }
 
         return mission;
     },
