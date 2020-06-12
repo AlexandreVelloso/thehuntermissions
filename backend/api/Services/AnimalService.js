@@ -35,6 +35,7 @@ module.exports = {
             for (let missionIndex = 0; missionIndex < missionsLength; missionIndex += 1) {
 
                 const objectivesLength = animals[animalIndex].missions[missionIndex].objectives.length;
+                let user_has_weapon = true;
 
                 for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
                     const weapons = animals[animalIndex]
@@ -42,12 +43,16 @@ module.exports = {
                         .objectives[objectivesIndex]
                         .weapons;
 
-                    animals[animalIndex]
-                        .missions[missionIndex]
-                        .objectives[objectivesIndex]
-                        .have_weapon = userHaveAllObjectiveWeapons(weapons);
+                    const has_some_weapon = userHaveAllObjectiveWeapons(weapons);
+
+                    if (!has_some_weapon) {
+                        user_has_weapon = false;
+                    }
                 }
 
+                animals[animalIndex]
+                    .missions[missionIndex]
+                    .user_has_weapon = user_has_weapon;
             }
 
         }
@@ -91,6 +96,7 @@ module.exports = {
         for (let missionIndex = 0; missionIndex < missionsLength; missionIndex += 1) {
 
             const objectivesLength = animal.missions[missionIndex].objectives.length;
+            let user_has_weapon = true;
 
             for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
                 const weapons = animal.
@@ -98,12 +104,16 @@ module.exports = {
                     .objectives[objectivesIndex]
                     .weapons;
 
-                animal
-                    .missions[missionIndex]
-                    .objectives[objectivesIndex]
-                    .have_weapon = userHaveAllObjectiveWeapons(weapons);
+                const has_some_weapon = userHaveAllObjectiveWeapons(weapons);
+
+                if (!has_some_weapon) {
+                    user_has_weapon = false;
+                }
             }
 
+            animal
+                .missions[missionIndex]
+                .user_has_weapon = user_has_weapon;
         }
 
         return animal;

@@ -30,17 +30,21 @@ module.exports = {
         for (let missionIndex = 0; missionIndex < missions.length; missionIndex += 1) {
 
             const objectivesLength = missions[missionIndex].objectives.length;
+            let user_has_weapon = true;
 
             for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
                 const weapons = missions[missionIndex]
                     .objectives[objectivesIndex]
                     .weapons;
 
-                missions[missionIndex]
-                    .objectives[objectivesIndex]
-                    .have_weapon = userHaveAllObjectiveWeapons(weapons);
+                const has_some_weapon = userHaveAllObjectiveWeapons(weapons);
+
+                if (!has_some_weapon) {
+                    user_has_weapon = false;
+                }
             }
 
+            missions[missionIndex].user_has_weapon = user_has_weapon;
         }
 
         return missions;
@@ -74,10 +78,22 @@ module.exports = {
             throw new EntityNotFoundException('Mission not found');
         }
 
-        for (let index = 0; index < mission.objectives.length; index += 1) {
-            const weapons = mission.objectives[index].weapons;
-            mission.objectives[index].have_weapon = userHaveAllObjectiveWeapons(weapons);
+        const objectivesLength = mission.objectives.length;
+        let user_has_weapon = true;
+
+        for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
+            const weapons = mission
+                .objectives[objectivesIndex]
+                .weapons;
+
+            const has_some_weapon = userHaveAllObjectiveWeapons(weapons);
+
+            if (!has_some_weapon) {
+                user_has_weapon = false;
+            }
         }
+
+        mission.user_has_weapon = user_has_weapon;
 
         return mission;
     },

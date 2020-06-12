@@ -27,8 +27,7 @@ export default function Animal() {
                     }
                 });
                 setLoading(false);
-
-                setAnimal(verifyUserWeapons(response.data));
+                setAnimal(response.data);
             } catch (err) {
                 if (!err.response) {
                     alert('Error when try to connect to server');
@@ -50,8 +49,7 @@ export default function Animal() {
                 }
             });
             setLoading(false);
-
-            setAnimal(verifyUserWeapons(response.data));
+            setAnimal(response.data);
         } catch (err) {
             if (!err.response) {
                 alert('Error when try to connect to server');
@@ -59,24 +57,6 @@ export default function Animal() {
                 history.push('/login');
             }
         }
-    }
-
-    function verifyUserWeapons(animal) {
-        const animalVerified = animal;
-
-        const missions = animal.missions.map(mission => {
-            const user_have_weapon = mission.objectives.every(objective => {
-                return objective.weapon_id === null || (
-                    objective.weapon_id && objective.have_weapon
-                );
-            });
-
-            mission.user_have_weapon = user_have_weapon;
-            return mission;
-        })
-
-        animalVerified.missions = missions;
-        return animalVerified;
     }
 
     async function updateObjective(objectiveId, completed) {
@@ -160,8 +140,8 @@ export default function Animal() {
                     {animal.missions && animal.missions.map(mission => (
                         <li key={mission.id}>
                             <p className="avaliability-tags">
-                                {mission.user_have_weapon && <p className="mission-avaliability avaliable"></p>}
-                                {!mission.user_have_weapon && <p className="mission-avaliability buy-gun"></p>}
+                                {mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {!mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
                             </p>
                             <div className="mission-title">
                                 <h2>{mission.name}</h2>

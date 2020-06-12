@@ -55,16 +55,20 @@ describe('Missions Index', () => {
             $ref: 'mission#/definitions/arrayOfMissions',
         };
 
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
+        const missions = response.body;
 
-        const firstMission = response.body[0];
+        expect(testSchema).toBeValidSchema();
+        expect(missions).toMatchSchema(testSchema);
+
+        const firstMission = missions[0];
+
+        expect(firstMission.user_has_weapon).toBe(true);
+
         const { objectives } = firstMission;
 
         expect(objectives).toHaveLength(4);
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(null);
-        expect(objectives[0].have_weapon).toBe(true);
     });
 
     it('should validate JWT token', async () => {
@@ -95,15 +99,18 @@ describe('Missions Get', () => {
             $ref: 'mission#/definitions/mission',
         };
 
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
+        const mission = response.body;
 
-        const { objectives } = response.body;
+        expect(testSchema).toBeValidSchema();
+        expect(mission).toMatchSchema(testSchema);
+
+        expect(mission.user_has_weapon).toBe(true);
+
+        const { objectives } = mission;
 
         expect(objectives).toHaveLength(4);
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(null);
-        expect(objectives[0].have_weapon).toBe(true);
     });
 
     it('should give error when not find mission', async () => {
