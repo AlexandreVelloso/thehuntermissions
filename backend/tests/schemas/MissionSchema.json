@@ -19,10 +19,7 @@
                     "type": "string"
                 },
                 "animal_id": {
-                    "type": [
-                        "null",
-                        "number"
-                    ]
+                    "type": "number"
                 },
                 "user_has_weapon": {
                     "type": "boolean"

@@ -125,3 +125,5 @@ database/test.sqlite
 database/dev.sqlite
 scripts/updateCsvs/*
 !scripts/updateCsvs/*.sql
+
+build/
