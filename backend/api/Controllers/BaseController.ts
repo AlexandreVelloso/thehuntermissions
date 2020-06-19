@@ -1,11 +1,12 @@
 import { Response } from 'express';
 
 import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import { LoginCredentials } from '../Models/UserCredentials';
 
 abstract class BaseController {
     protected req: any;
     protected res!: Response;
-    private user?: any;
+    private user?: LoginCredentials;
 
     public async index(req: any, res: Response) {
         this.req = req;
