@@ -1,32 +1,26 @@
-import { Response } from 'express';
-
 import LastMissionService from '../Services/LastMissionService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
 
-class LastMissionController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class LastMissionController extends BaseController {
+    
+    protected async indexImpl(user: any): Promise<any> {
+        const animals = await LastMissionService.index(user.id);
 
-        try {
-            const animals = await LastMissionService.index(user.id);
-            return res.json(animals);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(animals);
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async getImpl(user: any): Promise<any> {
+        const { id: animalId } = this.req.params;
 
-        const { id: animalId } = req.params;
+        const animal = await LastMissionService.get(animalId, user.id);
 
-        try {
-            const animal = await LastMissionService.get(animalId, user.id);
-            return res.json(animal);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(animal);
     }
+
+    protected updateImpl(user: any): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
 }
 
 export default LastMissionController;

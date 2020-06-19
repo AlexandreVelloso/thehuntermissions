@@ -1,10 +1,12 @@
 import express from 'express';
 
-import AnimalMissionController from '../Controllers/LastMissionController';
+import LastMissionController from '../Controllers/LastMissionController';
 
 const router = express.Router();
 
-router.get('/lastMissions', AnimalMissionController.index);
-router.get('/lastMissions/:id', AnimalMissionController.get);
+const lastMissionController = new LastMissionController();
+
+router.get('/lastMissions', (req, res) => lastMissionController.index(req, res));
+router.get('/lastMissions/:id', (req, res) => lastMissionController.get(req, res));
 
 export default router;
