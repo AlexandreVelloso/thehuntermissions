@@ -63,7 +63,7 @@ abstract class BaseController {
         return this.res.status(204).end();
     }
 
-    public static unauthorized(message?: string) {
+    public unauthorized(message?: string) {
         return BaseController.jsonResponse(this.res, 401, 'Unauthorized');
     }
 }
