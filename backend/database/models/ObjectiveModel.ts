@@ -9,7 +9,6 @@ class ObjectiveModel extends Model {
     user_id: any;
     completed: any;
     weapons: any;
-    have_weapon: any;
     created_at: any;
     updated_at: any;
 

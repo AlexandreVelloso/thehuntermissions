@@ -1,4 +1,3 @@
-import WeaponModel from "../../database/models/WeaponModel";
 import BaseDto from "./BaseDto";
 
 class WeaponDto extends BaseDto {

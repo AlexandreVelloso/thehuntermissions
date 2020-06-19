@@ -3,6 +3,7 @@ import { Response } from 'express';
 import ObjectiveService from '../Services/ObjectiveService';
 import BaseController from './BaseController';
 import { LoginCredentials } from '../Models/UserCredentials';
+import ObjectiveDto from '../Dtos/ObjectiveDto';
 
 class ObjectiveController extends BaseController {
 
@@ -15,7 +16,7 @@ class ObjectiveController extends BaseController {
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
-        const objectives = await this.objectiveService
+        const objectives: ObjectiveDto[] = await this.objectiveService
             .index(user.id);
 
         return this.ok(res, objectives);
@@ -24,7 +25,7 @@ class ObjectiveController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
         const { id: objectiveId } = req.params;
 
-        const objective = await this.objectiveService
+        const objective: ObjectiveDto = await this.objectiveService
             .get(objectiveId, user.id);
 
         return this.ok(res, objective);
