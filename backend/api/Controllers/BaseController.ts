@@ -47,8 +47,8 @@ abstract class BaseController {
     protected abstract async getImpl(user: any): Promise<void | any>;
     protected abstract async updateImpl(user: any): Promise<void | any>;
 
-    public static jsonResponse(res: Response, code: number, message: any) {
-        return res.status(code).json({ message })
+    public static jsonResponse(res: Response, code: number, json: any) {
+        return res.status(code).json(json)
     }
 
     public ok(dto?: any) {
