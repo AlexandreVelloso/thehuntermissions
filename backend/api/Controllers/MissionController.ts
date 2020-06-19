@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import MissionService from '../Services/MissionService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 
 class MissionController extends BaseController {
 

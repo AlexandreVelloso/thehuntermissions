@@ -2,7 +2,8 @@ import { Response } from 'express';
 
 import LastMissionService from '../Services/LastMissionService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import LastMissionDto from '../Dtos/LastMissionDto';
 
 class LastMissionController extends BaseController {
 
@@ -15,7 +16,7 @@ class LastMissionController extends BaseController {
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animals = await this.lastMissionService
+        const animals: LastMissionDto[] = await this.lastMissionService
             .index(user.id);
 
         return this.ok(res, animals);
@@ -24,13 +25,13 @@ class LastMissionController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: animalId } = req.params;
 
-        const animal = await this.lastMissionService
+        const animal: LastMissionDto = await this.lastMissionService
             .get(animalId, user.id);
 
         return this.ok(res, animal);
     }
 
-    protected updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+    protected updateImpl(_req: any, _res: Response, _user: LoginCredentials): Promise<any> {
         throw new Error("Method not implemented.");
     }
 

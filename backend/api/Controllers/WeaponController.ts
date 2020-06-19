@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import WeaponService from '../Services/WeaponService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import WeaponDto from '../Dtos/WeaponDto';
 
 class WeaponController extends BaseController {

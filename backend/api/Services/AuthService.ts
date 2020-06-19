@@ -1,4 +1,4 @@
-import UserCredentials from "../Models/UserCredentials";
+import UserCredentials from "../Dtos/UserCredentialsDto";
 
 interface AuthService {
 

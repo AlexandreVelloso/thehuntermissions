@@ -2,7 +2,7 @@ import { Response } from 'express';
 
 import ObjectiveService from '../Services/ObjectiveService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import ObjectiveDto from '../Dtos/ObjectiveDto';
 
 class ObjectiveController extends BaseController {

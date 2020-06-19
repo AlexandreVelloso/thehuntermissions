@@ -1,5 +1,5 @@
 import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
-import userHaveAllObjectiveWeapons from '../Utils/userHasSomeObjectiveWeapon';
+import { userHasSomeObjectiveWeapon } from '../Utils/ObjectiveWeapons';
 import MissionService from './MissionService';
 import UserModel from '../../database/models/UserModel';
 import MissionRepository from '../Repositories/MissionRepository';
@@ -30,25 +30,6 @@ class MissionServiceImpl implements MissionService {
 
         const missionsDtos = MissionDto.toDto(missions);
 
-        for (let missionIndex = 0; missionIndex < missionsDtos.length; missionIndex += 1) {
-            const objectivesLength = missionsDtos[missionIndex].objectives.length;
-            let userHasWeapon = true;
-
-            // eslint-disable-next-line max-len
-            for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
-                const { weapons } = missionsDtos[missionIndex]
-                    .objectives[objectivesIndex];
-
-                const hasSomeWeapon = userHaveAllObjectiveWeapons(weapons);
-
-                if (!hasSomeWeapon) {
-                    userHasWeapon = false;
-                }
-            }
-
-            missionsDtos[missionIndex].user_has_weapon = userHasWeapon;
-        }
-
         return missionsDtos;
     }
 
@@ -61,22 +42,6 @@ class MissionServiceImpl implements MissionService {
         }
 
         const missionDto = MissionDto.toDto(mission);
-
-        const objectivesLength = missionDto.objectives.length;
-        let userHasWeapon = true;
-
-        for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
-            const { weapons } = missionDto
-                .objectives[objectivesIndex];
-
-            const hasSomeWeapon = userHaveAllObjectiveWeapons(weapons);
-
-            if (!hasSomeWeapon) {
-                userHasWeapon = false;
-            }
-        }
-
-        missionDto.user_has_weapon = userHasWeapon;
 
         return missionDto;
     }

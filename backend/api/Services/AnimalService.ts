@@ -1,10 +1,10 @@
-import AnimalModel from "../../database/models/AnimalModel";
+import AnimalDto from "../Dtos/AnimalDto";
 
 interface AnimalService {
 
-    index(userId: number): Promise<AnimalModel[]>;
+    index(userId: number): Promise<AnimalDto[]>;
 
-    get(animalId: number, userId: number): Promise<AnimalModel>;
+    get(animalId: number, userId: number): Promise<AnimalDto>;
 
 }
 

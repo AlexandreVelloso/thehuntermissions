@@ -1,6 +1,6 @@
 import ObjectiveService from "./ObjectiveService";
 import ObjectiveRepository from "../Repositories/ObjectiveRepository";
-import userHaveAllObjectiveWeapons from '../Utils/userHasSomeObjectiveWeapon';
+import { userHasSomeObjectiveWeapon } from '../Utils/ObjectiveWeapons';
 import ObjectiveModel from "../../database/models/ObjectiveModel";
 import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
 import UserObjectiveRepository from "../Repositories/UserObjectiveRepository";
@@ -26,11 +26,6 @@ class ObjectiveServiceImpl implements ObjectiveService {
 
         const objectivesDto: ObjectiveDto[] = ObjectiveDto.toDto(objectives);
 
-        for (let index = 0; index < objectivesDto.length; index += 1) {
-            const { weapons } = objectivesDto[index];
-            objectivesDto[index].have_weapon = userHaveAllObjectiveWeapons(weapons);
-        }
-
         return objectivesDto;
     }
 
@@ -43,7 +38,6 @@ class ObjectiveServiceImpl implements ObjectiveService {
         }
 
         const objectiveDto: ObjectiveDto = ObjectiveDto.toDto(objective);
-        objectiveDto.have_weapon = userHaveAllObjectiveWeapons(objective.weapons);
 
         return objectiveDto;
     }
