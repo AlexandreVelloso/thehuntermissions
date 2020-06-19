@@ -6,8 +6,17 @@ import { LoginCredentials } from '../Models/UserCredentials';
 
 class LastMissionController extends BaseController {
 
-    protected async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animals = await LastMissionService.index(user.id);
+    private lastMissionService: LastMissionService;
+
+    public constructor(lastMissionService: LastMissionService) {
+        super();
+
+        this.lastMissionService = lastMissionService;
+    }
+
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const animals = await this.lastMissionService
+            .index(user.id);
 
         return this.ok(res, animals);
     }
@@ -15,7 +24,8 @@ class LastMissionController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: animalId } = req.params;
 
-        const animal = await LastMissionService.get(animalId, user.id);
+        const animal = await this.lastMissionService
+            .get(animalId, user.id);
 
         return this.ok(res, animal);
     }

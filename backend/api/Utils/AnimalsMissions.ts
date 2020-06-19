@@ -11,7 +11,7 @@ export function getLastMission(missions: Mission[]) {
     return missions.find((mission) => !isAllObjectivesCompleted(mission.objectives));
 }
 
-export function getAnimalsLastMission(animals: Animal[]) {
+export function getAnimalsLastMission(animals: Animal[]): LastMission[] {
     const animalsLastMissions: LastMission[] = [];
 
     animals.forEach((animal) => {
