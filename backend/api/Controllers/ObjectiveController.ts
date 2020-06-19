@@ -1,43 +1,29 @@
-import { Response } from 'express';
-
 import ObjectiveService from '../Services/ObjectiveService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
 
-class ObjectiveController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class ObjectiveController extends BaseController {
+    
+    protected async indexImpl(user: any): Promise<any> {
+        const objectives = await ObjectiveService.index(user.id);
 
-        try {
-            const objectives = await ObjectiveService.index(user.id);
-            return res.json(objectives);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(objectives);
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
-        const { id: objectiveId } = req.params;
+    protected async getImpl(user: any): Promise<any> {
+        const { id: objectiveId } = this.req.params;
 
-        try {
-            const objective = await ObjectiveService.get(objectiveId, user.id);
-            return res.json(objective);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const objective = await ObjectiveService.get(objectiveId, user.id);
+        
+        return this.ok(objective);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
-        const { id } = req.params;
-        const { completed } = req.body;
+    protected async updateImpl(user: any): Promise<any> {
+        const { id } = this.req.params;
+        const { completed } = this.req.body;
 
-        try {
-            await ObjectiveService.update(id, completed, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        await ObjectiveService.update(id, completed, user.id);
+        
+        return this.noContent();
     }
 }
 
