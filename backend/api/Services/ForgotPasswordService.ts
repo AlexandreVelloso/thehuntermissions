@@ -1,21 +1,7 @@
-import User from '../../database/models/UserModel';
-import ValidationException from '../Exceptions/ValidationException';
-import SendResetEmailService from './SendResetEmailService';
+interface ForgorPasswordService {
 
-class ForgotPasswordService {
-    static async sendEmail(userEmail: string) {
-        const user = await User.query()
-            .where('email', userEmail)
-            .first();
+    sendEmail(userEmail: string): Promise<void>;
 
-        if (!user) {
-            throw new ValidationException('Email not found');
-        }
-
-        if (process.env.NODE_ENV === 'production') {
-            await SendResetEmailService.sendEmailTo(userEmail);
-        }
-    }
 }
 
-export default ForgotPasswordService;
+export default ForgorPasswordService;

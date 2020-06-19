@@ -1,11 +1,21 @@
 import { Router } from 'express';
 
 import ObjectiveController from '../Controllers/ObjectiveController';
+import ObjectiveServiceImpl from '../Services/ObjectiveServiceImpl';
+import UserObjectiveRepositoryImpl from '../Repositories/UserObjectiveRepositoryImpl';
+import ObjectiveRepositoryImpl from '../Repositories/ObjectiveRepositoryImpl';
 
 const router = Router();
 
-router.get('/objectives', ObjectiveController.index);
-router.get('/objectives/:id', ObjectiveController.get);
-router.put('/objectives/:id', ObjectiveController.update);
+const objectiveController = new ObjectiveController(
+    new ObjectiveServiceImpl(
+        new ObjectiveRepositoryImpl(),
+        new UserObjectiveRepositoryImpl(),
+    ),
+);
+
+router.get('/objectives', (req, res) => objectiveController.index(req, res));
+router.get('/objectives/:id', (req, res) => objectiveController.get(req, res));
+router.put('/objectives/:id', (req, res) => objectiveController.update(req, res));
 
 export default router;

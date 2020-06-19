@@ -1,43 +1,43 @@
 import { Response } from 'express';
 
 import MissionService from '../Services/MissionService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
+import { LoginCredentials } from '../Models/UserCredentials';
 
-class MissionController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class MissionController extends BaseController {
 
-        try {
-            const missions = await MissionService.index(user.id);
-            return res.json(missions);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    private missionService: MissionService;
+
+    public constructor(missionService: MissionService) {
+        super();
+
+        this.missionService = missionService;
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const missions = await this.missionService
+            .index(user.id);
+
+        return this.ok(res, missions);
+    }
+
+    protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: missionId } = req.params;
 
-        try {
-            const mission = await MissionService.get(missionId, user.id);
-            return res.json(mission);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const mission = await this.missionService
+            .get(missionId, user.id);
+
+        return this.ok(res, mission);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: missionId } = req.params;
         const { completed } = req.body;
 
-        try {
-            await MissionService.update(missionId, completed, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        await this.missionService
+            .update(missionId, completed, user.id);
+
+        return this.noContent(res);
     }
 }
 

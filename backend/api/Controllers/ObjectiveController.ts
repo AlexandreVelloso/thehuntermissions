@@ -1,43 +1,43 @@
 import { Response } from 'express';
 
 import ObjectiveService from '../Services/ObjectiveService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
+import { LoginCredentials } from '../Models/UserCredentials';
 
-class ObjectiveController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class ObjectiveController extends BaseController {
 
-        try {
-            const objectives = await ObjectiveService.index(user.id);
-            return res.json(objectives);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    private objectiveService: ObjectiveService;
+
+    public constructor(objectiveService: ObjectiveService) {
+        super();
+
+        this.objectiveService = objectiveService;
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
+        const objectives = await this.objectiveService
+            .index(user.id);
+
+        return this.ok(res, objectives);
+    }
+
+    protected async getImpl(req: any, res: Response, user: LoginCredentials) {
         const { id: objectiveId } = req.params;
 
-        try {
-            const objective = await ObjectiveService.get(objectiveId, user.id);
-            return res.json(objective);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const objective = await this.objectiveService
+            .get(objectiveId, user.id);
+
+        return this.ok(res, objective);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
         const { id } = req.params;
         const { completed } = req.body;
 
-        try {
-            await ObjectiveService.update(id, completed, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        await this.objectiveService
+            .update(id, completed, user.id);
+
+        return this.noContent(res);
     }
 }
 

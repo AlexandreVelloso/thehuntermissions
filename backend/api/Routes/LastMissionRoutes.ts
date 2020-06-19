@@ -1,10 +1,21 @@
 import express from 'express';
 
-import AnimalMissionController from '../Controllers/LastMissionController';
+import LastMissionController from '../Controllers/LastMissionController';
+import LastMissionServiceImpl from '../Services/LastMissionServiceImpl';
+import AnimalServiceImpl from '../Services/AnimalServiceImpl';
+import AnimalRepositoryImpl from '../Repositories/AnimalRepositoryImpl';
 
 const router = express.Router();
 
-router.get('/lastMissions', AnimalMissionController.index);
-router.get('/lastMissions/:id', AnimalMissionController.get);
+const lastMissionController = new LastMissionController(
+    new LastMissionServiceImpl(
+        new AnimalServiceImpl(
+            new AnimalRepositoryImpl()
+        ),
+    )
+);
+
+router.get('/lastMissions', (req, res) => lastMissionController.index(req, res));
+router.get('/lastMissions/:id', (req, res) => lastMissionController.get(req, res));
 
 export default router;
