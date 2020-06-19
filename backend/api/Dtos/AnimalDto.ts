@@ -1,6 +1,5 @@
 import BaseDto from "./BaseDto";
 import MissionDto from "./MissionDto";
-import MissionModel from "../../database/models/MissionModel";
 import AnimalModel from "../../database/models/AnimalModel";
 
 class AnimalDto extends BaseDto {

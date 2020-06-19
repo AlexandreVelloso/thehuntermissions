@@ -1,8 +1,8 @@
-import { getAnimalsLastMission, getLastMission } from '../Utils/AnimalsMissions';
-import AnimalService from './AnimalService';
-import LastMissionService from './LastMissionService';
-import AnimalDto from '../Dtos/AnimalDto';
-import LastMissionDto from '../Dtos/LastMissionDto';
+import { getAnimalsLastMission, getLastMission } from '../../Utils/AnimalsMissions';
+import AnimalService from '../AnimalService';
+import LastMissionService from '../LastMissionService';
+import AnimalDto from '../../Dtos/AnimalDto';
+import LastMissionDto from '../../Dtos/LastMissionDto';
 
 class LastMissionServiceImpl implements LastMissionService {
 

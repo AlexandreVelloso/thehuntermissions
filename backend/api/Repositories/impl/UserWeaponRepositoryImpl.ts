@@ -1,5 +1,5 @@
-import UserWeaponRepository from "./UserWeaponRepository";
-import UserWeaponModel from "../../database/models/UserWeaponModel";
+import UserWeaponRepository from "../UserWeaponRepository";
+import UserWeaponModel from "../../../database/models/UserWeaponModel";
 
 class UserWeaponRepositoryImpl implements UserWeaponRepository {
 
@@ -10,7 +10,7 @@ class UserWeaponRepositoryImpl implements UserWeaponRepository {
     }
 
     async findByWeaponAndUser(weaponId: number, userId: number): Promise<UserWeaponModel> {
-        return await await UserWeaponModel.query()
+        return await UserWeaponModel.query()
             .where('weapon_id', weaponId)
             .where('user_id', userId)
             .first();

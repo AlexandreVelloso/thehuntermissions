@@ -1,14 +1,16 @@
 import { Router } from 'express';
 
 import ForgotPasswordController from '../Controllers/ForgotPasswordController';
-import ForgotPasswordServiceImpl from '../Services/ForgotPasswordServiceImpl';
-import UserRepositoryImpl from '../Repositories/UserRepositoryImpl';
+import ForgotPasswordServiceImpl from '../Services/impl/ForgotPasswordServiceImpl';
+import SendRequestEmailServiceImpl from '../Services/impl/SendResetEmailServiceImpl';
+import UserRepositoryImpl from '../Repositories/impl/UserRepositoryImpl';
 
 const router = Router();
 
 const forgotPasswordController = new ForgotPasswordController(
     new ForgotPasswordServiceImpl(
-        new UserRepositoryImpl()
+        new UserRepositoryImpl(),
+        new SendRequestEmailServiceImpl(),
     )
 );
 

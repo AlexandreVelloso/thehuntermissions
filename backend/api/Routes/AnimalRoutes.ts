@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
 import AnimalController from '../Controllers/AnimalController';
-import AnimalServiceImpl from '../Services/AnimalServiceImpl';
-import AnimalRepositoryImpl from '../Repositories/AnimalRepositoryImpl';
+import AnimalServiceImpl from '../Services/impl/AnimalServiceImpl';
+import AnimalRepositoryImpl from '../Repositories/impl/AnimalRepositoryImpl';
 
 const router = Router();
 

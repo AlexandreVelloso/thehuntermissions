@@ -1,8 +1,8 @@
-import AnimalModel from '../../database/models/AnimalModel';
-import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
-import AnimalRepository from '../Repositories/AnimalRepository';
-import AnimalService from './AnimalService';
-import AnimalDto from '../Dtos/AnimalDto';
+import AnimalModel from '../../../database/models/AnimalModel';
+import EntityNotFoundException from '../../Exceptions/EntityNotFoundException';
+import AnimalRepository from '../../Repositories/AnimalRepository';
+import AnimalService from '../AnimalService';
+import AnimalDto from '../../Dtos/AnimalDto';
 
 class AnimalServiceImpl implements AnimalService {
 

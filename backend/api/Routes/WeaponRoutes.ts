@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import WeaponController from '../Controllers/WeaponController';
-import WeaponService from '../Services/WeaponServiceImpl';
-import WeaponRepositoryImpl from '../Repositories/WeaponRepositoryImpl';
-import UserWeaponRepositoryImpl from '../Repositories/UserWeaponRepositoryImpl';
+import WeaponService from '../Services/impl/WeaponServiceImpl';
+import WeaponRepositoryImpl from '../Repositories/impl/WeaponRepositoryImpl';
+import UserWeaponRepositoryImpl from '../Repositories/impl/UserWeaponRepositoryImpl';
 
 const router = Router();
 

@@ -1,12 +1,11 @@
-import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
-import { userHasSomeObjectiveWeapon } from '../Utils/ObjectiveWeapons';
-import MissionService from './MissionService';
-import UserModel from '../../database/models/UserModel';
-import MissionRepository from '../Repositories/MissionRepository';
-import ObjectiveRepository from '../Repositories/ObjectiveRepository';
-import UserObjectiveRepository from '../Repositories/UserObjectiveRepository';
-import MissionModel from '../../database/models/MissionModel';
-import MissionDto from '../Dtos/MissionDto';
+import EntityNotFoundException from '../../Exceptions/EntityNotFoundException';
+import MissionService from '../MissionService';
+import UserModel from '../../../database/models/UserModel';
+import MissionRepository from '../../Repositories/MissionRepository';
+import ObjectiveRepository from '../../Repositories/ObjectiveRepository';
+import UserObjectiveRepository from '../../Repositories/UserObjectiveRepository';
+import MissionModel from '../../../database/models/MissionModel';
+import MissionDto from '../../Dtos/MissionDto';
 
 class MissionServiceImpl implements MissionService {
 

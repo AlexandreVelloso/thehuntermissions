@@ -1,9 +1,9 @@
 import express from 'express';
 
 import LastMissionController from '../Controllers/LastMissionController';
-import LastMissionServiceImpl from '../Services/LastMissionServiceImpl';
-import AnimalServiceImpl from '../Services/AnimalServiceImpl';
-import AnimalRepositoryImpl from '../Repositories/AnimalRepositoryImpl';
+import LastMissionServiceImpl from '../Services/impl/LastMissionServiceImpl';
+import AnimalServiceImpl from '../Services/impl/AnimalServiceImpl';
+import AnimalRepositoryImpl from '../Repositories/impl/AnimalRepositoryImpl';
 
 const router = express.Router();
 

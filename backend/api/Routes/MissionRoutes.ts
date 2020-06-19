@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
 import MissionController from '../Controllers/MissionController';
-import MissionServiceImpl from '../Services/MissionServiceImpl';
-import MissionRepositoryImpl from '../Repositories/MissionRepositoryImpl';
-import ObjectiveRepositoryImpl from '../Repositories/ObjectiveRepositoryImpl';
-import UserObjectiveRepositoryImpl from '../Repositories/UserObjectiveRepositoryImpl';
+import MissionServiceImpl from '../Services/impl/MissionServiceImpl';
+import MissionRepositoryImpl from '../Repositories/impl/MissionRepositoryImpl';
+import ObjectiveRepositoryImpl from '../Repositories/impl/ObjectiveRepositoryImpl';
+import UserObjectiveRepositoryImpl from '../Repositories/impl/UserObjectiveRepositoryImpl';
 
 const router = Router();
 

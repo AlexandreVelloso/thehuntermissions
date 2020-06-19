@@ -1,5 +1,5 @@
-import ObjectiveRepository from "./ObjectiveRepository";
-import ObjectiveModel from "../../database/models/ObjectiveModel";
+import ObjectiveRepository from "../ObjectiveRepository";
+import ObjectiveModel from "../../../database/models/ObjectiveModel";
 
 class ObjectiveRepositoryImpl implements ObjectiveRepository {
 

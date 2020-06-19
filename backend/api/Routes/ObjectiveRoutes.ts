@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import ObjectiveController from '../Controllers/ObjectiveController';
-import ObjectiveServiceImpl from '../Services/ObjectiveServiceImpl';
-import UserObjectiveRepositoryImpl from '../Repositories/UserObjectiveRepositoryImpl';
-import ObjectiveRepositoryImpl from '../Repositories/ObjectiveRepositoryImpl';
+import ObjectiveServiceImpl from '../Services/impl/ObjectiveServiceImpl';
+import UserObjectiveRepositoryImpl from '../Repositories/impl/UserObjectiveRepositoryImpl';
+import ObjectiveRepositoryImpl from '../Repositories/impl/ObjectiveRepositoryImpl';
 
 const router = Router();
 
