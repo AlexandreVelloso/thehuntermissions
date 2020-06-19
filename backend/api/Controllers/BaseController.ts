@@ -4,68 +4,58 @@ import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
 import { LoginCredentials } from '../Models/UserCredentials';
 
 abstract class BaseController {
-    protected req: any;
-    protected res!: Response;
-    private user?: LoginCredentials;
-
     public async index(req: any, res: Response) {
-        this.req = req;
-        this.res = res;
-        this.user = req.auth.user;
+        const user = req.auth.user;
 
         try {
-            await this.indexImpl(this.user);
+            await this.indexImpl(req, res, user);
         } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, this.req, this.res);
+            return ErrorHandlerMiddleware.handle(err, req, res);
         }
     }
 
     public async get(req: any, res: Response) {
-        this.req = req;
-        this.res = res;
-        this.user = req.auth.user;
+        const user = req.auth.user;
 
         try {
-            await this.getImpl(this.user);
+            await this.getImpl(req, res, user);
         } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, this.req, this.res);
+            return ErrorHandlerMiddleware.handle(err, req, res);
         }
     }
 
     public async update(req: any, res: Response) {
-        this.req = req;
-        this.res = res;
-        this.user = req.auth.user;
+        const user = req.auth.user;
 
         try {
-            await this.updateImpl(this.user);
+            await this.updateImpl(req, res, user);
         } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, this.req, this.res);
+            return ErrorHandlerMiddleware.handle(err, req, res);
         }
     }
 
-    protected abstract async indexImpl(user: any): Promise<void | any>;
-    protected abstract async getImpl(user: any): Promise<void | any>;
-    protected abstract async updateImpl(user: any): Promise<void | any>;
+    protected abstract async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
+    protected abstract async getImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
+    protected abstract async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
 
     public static jsonResponse(res: Response, code: number, json: any) {
         return res.status(code).json(json)
     }
 
-    public ok(dto?: any) {
+    public ok(res: Response, dto?: any) {
         if (!!dto) {
-            return BaseController.jsonResponse(this.res, 200, dto);
+            return BaseController.jsonResponse(res, 200, dto);
         }
 
-        return this.res.end();
+        return res.end();
     }
 
-    public noContent() {
-        return this.res.status(204).end();
+    public noContent(res: Response) {
+        return res.status(204).end();
     }
 
-    public unauthorized(message?: string) {
-        return BaseController.jsonResponse(this.res, 401, 'Unauthorized');
+    public unauthorized(res: Response, message?: string) {
+        return BaseController.jsonResponse(res, 401, 'Unauthorized');
     }
 }
 

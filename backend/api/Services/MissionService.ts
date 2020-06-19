@@ -5,7 +5,7 @@ import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
 import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
 
 class MissionService {
-    static async index(userId: string) {
+    static async index(userId: any) {
         const missions = await Mission.query()
             .select('missions.*')
             .withGraphFetched('objectives')
@@ -49,7 +49,7 @@ class MissionService {
         return missions;
     }
 
-    static async get(missionId: string, userId: string) {
+    static async get(missionId: any, userId: any) {
         const mission = await Mission.query()
             .select('missions.*')
             .withGraphFetched('objectives')

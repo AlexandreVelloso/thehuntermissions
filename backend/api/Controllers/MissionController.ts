@@ -1,29 +1,32 @@
+import { Response } from 'express';
+
 import MissionService from '../Services/MissionService';
 import BaseController from './BaseController';
+import { LoginCredentials } from '../Models/UserCredentials';
 
 class MissionController extends BaseController {
-    
-    protected async indexImpl(user: any): Promise<any> {
+
+    protected async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const missions = await MissionService.index(user.id);
 
-        return this.ok(missions);
+        return this.ok(res, missions);
     }
 
-    protected async getImpl(user: any): Promise<any> {
-        const { id: missionId } = this.req.params;
+    protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const { id: missionId } = req.params;
 
         const mission = await MissionService.get(missionId, user.id);
 
-        return this.ok(mission);
+        return this.ok(res, mission);
     }
 
-    protected async updateImpl(user: any): Promise<any> {
-        const { id: missionId } = this.req.params;
-        const { completed } = this.req.body;
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const { id: missionId } = req.params;
+        const { completed } = req.body;
 
-        await MissionService.update(missionId, completed, user.id);
+        await MissionService.update(missionId, completed, String(user.id));
 
-        return this.noContent();
+        return this.noContent(res);
     }
 }
 

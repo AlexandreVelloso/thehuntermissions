@@ -3,7 +3,7 @@ import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
 import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
 
 class AnimalService {
-    static async index(userId: string) {
+    static async index(userId: any) {
         const animals = await AnimalModel.query()
             .select('animals.*')
             .withGraphFetched('missions')
@@ -60,7 +60,7 @@ class AnimalService {
         return animals;
     }
 
-    static async get(animalId: string, userId: string) {
+    static async get(animalId: number, userId: any) {
         const animal = await AnimalModel.query()
             .select('animals.*')
             .withGraphFetched('missions')

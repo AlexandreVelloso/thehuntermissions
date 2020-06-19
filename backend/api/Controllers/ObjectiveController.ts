@@ -1,5 +1,8 @@
+import { Response } from 'express';
+
 import ObjectiveService from '../Services/ObjectiveService';
 import BaseController from './BaseController';
+import { LoginCredentials } from '../Models/UserCredentials';
 
 class ObjectiveController extends BaseController {
 
@@ -11,30 +14,30 @@ class ObjectiveController extends BaseController {
         this.objectiveService = objectiveService;
     }
 
-    protected async indexImpl(user: any) {
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
         const objectives = await this.objectiveService
             .index(user.id);
 
-        return this.ok(objectives);
+        return this.ok(res, objectives);
     }
 
-    protected async getImpl(user: any) {
-        const { id: objectiveId } = this.req.params;
+    protected async getImpl(req: any, res: Response, user: LoginCredentials) {
+        const { id: objectiveId } = req.params;
 
         const objective = await this.objectiveService
             .get(objectiveId, user.id);
 
-        return this.ok(objective);
+        return this.ok(res, objective);
     }
 
-    protected async updateImpl(user: any) {
-        const { id } = this.req.params;
-        const { completed } = this.req.body;
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
+        const { id } = req.params;
+        const { completed } = req.body;
 
         await this.objectiveService
             .update(id, completed, user.id);
 
-        return this.noContent();
+        return this.noContent(res);
     }
 }
 
