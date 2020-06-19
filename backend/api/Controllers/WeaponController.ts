@@ -1,45 +1,33 @@
-import { Response } from 'express';
-
 import WeaponService from '../Services/WeaponService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
 
-class WeaponController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class WeaponController extends BaseController {
 
-        try {
-            const weapons = await WeaponService.index(user.id);
-            return res.json(weapons);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    public constructor() {
+        super();
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(user: any): Promise<any> {
+        const weapons = await WeaponService.index(user.id);
 
-        const { id } = req.params;
-
-        try {
-            const weapon = await WeaponService.get(id, user.id);
-            return res.json(weapon);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(weapons);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async getImpl(user: any): Promise<any> {
+        const { id } = this.req.params;
 
-        const { id } = req.params;
-        const { have_weapon: haveWeapon } = req.body;
+        const weapon = await WeaponService.get(id, user.id);
 
-        try {
-            await WeaponService.update(id, haveWeapon, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(weapon);
+    }
+
+    protected async updateImpl(user: any): Promise<any> {
+        const { id } = this.req.params;
+        const { have_weapon: haveWeapon } = this.req.body;
+
+        await WeaponService.update(id, haveWeapon, user.id);
+        
+        return this.noContent();
     }
 }
 
