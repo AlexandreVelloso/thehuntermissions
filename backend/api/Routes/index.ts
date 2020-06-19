@@ -1,20 +1,30 @@
 import { Router } from 'express';
+
 import JwtMiddleware from '../Middleware/JwtMiddleware';
+import SwaggerRoutes from './SwaggerRoutes';
+import AuthRoutes from './AuthRoutes';
+import ForgotPasswordRoutes from './ForgotPasswordRoutes';
+import AnimalRoutes from './AnimalRoutes';
+import LastMissionRoutes from './LastMissionRoutes';
+import WeaponRoutes from './WeaponRoutes';
+import ObjectiveRoutes from './ObjectiveRoutes';
+import MissionRoutes from './MissionRoutes';
+import Error404Route from './Error404Route';
 
 const router = Router();
 
-router.use('/api/test', JwtMiddleware.handle, (req, res) => {
-    return res.json({ hello: "hello", body: req.body  })
+router.use('/manage/health', JwtMiddleware.handle, (req, res) => {
+    return res.json({ status: "UP" })
 });
 
-router.use('/api', require('./SwaggerRoutes').default);
-router.use('/api', require('./AuthRoutes').default);
-router.use('/api', require('./ForgotPasswordRoutes').default);
-router.use('/api', JwtMiddleware.handle, require('./AnimalRoutes').default);
-router.use('/api', JwtMiddleware.handle, require('./LastMissionRoutes').default);
-router.use('/api', JwtMiddleware.handle, require('./WeaponRoutes').default);
-router.use('/api', JwtMiddleware.handle, require('./ObjectiveRoutes').default);
-router.use('/api', JwtMiddleware.handle, require('./MissionRoutes').default);
-router.use('/api', require('./Error404Route').default);
+router.use('/api', SwaggerRoutes);
+router.use('/api', AuthRoutes);
+router.use('/api', ForgotPasswordRoutes);
+router.use('/api', JwtMiddleware.handle, AnimalRoutes);
+router.use('/api', JwtMiddleware.handle, LastMissionRoutes);
+router.use('/api', JwtMiddleware.handle, WeaponRoutes);
+router.use('/api', JwtMiddleware.handle, ObjectiveRoutes);
+router.use('/api', JwtMiddleware.handle, MissionRoutes);
+router.use('/api', Error404Route);
 
 export default router;
