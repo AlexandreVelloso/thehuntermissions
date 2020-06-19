@@ -5,6 +5,8 @@ import UserModel from '../../database/models/UserModel';
 import MissionRepository from '../Repositories/MissionRepository';
 import ObjectiveRepository from '../Repositories/ObjectiveRepository';
 import UserObjectiveRepository from '../Repositories/UserObjectiveRepository';
+import MissionModel from '../../database/models/MissionModel';
+import MissionDto from '../Dtos/MissionDto';
 
 class MissionServiceImpl implements MissionService {
 
@@ -23,16 +25,18 @@ class MissionServiceImpl implements MissionService {
     }
 
     async index(userId: any): Promise<UserModel[]> {
-        const missions = await this.missionRepository
+        const missions: MissionModel[] = await this.missionRepository
             .getMissionsByUser(userId);
 
-        for (let missionIndex = 0; missionIndex < missions.length; missionIndex += 1) {
-            const objectivesLength = missions[missionIndex].objectives.length;
+        const missionsDtos = MissionDto.toDto(missions);
+
+        for (let missionIndex = 0; missionIndex < missionsDtos.length; missionIndex += 1) {
+            const objectivesLength = missionsDtos[missionIndex].objectives.length;
             let userHasWeapon = true;
 
             // eslint-disable-next-line max-len
             for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
-                const { weapons } = missions[missionIndex]
+                const { weapons } = missionsDtos[missionIndex]
                     .objectives[objectivesIndex];
 
                 const hasSomeWeapon = userHaveAllObjectiveWeapons(weapons);
@@ -42,25 +46,27 @@ class MissionServiceImpl implements MissionService {
                 }
             }
 
-            missions[missionIndex].user_has_weapon = userHasWeapon;
+            missionsDtos[missionIndex].user_has_weapon = userHasWeapon;
         }
 
-        return missions;
+        return missionsDtos;
     }
 
     async get(missionId: any, userId: any): Promise<UserModel> {
-        const mission = await this.missionRepository
+        const mission: MissionModel = await this.missionRepository
             .findMissionByUser(missionId, userId);
 
         if (!mission) {
             throw new EntityNotFoundException('Mission not found');
         }
 
-        const objectivesLength = mission.objectives.length;
+        const missionDto = MissionDto.toDto(mission);
+
+        const objectivesLength = missionDto.objectives.length;
         let userHasWeapon = true;
 
         for (let objectivesIndex = 0; objectivesIndex < objectivesLength; objectivesIndex += 1) {
-            const { weapons } = mission
+            const { weapons } = missionDto
                 .objectives[objectivesIndex];
 
             const hasSomeWeapon = userHaveAllObjectiveWeapons(weapons);
@@ -70,29 +76,29 @@ class MissionServiceImpl implements MissionService {
             }
         }
 
-        mission.user_has_weapon = userHasWeapon;
+        missionDto.user_has_weapon = userHasWeapon;
 
-        return mission;
+        return missionDto;
     }
 
     async update(missionId: number, missionCompleted: boolean, userId: number): Promise<void> {
-        const mission = await this.missionRepository
+        const mission: MissionModel = await this.missionRepository
             .findById(missionId);
 
         if (!mission) {
             throw new EntityNotFoundException('Mission not found');
         }
 
-        const objectivesIds = await this.objectiveRepository
+        const objectivesIds: number[] = await this.objectiveRepository
             .getObjectivesByMissionId(missionId)
             .then((items) => items.map((item) => item.id));
 
-        const objectivesToPatch = await this.userObjectiveRepository
+        const objectivesToPatch: number[] = await this.userObjectiveRepository
             .getObjectivesByUserWhereObjectivesIn(userId, objectivesIds)
             .then((items) => items.map((item) => item.objective_id));
 
         // eslint-disable-next-line max-len
-        const objectivesToInsert = objectivesIds.filter((objectiveId) => objectivesToPatch.indexOf(objectiveId) === -1);
+        const objectivesToInsert: number[] = objectivesIds.filter((objectiveId) => objectivesToPatch.indexOf(objectiveId) === -1);
 
         if (objectivesToPatch.length > 0) {
             await this.userObjectiveRepository

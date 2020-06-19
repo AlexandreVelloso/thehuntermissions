@@ -67,7 +67,7 @@ describe('Missions Index', () => {
 
         expect(objectives).toHaveLength(4);
         expect(objectives[0].user_id).toBe(null);
-        expect(objectives[0].completed).toBe(null);
+        expect(objectives[0].completed).toBe(false);
     });
 
     it('should validate JWT token', async () => {
@@ -109,7 +109,7 @@ describe('Missions Get', () => {
 
         expect(objectives).toHaveLength(4);
         expect(objectives[0].user_id).toBe(null);
-        expect(objectives[0].completed).toBe(null);
+        expect(objectives[0].completed).toBe(false);
     });
 
     it('should give error when not find mission', async () => {

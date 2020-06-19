@@ -1,11 +1,12 @@
 import BaseDto from "./BaseDto";
+import WeaponModel from "../../database/models/WeaponModel";
 
 class WeaponDto extends BaseDto {
 
     public id: number;
     public name: string;
     public price: number;
-    public user_id: number;
+    public user_id: number | null;
     public have_weapon: boolean;
     public created_at: any;
     public updated_at: any;
@@ -14,7 +15,7 @@ class WeaponDto extends BaseDto {
         id: number,
         name: string,
         price: number,
-        user_id: number,
+        user_id: number | null,
         have_weapon: number,
         created_at: any,
         updated_at: any
@@ -30,7 +31,7 @@ class WeaponDto extends BaseDto {
         this.updated_at = updated_at;
     }
 
-    static modelToDto(model: any): WeaponDto {
+    static modelToDto(model: WeaponModel): WeaponDto {
         return new WeaponDto(
             model.id,
             model.name,

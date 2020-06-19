@@ -1,5 +1,5 @@
 import userHasSomeObjectiveWeapon from '../../api/Utils/userHasSomeObjectiveWeapon';
-import Weapon from '../../api/Models/Weapon';
+import WeaponDto from '../../api/Dtos/WeaponDto';
 
 describe('User Have All Objective Weapons', () => {
     it('should give true when weapons array is empty', () => {
@@ -9,7 +9,7 @@ describe('User Have All Objective Weapons', () => {
     });
 
     it('should give true when user has 1 weapon', () => {
-        const weapons: Weapon[] = [
+        const weapons: WeaponDto[] = [
             {
                 id: 1,
                 name: '',
@@ -35,7 +35,7 @@ describe('User Have All Objective Weapons', () => {
     });
 
     it('should give false when user has no weapons', () => {
-        const weapons = [
+        const weapons: WeaponDto[] = [
             {
                 id: 1,
                 name: '',

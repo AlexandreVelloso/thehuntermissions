@@ -1,5 +1,6 @@
 import BaseDto from "./BaseDto";
 import WeaponDto from "./WeaponDto";
+import ObjectiveModel from "../../database/models/ObjectiveModel";
 
 class ObjectiveDto extends BaseDto {
 
@@ -10,7 +11,7 @@ class ObjectiveDto extends BaseDto {
     public updated_at: string;
     public user_id: number | null;
     public completed: boolean;
-    public have_weapon: boolean | undefined;
+    public have_weapon: boolean;
     public weapons: WeaponDto[];
 
     public constructor(
@@ -30,12 +31,13 @@ class ObjectiveDto extends BaseDto {
         this.mission_id = mission_id;
         this.user_id = user_id;
         this.completed = completed === 1;
+        this.have_weapon = false;
         this.weapons = weapons ? weapons.slice() : [];
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    static modelToDto(model: any): ObjectiveDto {
+    static modelToDto(model: ObjectiveModel): ObjectiveDto {
         return new ObjectiveDto(
             model.id,
             model.name,
