@@ -1,9 +1,9 @@
-import userHaveAllObjectiveWeapons from '../../api/Utils/userHaveAllObjectiveWeapons';
+import userHasSomeObjectiveWeapon from '../../api/Utils/userHasSomeObjectiveWeapon';
 import Weapon from '../../api/Models/Weapon';
 
 describe('User Have All Objective Weapons', () => {
     it('should give true when weapons array is empty', () => {
-        const result = userHaveAllObjectiveWeapons([]);
+        const result = userHasSomeObjectiveWeapon([]);
 
         expect(result).toBe(true);
     });
@@ -29,7 +29,7 @@ describe('User Have All Objective Weapons', () => {
                 have_weapon: false,
             },
         ];
-        const result = userHaveAllObjectiveWeapons(weapons);
+        const result = userHasSomeObjectiveWeapon(weapons);
 
         expect(result).toBe(true);
     });
@@ -55,7 +55,7 @@ describe('User Have All Objective Weapons', () => {
                 have_weapon: false,
             }
         ];
-        const result = userHaveAllObjectiveWeapons(weapons);
+        const result = userHasSomeObjectiveWeapon(weapons);
 
         expect(result).toBe(false);
     });

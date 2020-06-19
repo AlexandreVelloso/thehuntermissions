@@ -1,6 +1,6 @@
 import ObjectiveService from "./ObjectiveService";
 import ObjectiveRepository from "../Repositories/ObjectiveRepository";
-import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
+import userHaveAllObjectiveWeapons from '../Utils/userHasSomeObjectiveWeapon';
 import ObjectiveModel from "../../database/models/ObjectiveModel";
 import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
 import UserObjectiveRepository from "../Repositories/UserObjectiveRepository";

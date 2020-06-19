@@ -1,5 +1,5 @@
 import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
-import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
+import userHaveAllObjectiveWeapons from '../Utils/userHasSomeObjectiveWeapon';
 import MissionService from './MissionService';
 import UserModel from '../../database/models/UserModel';
 import MissionRepository from '../Repositories/MissionRepository';

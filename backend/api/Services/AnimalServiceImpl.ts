@@ -1,6 +1,6 @@
 import AnimalModel from '../../database/models/AnimalModel';
 import EntityNotFoundException from '../Exceptions/EntityNotFoundException';
-import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
+import userHaveAllObjectiveWeapons from '../Utils/userHasSomeObjectiveWeapon';
 import AnimalRepository from '../Repositories/AnimalRepository';
 import AnimalService from './AnimalService';
 
