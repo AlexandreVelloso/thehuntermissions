@@ -6,8 +6,17 @@ import { LoginCredentials } from '../Models/UserCredentials';
 
 class AnimalController extends BaseController {
 
-    protected async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animals = await AnimalService.index(user.id);
+    private animalService: AnimalService;
+
+    public constructor(animalService: AnimalService) {
+        super();
+        
+        this.animalService = animalService;
+    }
+
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const animals = await this.animalService
+            .index(user.id);
 
         return this.ok(res, animals);
     }
@@ -15,7 +24,8 @@ class AnimalController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const animalId = req.params.id;
 
-        const animal = await AnimalService.get(animalId, user.id);
+        const animal = await this.animalService
+            .get(animalId, user.id);
 
         return this.ok(res, animal);
     }
