@@ -4,7 +4,9 @@ import AnimalController from '../Controllers/AnimalController';
 
 const router = Router();
 
-router.get('/animals', AnimalController.index);
-router.get('/animals/:id', AnimalController.get);
+const animalController = new AnimalController();
+
+router.get('/animals', (req, res) => animalController.index(req, res));
+router.get('/animals/:id', (req, res) => animalController.get(req, res));
 
 export default router;
