@@ -1,8 +1,8 @@
 import { getAnimalsLastMission, getLastMission } from '../Utils/AnimalsMissions';
 import AnimalService from './AnimalService';
 import LastMissionService from './LastMissionService';
-import AnimalModel from '../../database/models/AnimalModel';
-import LastMission from '../Models/LastMission';
+import AnimalDto from '../Dtos/AnimalDto';
+import LastMissionDto from '../Dtos/LastMissionDto';
 
 class LastMissionServiceImpl implements LastMissionService {
 
@@ -12,21 +12,28 @@ class LastMissionServiceImpl implements LastMissionService {
         this.animalService = animalService;
     }
 
-    async index(userId: number): Promise<LastMission[]> {
-        const animals = await this.animalService
+    async index(userId: number): Promise<LastMissionDto[]> {
+        const animals: AnimalDto[] = await this.animalService
             .index(userId);
 
         return getAnimalsLastMission(animals);
     }
 
-    async get(animalId: number, userId: number): Promise<LastMission> {
-        const animal = await this.animalService
+    async get(animalId: number, userId: number): Promise<LastMissionDto> {
+        const animal: AnimalDto = await this.animalService
             .get(animalId, userId);
 
-        animal.mission = getLastMission(animal.missions);
-        delete animal.missions;
+        const lastMission = getLastMission(animal.missions);
 
-        return animal;
+        const lastMissionDto = new LastMissionDto(
+            animal.id,
+            animal.name,
+            lastMission,
+            animal.created_at,
+            animal.updated_at
+        );
+
+        return lastMissionDto;
     }
 }
 

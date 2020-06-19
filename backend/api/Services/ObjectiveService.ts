@@ -1,10 +1,10 @@
-import ObjectiveModel from '../../database/models/ObjectiveModel';
+import ObjectiveDto from '../Dtos/ObjectiveDto';
 
 interface ObjectiveService {
 
-    index(userId: number): Promise<ObjectiveModel[]>;
+    index(userId: number): Promise<ObjectiveDto[]>;
 
-    get(objectiveId: number, userId: number): Promise<ObjectiveModel>
+    get(objectiveId: number, userId: number): Promise<ObjectiveDto>
 
     update(objectiveId: number, objectiveCompleted: boolean, userId: number): Promise<void>;
     

@@ -3,32 +3,34 @@ import {
     getLastMission,
     isAllObjectivesCompleted,
 } from '../../api/Utils/AnimalsMissions';
-import Objective from '../../api/Models/Objective';
-import Mission from '../../api/Models/Mission';
-import Animal from '../../api/Models/Animal';
+import ObjectiveDto from '../../api/Dtos/ObjectiveDto';
+import MissionDto from '../../api/Dtos/MissionDto';
+import AnimalDto from '../../api/Dtos/AnimalDto';
 
 describe('Animals missions - isAllObjectivesCompleted', () => {
     it('should get true when all objectives are completed', () => {
-        const objectives: Objective[] = [
+        const objectives: ObjectiveDto[] = [
             {
                 id: 1,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: true,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 1,
-                weapons: [],
             },
             {
                 id: 2,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: true,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 1,
-                weapons: [],
             },
         ];
 
@@ -37,26 +39,28 @@ describe('Animals missions - isAllObjectivesCompleted', () => {
     });
 
     it('should get false when all objectives are incomplete', () => {
-        const objectives: Objective[] = [
+        const objectives: ObjectiveDto[] = [
             {
                 id: 1,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: false,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 0,
-                weapons: [],
             },
             {
                 id: 2,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: false,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 0,
-                weapons: [],
             },
         ];
 
@@ -65,54 +69,28 @@ describe('Animals missions - isAllObjectivesCompleted', () => {
     });
 
     it('should get false when one objective is incomplete', () => {
-        const objectives: Objective[] = [
+        const objectives: ObjectiveDto[] = [
             {
                 id: 1,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: false,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 0,
-                weapons: [],
             },
             {
                 id: 2,
                 name: 'string',
                 mission_id: 1,
+                user_id: null,
+                completed: true,
+                user_has_weapon: true,
+                weapons: [],
                 created_at: 'string',
                 updated_at: 'string',
-                user_id: null,
-                completed: 1,
-                weapons: [],
-            },
-        ];
-
-        const result = isAllObjectivesCompleted(objectives);
-        expect(result).toBe(false);
-    });
-
-    it('should get false when completed is null', () => {
-        const objectives: Objective[] = [
-            {
-                id: 1,
-                name: 'string',
-                mission_id: 1,
-                created_at: 'string',
-                updated_at: 'string',
-                user_id: null,
-                completed: null,
-                weapons: [],
-            },
-            {
-                id: 2,
-                name: 'string',
-                mission_id: 1,
-                created_at: 'string',
-                updated_at: 'string',
-                user_id: null,
-                completed: 1,
-                weapons: [],
             },
         ];
 
@@ -123,7 +101,7 @@ describe('Animals missions - isAllObjectivesCompleted', () => {
 
 describe('Animals missions - getLasMission', () => {
     it('should return the first mission when it have one objective incomplete', () => {
-        const missions: Mission[] = [
+        const missions: MissionDto[] = [
             {
                 id: 1,
                 name: '',
@@ -138,11 +116,12 @@ describe('Animals missions - getLasMission', () => {
                         id: 1,
                         name: '',
                         mission_id: 1,
+                        user_id: 1,
+                        completed: false,
+                        user_has_weapon: true,
+                        weapons: [],
                         created_at: '',
                         updated_at: '',
-                        user_id: 1,
-                        completed: 0,
-                        weapons: []
                     },
                 ],
             },
@@ -160,11 +139,12 @@ describe('Animals missions - getLasMission', () => {
                         id: 2,
                         name: '',
                         mission_id: 1,
+                        user_id: 1,
+                        completed: false,
+                        user_has_weapon: true,
+                        weapons: [],
                         created_at: '',
                         updated_at: '',
-                        user_id: 1,
-                        completed: 0,
-                        weapons: []
                     },
                 ],
             },
@@ -186,11 +166,12 @@ describe('Animals missions - getLasMission', () => {
                     id: 1,
                     name: '',
                     mission_id: 1,
+                    user_id: 1,
+                    completed: false,
+                    user_has_weapon: true,
+                    weapons: [],
                     created_at: '',
                     updated_at: '',
-                    user_id: 1,
-                    completed: 0,
-                    weapons: []
                 },
             ],
         });
@@ -198,7 +179,7 @@ describe('Animals missions - getLasMission', () => {
 
     it('should return the second mission when the first mission objectives are completed', () => {
 
-        const missions: Mission[] = [
+        const missions: MissionDto[] = [
             {
                 id: 1,
                 name: '',
@@ -213,11 +194,12 @@ describe('Animals missions - getLasMission', () => {
                         id: 1,
                         name: '',
                         mission_id: 1,
+                        user_id: 1,
+                        completed: true,
+                        user_has_weapon: true,
+                        weapons: [],
                         created_at: '',
                         updated_at: '',
-                        user_id: 1,
-                        completed: 1,
-                        weapons: []
                     },
                 ],
             },
@@ -235,11 +217,12 @@ describe('Animals missions - getLasMission', () => {
                         id: 2,
                         name: '',
                         mission_id: 1,
+                        user_id: 1,
+                        completed: false,
+                        user_has_weapon: true,
+                        weapons: [],
                         created_at: '',
                         updated_at: '',
-                        user_id: 1,
-                        completed: 0,
-                        weapons: []
                     },
                 ],
             },
@@ -261,11 +244,12 @@ describe('Animals missions - getLasMission', () => {
                     id: 2,
                     name: '',
                     mission_id: 1,
+                    user_id: 1,
+                    completed: false,
+                    user_has_weapon: true,
+                    weapons: [],
                     created_at: '',
                     updated_at: '',
-                    user_id: 1,
-                    completed: 0,
-                    weapons: []
                 },
             ],
         });
@@ -274,7 +258,7 @@ describe('Animals missions - getLasMission', () => {
 
 describe('Animals missions - getAnimalsLastMission', () => {
     it('should return animal info and last mission', () => {
-        const animals: Animal[] = [
+        const animals: AnimalDto[] = [
             {
                 id: 1,
                 name: 'First animal',
@@ -295,11 +279,12 @@ describe('Animals missions - getAnimalsLastMission', () => {
                                 id: 1,
                                 name: '',
                                 mission_id: 1,
+                                user_id: 1,
+                                completed: true,
+                                weapons: [],
+                                user_has_weapon: true,
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 1,
-                                weapons: [],
                             },
                         ],
                     },
@@ -316,12 +301,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 2,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: false,
+                                weapons: [],
+                                user_has_weapon: true,
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 0,
-                                weapons: [],
                             },
                         ],
                     }
@@ -334,11 +320,11 @@ describe('Animals missions - getAnimalsLastMission', () => {
                 updated_at: '',
                 missions: [
                     {
-                        id: 1,
+                        id: 3,
                         name: 'Mission 1',
                         reward: 100,
                         hint: '',
-                        animal_id: 1,
+                        animal_id: 2,
                         user_has_weapon: true,
                         created_at: '',
                         updated_at: '',
@@ -346,21 +332,22 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 3,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: false,
+                                user_has_weapon: true,
+                                weapons: [],
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 0,
-                                weapons: [],
                             },
                         ],
                     },
                     {
-                        id: 2,
+                        id: 4,
                         name: 'Mission 2',
                         reward: 100,
                         hint: '',
-                        animal_id: 1,
+                        animal_id: 2,
                         user_has_weapon: true,
                         created_at: '',
                         updated_at: '',
@@ -368,12 +355,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 4,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: false,
+                                user_has_weapon: true,
+                                weapons: [],
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 1,
-                                weapons: [],
                             },
                         ],
                     }
@@ -402,12 +390,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                         {
                             id: 2,
                             name: '',
-                            mission_id: 1,
+                            mission_id: 2,
+                            user_id: 1,
+                            completed: false,
+                            weapons: [],
+                            user_has_weapon: true,
                             created_at: '',
                             updated_at: '',
-                            user_id: 1,
-                            completed: 0,
-                            weapons: [],
                         },
                     ],
                 },
@@ -418,11 +407,11 @@ describe('Animals missions - getAnimalsLastMission', () => {
                 created_at: '',
                 updated_at: '',
                 mission: {
-                    id: 1,
+                    id: 3,
                     name: 'Mission 1',
                     reward: 100,
                     hint: '',
-                    animal_id: 1,
+                    animal_id: 2,
                     user_has_weapon: true,
                     created_at: '',
                     updated_at: '',
@@ -430,12 +419,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                         {
                             id: 3,
                             name: '',
-                            mission_id: 1,
+                            mission_id: 2,
+                            user_id: 1,
+                            completed: false,
+                            user_has_weapon: true,
+                            weapons: [],
                             created_at: '',
                             updated_at: '',
-                            user_id: 1,
-                            completed: 0,
-                            weapons: [],
                         },
                     ],
                 },
@@ -444,7 +434,7 @@ describe('Animals missions - getAnimalsLastMission', () => {
     });
 
     it('should not return animal mission when it is all completed', () => {
-        const animals: Animal[] = [
+        const animals: AnimalDto[] = [
             {
                 id: 1,
                 name: 'First animal',
@@ -465,11 +455,12 @@ describe('Animals missions - getAnimalsLastMission', () => {
                                 id: 1,
                                 name: '',
                                 mission_id: 1,
+                                user_id: 1,
+                                completed: true,
+                                weapons: [],
+                                user_has_weapon: true,
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 1,
-                                weapons: [],
                             },
                         ],
                     },
@@ -486,12 +477,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 2,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: false,
+                                weapons: [],
+                                user_has_weapon: true,
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 0,
-                                weapons: [],
                             },
                         ],
                     }
@@ -504,11 +496,11 @@ describe('Animals missions - getAnimalsLastMission', () => {
                 updated_at: '',
                 missions: [
                     {
-                        id: 1,
+                        id: 3,
                         name: 'Mission 1',
                         reward: 100,
                         hint: '',
-                        animal_id: 1,
+                        animal_id: 2,
                         user_has_weapon: true,
                         created_at: '',
                         updated_at: '',
@@ -516,21 +508,22 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 3,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: true,
+                                user_has_weapon: true,
+                                weapons: [],
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 1,
-                                weapons: [],
                             },
                         ],
                     },
                     {
-                        id: 2,
+                        id: 4,
                         name: 'Mission 2',
                         reward: 100,
                         hint: '',
-                        animal_id: 1,
+                        animal_id: 2,
                         user_has_weapon: true,
                         created_at: '',
                         updated_at: '',
@@ -538,12 +531,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                             {
                                 id: 4,
                                 name: '',
-                                mission_id: 1,
+                                mission_id: 2,
+                                user_id: 1,
+                                completed: true,
+                                user_has_weapon: true,
+                                weapons: [],
                                 created_at: '',
                                 updated_at: '',
-                                user_id: 1,
-                                completed: 1,
-                                weapons: [],
                             },
                         ],
                     }
@@ -572,12 +566,13 @@ describe('Animals missions - getAnimalsLastMission', () => {
                         {
                             id: 2,
                             name: '',
-                            mission_id: 1,
+                            mission_id: 2,
+                            user_id: 1,
+                            completed: false,
+                            weapons: [],
+                            user_has_weapon: true,
                             created_at: '',
                             updated_at: '',
-                            user_id: 1,
-                            completed: 0,
-                            weapons: [],
                         },
                     ],
                 },

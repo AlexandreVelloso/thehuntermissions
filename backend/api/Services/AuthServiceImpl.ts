@@ -6,7 +6,7 @@ import ValidationException from '../Exceptions/ValidationException';
 import UnauthorizedOperationException from '../Exceptions/UnauthorizedOperationException';
 import StartWeaponsService from './StartWeaponsService';
 import AuthService from './AuthService';
-import UserCredentials from '../Models/UserCredentials';
+import UserCredentials from '../Dtos/UserCredentialsDto';
 import UserRepository from '../Repositories/UserRepository';
 
 class AuthServiceImpl implements AuthService {

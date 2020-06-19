@@ -1,10 +1,10 @@
-import LastMission from "../Models/LastMission";
+import LastMissionDto from "../Dtos/LastMissionDto";
 
 interface LastMissionService {
 
-    index(userId: number): Promise<LastMission[]>;
+    index(userId: number): Promise<LastMissionDto[]>;
 
-    get(animalId: number, userId: number): Promise<LastMission>;
+    get(animalId: number, userId: number): Promise<LastMissionDto>;
 
 }
 

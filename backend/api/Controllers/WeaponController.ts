@@ -2,7 +2,8 @@ import { Response } from 'express';
 
 import WeaponService from '../Services/WeaponService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import WeaponDto from '../Dtos/WeaponDto';
 
 class WeaponController extends BaseController {
 
@@ -15,7 +16,7 @@ class WeaponController extends BaseController {
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
-        const weapons = await this.weaponService.index(user.id);
+        const weapons: WeaponDto[] = await this.weaponService.index(user.id);
 
         return this.ok(res, weapons);
     }
@@ -23,7 +24,7 @@ class WeaponController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
         const { id } = req.params;
 
-        const weapon = await this.weaponService.get(id, user.id);
+        const weapon: WeaponDto = await this.weaponService.get(id, user.id);
 
         return this.ok(res, weapon);
     }

@@ -161,7 +161,7 @@ describe('Weapons Update', () => {
             .set('Authorization', user.accessToken);
 
         const weaponOld = responseOld.body;
-        expect(weaponOld.have_weapon).toBe(null);
+        expect(weaponOld.have_weapon).toBe(false);
 
         const responseUpdate = await request(app)
             .put('/api/weapons/1')
@@ -177,7 +177,7 @@ describe('Weapons Update', () => {
             .set('Authorization', user.accessToken);
 
         const weaponNew = responseNew.body;
-        expect(weaponNew.have_weapon).toBe(1);
+        expect(weaponNew.have_weapon).toBe(true);
     });
 
     it('should give an error when not find weapon to update', async () => {
@@ -266,11 +266,11 @@ describe('Test weapons for two users', () => {
 
         const firstWeaponUser1 = response1.body[0];
         expect(firstWeaponUser1.user_id).toBe(1);
-        expect(firstWeaponUser1.have_weapon).toBe(1);
+        expect(firstWeaponUser1.have_weapon).toBe(true);
 
         const firstWeaponUser2 = response2.body[0];
         expect(firstWeaponUser2.user_id).toBe(null);
-        expect(firstWeaponUser2.have_weapon).toBe(null);
+        expect(firstWeaponUser2.have_weapon).toBe(false);
     });
 
     it('should have different results for weapons gets', async () => {
@@ -284,10 +284,10 @@ describe('Test weapons for two users', () => {
 
         const firstWeaponUser1 = response1.body;
         expect(firstWeaponUser1.user_id).toBe(1);
-        expect(firstWeaponUser1.have_weapon).toBe(1);
+        expect(firstWeaponUser1.have_weapon).toBe(true);
 
         const firstWeaponUser2 = response2.body;
         expect(firstWeaponUser2.user_id).toBe(null);
-        expect(firstWeaponUser2.have_weapon).toBe(null);
+        expect(firstWeaponUser2.have_weapon).toBe(false);
     });
 });

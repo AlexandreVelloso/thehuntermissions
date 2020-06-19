@@ -1,9 +1,11 @@
 import ObjectiveService from "./ObjectiveService";
 import ObjectiveRepository from "../Repositories/ObjectiveRepository";
-import userHaveAllObjectiveWeapons from '../Utils/userHaveAllObjectiveWeapons';
+import { userHasSomeObjectiveWeapon } from '../Utils/ObjectiveWeapons';
 import ObjectiveModel from "../../database/models/ObjectiveModel";
 import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
 import UserObjectiveRepository from "../Repositories/UserObjectiveRepository";
+import ObjectiveDto from "../Dtos/ObjectiveDto";
+import UserObjectiveModel from "../../database/models/UserObjectiveModel";
 
 class ObjectiveServiceImpl implements ObjectiveService {
 
@@ -18,40 +20,37 @@ class ObjectiveServiceImpl implements ObjectiveService {
         this.userObjectiveRepository = userObjectiveRepository;
     }
 
-    async index(userId: number): Promise<ObjectiveModel[]> {
-        const objectives = await this.objectiveRepository
+    async index(userId: number): Promise<ObjectiveDto[]> {
+        const objectives: ObjectiveModel[] = await this.objectiveRepository
             .getObjectivesByUser(userId);
 
-        for (let index = 0; index < objectives.length; index += 1) {
-            const { weapons } = objectives[index];
-            objectives[index].have_weapon = userHaveAllObjectiveWeapons(weapons);
-        }
+        const objectivesDto: ObjectiveDto[] = ObjectiveDto.toDto(objectives);
 
-        return objectives;
+        return objectivesDto;
     }
 
-    async get(objectiveId: number, userId: number): Promise<ObjectiveModel> {
-        const objective = await this.objectiveRepository
+    async get(objectiveId: number, userId: number): Promise<ObjectiveDto> {
+        const objective: ObjectiveModel = await this.objectiveRepository
             .findObjectiveByUser(objectiveId, userId);
 
         if (!objective) {
             throw new EntityNotFoundException('Objective not found');
         }
 
-        objective.have_weapon = userHaveAllObjectiveWeapons(objective.weapons);
+        const objectiveDto: ObjectiveDto = ObjectiveDto.toDto(objective);
 
-        return objective;
+        return objectiveDto;
     }
 
     async update(objectiveId: number, isObjectiveCompleted: boolean, userId: number): Promise<void> {
-        const objective = await this.objectiveRepository
+        const objective: ObjectiveModel = await this.objectiveRepository
             .findById(objectiveId);
 
         if (!objective) {
             throw new EntityNotFoundException('Objective not found');
         }
 
-        const userObjective = await this.userObjectiveRepository
+        const userObjective: UserObjectiveModel = await this.userObjectiveRepository
             .findByObjectiveAndUser(objectiveId, userId);
 
         if (userObjective) {

@@ -2,7 +2,8 @@ import { Response } from 'express';
 
 import AnimalService from '../Services/AnimalService';
 import BaseController from './BaseController';
-import { LoginCredentials } from '../Models/UserCredentials';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import AnimalDto from '../Dtos/AnimalDto';
 
 class AnimalController extends BaseController {
 
@@ -10,12 +11,12 @@ class AnimalController extends BaseController {
 
     public constructor(animalService: AnimalService) {
         super();
-        
+
         this.animalService = animalService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animals = await this.animalService
+        const animals: AnimalDto[] = await this.animalService
             .index(user.id);
 
         return this.ok(res, animals);
@@ -24,7 +25,7 @@ class AnimalController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const animalId = req.params.id;
 
-        const animal = await this.animalService
+        const animal: AnimalDto = await this.animalService
             .get(animalId, user.id);
 
         return this.ok(res, animal);

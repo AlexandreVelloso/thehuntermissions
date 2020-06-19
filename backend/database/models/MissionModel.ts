@@ -2,9 +2,14 @@ import { Model } from 'objection';
 import Objective from './ObjectiveModel';
 
 class MissionModel extends Model {
-    id?: number;
+    id: any;
+    name: any;
+    reward: any;
+    hint: any;
+    animal_id: any;
     objectives: any;
-    user_has_weapon: any;
+    created_at: any;
+    updated_at: any;
 
     static get tableName() {
         return 'missions';
