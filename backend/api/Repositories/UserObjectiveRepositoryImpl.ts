@@ -34,6 +34,23 @@ class UserObjectiveRepositoryImpl implements UserObjectiveRepository {
             });
     }
 
+    async getObjectivesByUserWhereObjectivesIn(userId: number, objectivesIds: number[]): Promise<UserObjectiveModel[]> {
+        return await UserObjectiveModel.query()
+            .where('user_id', userId)
+            .where('objective_id', 'in', objectivesIds)
+    }
+
+    async updateMany(objectivesIds: number[], completed: boolean): Promise<void> {
+        await UserObjectiveModel.query()
+            .where('objective_id', 'in', objectivesIds)
+            .update({ completed });
+    }
+
+    async insertMany(userObjectives: any[]): Promise<void> {
+        await UserObjectiveModel.query()
+            .insertGraph(userObjectives);
+    }
+
 }
 
 export default UserObjectiveRepositoryImpl;

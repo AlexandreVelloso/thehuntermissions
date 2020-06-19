@@ -6,8 +6,17 @@ import { LoginCredentials } from '../Models/UserCredentials';
 
 class MissionController extends BaseController {
 
-    protected async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const missions = await MissionService.index(user.id);
+    private missionService: MissionService;
+
+    public constructor(missionService: MissionService) {
+        super();
+
+        this.missionService = missionService;
+    }
+
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const missions = await this.missionService
+            .index(user.id);
 
         return this.ok(res, missions);
     }
@@ -15,7 +24,8 @@ class MissionController extends BaseController {
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: missionId } = req.params;
 
-        const mission = await MissionService.get(missionId, user.id);
+        const mission = await this.missionService
+            .get(missionId, user.id);
 
         return this.ok(res, mission);
     }
@@ -24,7 +34,8 @@ class MissionController extends BaseController {
         const { id: missionId } = req.params;
         const { completed } = req.body;
 
-        await MissionService.update(missionId, completed, String(user.id));
+        await this.missionService
+            .update(missionId, completed, user.id);
 
         return this.noContent(res);
     }
