@@ -1,32 +1,40 @@
 import { Response } from 'express';
 
 import LastMissionService from '../Services/LastMissionService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import LastMissionDto from '../Dtos/LastMissionDto';
 
-class LastMissionController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class LastMissionController extends BaseController {
 
-        try {
-            const animals = await LastMissionService.index(user.id);
-            return res.json(animals);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    private lastMissionService: LastMissionService;
+
+    public constructor(lastMissionService: LastMissionService) {
+        super();
+
+        this.lastMissionService = lastMissionService;
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const animals: LastMissionDto[] = await this.lastMissionService
+            .index(user.id);
 
+        return this.ok(res, animals);
+    }
+
+    protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const { id: animalId } = req.params;
 
-        try {
-            const animal = await LastMissionService.get(animalId, user.id);
-            return res.json(animal);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const animal: LastMissionDto = await this.lastMissionService
+            .get(animalId, user.id);
+
+        return this.ok(res, animal);
     }
+
+    protected updateImpl(_req: any, _res: Response, _user: LoginCredentials): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
 }
 
 export default LastMissionController;

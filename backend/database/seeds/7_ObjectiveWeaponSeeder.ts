@@ -4,10 +4,10 @@ import AmmoModel from '../models/AmmoModel';
 import WeaponModel from '../models/WeaponModel';
 import ObjectiveModel from '../models/ObjectiveModel';
 import ObjectiveWeaponModel from '../models/ObjectiveWeaponModel';
-import Weapon from '../../api/Models/Weapon';
-import Objective from '../../api/Models/Objective';
-import WeaponObjective from '../../api/Models/WeaponObjective';
 import Knex from 'knex';
+import WeaponDto from '../../api/Dtos/WeaponDto';
+import ObjectiveDto from '../../api/Dtos/ObjectiveDto';
+import ObjectiveWeaponDto from '../../api/Dtos/ObjectiveWeaponDto';
 
 async function findAmmoByName(name: string) {
     return AmmoModel.query()
@@ -21,8 +21,8 @@ async function findObjectivesByName(weapon: string) {
         .select('*');
 }
 
-async function addWeaponsObjectives(knex: Knex, weapons: Weapon[], objectives: Objective[]) {
-    const weaponObjectives: WeaponObjective[] = [];
+async function addWeaponsObjectives(knex: Knex, weapons: WeaponDto[], objectives: ObjectiveDto[]) {
+    const weaponObjectives: ObjectiveWeaponDto[] = [];
 
     objectives.forEach((objective) => {
         weapons.forEach((weapon) => {
@@ -44,11 +44,11 @@ async function addWeaponsObjectives(knex: Knex, weapons: Weapon[], objectives: O
 
 async function createObjectivesWeaponsForAllWeapons(knex: Knex) {
     const weaponsDb: WeaponModel[] = await WeaponModel.query();
-    const weapons: Weapon[] = Weapon.convertArray(weaponsDb);
+    const weapons: WeaponDto[] = WeaponDto.toDto(weaponsDb);
 
     await weapons.forEach(async (weapon) => {
         const objectivesDB = await findObjectivesByName(weapon.name);
-        const objectives: Objective[] = Objective.convertArray(objectivesDB);
+        const objectives: ObjectiveDto[] = ObjectiveDto.toDto(objectivesDB);
 
         await addWeaponsObjectives(knex, [weapon], objectives);
     });
@@ -63,8 +63,9 @@ async function dot17HMRHV(knex: Knex) {
         .where('ammo_id', ammo.id);
 
     const objectives = await findObjectivesByName('17 HMR HV Ammunition');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot308SingleShotHandgun(knex: Knex) {
@@ -76,8 +77,9 @@ async function dot308SingleShotHandgun(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('308 Single Shot Handgun');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    addWeaponsObjectives(knex, weapons, objectives);
+    addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot4570Government(knex: Knex) {
@@ -89,8 +91,11 @@ async function dot4570Government(knex: Knex) {
     const objectives = await findObjectivesByName('45-70 Government');
     const objectives2 = await findObjectivesByName('45-70 Lever Action Rifle');
 
-    addWeaponsObjectives(knex, weapons, objectives);
-    addWeaponsObjectives(knex, weapons, objectives2);
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+    const objectivesDto2 = ObjectiveDto.toDto(objectives2);
+
+    addWeaponsObjectives(knex, weapons, objectivesDto);
+    addWeaponsObjectives(knex, weapons, objectivesDto2);
 }
 
 async function dot7mmBreakActionRifle(knex: Knex) {
@@ -101,8 +106,9 @@ async function dot7mmBreakActionRifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('7mm Break Action Rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function tracerArrows(knex: Knex) {
@@ -119,8 +125,9 @@ async function tracerArrows(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('tracer arrow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot7mmAmmunition(knex: Knex) {
@@ -133,8 +140,11 @@ async function dot7mmAmmunition(knex: Knex) {
     const objectives = await findObjectivesByName('7 mm ammunition');
     const objectives2 = await findObjectivesByName('7mm Magnum ammunition');
 
-    await addWeaponsObjectives(knex, weapons, objectives);
-    await addWeaponsObjectives(knex, weapons, objectives2);
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+    const objectivesDto2 = ObjectiveDto.toDto(objectives2);
+
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
+    await addWeaponsObjectives(knex, weapons, objectivesDto2);
 }
 
 async function anyShotgun(knex: Knex) {
@@ -151,8 +161,9 @@ async function anyShotgun(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('any shotgun');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function buckshot(knex: Knex) {
@@ -169,8 +180,9 @@ async function buckshot(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('buckshot');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function slug(knex: Knex) {
@@ -185,8 +197,9 @@ async function slug(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('slug');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function anyBow(knex: Knex) {
@@ -199,8 +212,9 @@ async function anyBow(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('any bow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function anyCompoundBow(knex: Knex) {
@@ -213,8 +227,9 @@ async function anyCompoundBow(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('any Compound Bow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function anyCrossbow(knex: Knex) {
@@ -226,8 +241,9 @@ async function anyCrossbow(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('any crossbow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function bowOrCrossbow(knex: Knex) {
@@ -243,8 +259,9 @@ async function bowOrCrossbow(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('bow or crossbow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function bisonRevolvers(knex: Knex) {
@@ -254,8 +271,9 @@ async function bisonRevolvers(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Harvest the male Bison "Buffalo Bill" last seen at the "Windy Hill" (X: -6464, Y: -10096) using any permitted revolver without a scope.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot300Rifle(knex: Knex) {
@@ -265,8 +283,9 @@ async function dot300Rifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.300 Rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function pumpAction(knex: Knex) {
@@ -276,8 +295,9 @@ async function pumpAction(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Pump-Action Shotgun');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot308Anschuts(knex: Knex) {
@@ -287,8 +307,9 @@ async function dot308Anschuts(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('308 Anschütz Rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot308RivalHandgun(knex: Knex) {
@@ -298,8 +319,9 @@ async function dot308RivalHandgun(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('308 "Rival" Handgun');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function any243or223(knex: Knex) {
@@ -311,8 +333,9 @@ async function any243or223(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('any .243 or .223 rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function arcticFoxRevolvers(knex: Knex) {
@@ -322,8 +345,9 @@ async function arcticFoxRevolvers(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Harvest an Arctic Fox with any permitted revolver.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function snakebiteMissions(knex: Knex) {
@@ -333,8 +357,9 @@ async function snakebiteMissions(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('"Snakebite" Compound Bow');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot223Ammunition(knex: Knex) {
@@ -345,8 +370,9 @@ async function dot223Ammunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('223 ammunition');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot22Ammunition(knex: Knex) {
@@ -357,8 +383,9 @@ async function dot22Ammunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.22 ammo');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function feralGoatPistols(knex: Knex) {
@@ -371,8 +398,9 @@ async function feralGoatPistols(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Harvest a Feral Goat with 100% Harvest Value, using any ethical pistol or revolver.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function parkerPython(knex: Knex) {
@@ -382,8 +410,9 @@ async function parkerPython(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Compound Bow "Parker Python');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function sideBySide(knex: Knex) {
@@ -393,8 +422,9 @@ async function sideBySide(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Side by Side shotgun');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot270rifle(knex: Knex) {
@@ -404,8 +434,9 @@ async function dot270rifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.270 rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot3006rifle(knex: Knex) {
@@ -417,8 +448,9 @@ async function dot3006rifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.30-06 rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot357Handgun(knex: Knex) {
@@ -430,8 +462,11 @@ async function dot357Handgun(knex: Knex) {
     const objectives = await findObjectivesByName('.357 Handgun');
     const objectives2 = await findObjectivesByName('.357 Magnum');
 
-    await addWeaponsObjectives(knex, weapons, objectives);
-    await addWeaponsObjectives(knex, weapons, objectives2);
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+    const objectivesDto2 = ObjectiveDto.toDto(objectives2);
+
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
+    await addWeaponsObjectives(knex, weapons, objectivesDto2);
 }
 
 async function k98kBoltActionRifle(knex: Knex) {
@@ -441,8 +476,9 @@ async function k98kBoltActionRifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('8x57 K98k Bolt Action Rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function anschtzRifle(knex: Knex) {
@@ -454,8 +490,9 @@ async function anschtzRifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Anchütz rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot8x57Ammunition(knex: Knex) {
@@ -466,8 +503,9 @@ async function dot8x57Ammunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('8x57 ammunition');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function any4570Rifle(knex: Knex) {
@@ -478,8 +516,9 @@ async function any4570Rifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.45-70 rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot3006Ammunition(knex: Knex) {
@@ -491,8 +530,9 @@ async function dot3006Ammunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.30-06 ammunition');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function rockMountainElkPermitedRifle(knex: Knex) {
@@ -521,8 +561,9 @@ async function rockMountainElkPermitedRifle(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Harvest a male Rocky Mountain Elk with more than 12 typical points using any ethical rifle ammunition.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function dot454Ammunition(knex: Knex) {
@@ -532,8 +573,9 @@ async function dot454Ammunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('.454 ammunition');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 async function waterBuffaloAnyMuzeloaderAmmunition(knex: Knex) {
@@ -544,8 +586,9 @@ async function waterBuffaloAnyMuzeloaderAmmunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Finally, harvest a charging Water Buffalo with any ethical Muzzleloader ammo.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
 
-    await addWeaponsObjectives(knex, weapons, objectives);
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
 exports.seed = (knex: Knex) => {

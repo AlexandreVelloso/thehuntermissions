@@ -28,10 +28,7 @@
                     ]
                 },
                 "completed": {
-                    "type": [
-                        "null",
-                        "number"
-                    ]
+                    "type": "boolean"
                 },
                 "weapons": {
                     "$ref": "weapon#/definitions/arrayOfWeapons"

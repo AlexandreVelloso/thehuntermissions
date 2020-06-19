@@ -1,18 +1,18 @@
-import Objective from '../Models/Objective';
-import Mission from '../Models/Mission';
-import Animal from '../Models/Animal';
-import LastMission from '../Models/LastMission';
+import ObjectiveDto from '../Dtos/ObjectiveDto';
+import MissionDto from '../Dtos/MissionDto';
+import LastMissionDto from '../Dtos/LastMissionDto';
+import AnimalDto from '../Dtos/AnimalDto';
 
-export function isAllObjectivesCompleted(objectives: Objective[]) {
+export function isAllObjectivesCompleted(objectives: ObjectiveDto[]): boolean {
     return objectives.every((objective) => objective.completed);
 }
 
-export function getLastMission(missions: Mission[]) {
+export function getLastMission(missions: MissionDto[]): MissionDto | undefined {
     return missions.find((mission) => !isAllObjectivesCompleted(mission.objectives));
 }
 
-export function getAnimalsLastMission(animals: Animal[]) {
-    const animalsLastMissions: LastMission[] = [];
+export function getAnimalsLastMission(animals: AnimalDto[]): LastMissionDto[] {
+    const animalsLastMissions: LastMissionDto[] = [];
 
     animals.forEach((animal) => {
         if (animal.missions.length === 0) {
@@ -28,9 +28,9 @@ export function getAnimalsLastMission(animals: Animal[]) {
         animalsLastMissions.push({
             id: animal.id,
             name: animal.name,
+            mission: lastMission,
             created_at: animal.created_at,
             updated_at: animal.updated_at,
-            mission: lastMission,
         });
     });
 

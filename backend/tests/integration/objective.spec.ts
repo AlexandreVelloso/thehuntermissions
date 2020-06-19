@@ -161,7 +161,7 @@ describe('Objectives Update', () => {
             .set('Authorization', user.accessToken);
 
         const objectiveOld = responseOld.body;
-        expect(objectiveOld.completed).toBe(null);
+        expect(objectiveOld.completed).toBe(false);
 
         const responseUpdate = await request(app)
             .put('/api/objectives/1')
@@ -177,7 +177,7 @@ describe('Objectives Update', () => {
             .set('Authorization', user.accessToken);
 
         const objectiveNew = responseNew.body;
-        expect(objectiveNew.completed).toBe(1);
+        expect(objectiveNew.completed).toBe(true);
     });
 
     it('should give an error when not find objective to update', async () => {
@@ -266,11 +266,11 @@ describe('Test objectives for two users', () => {
 
         const firstObjectiveUser1 = response1.body[0];
         expect(firstObjectiveUser1.user_id).toBe(1);
-        expect(firstObjectiveUser1.completed).toBe(1);
+        expect(firstObjectiveUser1.completed).toBe(true);
 
         const firstObjectiveUser2 = response2.body[0];
         expect(firstObjectiveUser2.user_id).toBe(null);
-        expect(firstObjectiveUser2.completed).toBe(null);
+        expect(firstObjectiveUser2.completed).toBe(false);
     });
 
     it('should have different results for objectives gets', async () => {
@@ -284,10 +284,10 @@ describe('Test objectives for two users', () => {
 
         const firstObjectiveUser1 = response1.body;
         expect(firstObjectiveUser1.user_id).toBe(1);
-        expect(firstObjectiveUser1.completed).toBe(1);
+        expect(firstObjectiveUser1.completed).toBe(true);
 
         const firstObjectiveUser2 = response2.body;
         expect(firstObjectiveUser2.user_id).toBe(null);
-        expect(firstObjectiveUser2.completed).toBe(null);
+        expect(firstObjectiveUser2.completed).toBe(false);
     });
 });

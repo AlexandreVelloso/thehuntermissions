@@ -1,45 +1,41 @@
 import { Response } from 'express';
 
 import WeaponService from '../Services/WeaponService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import WeaponDto from '../Dtos/WeaponDto';
 
-class WeaponController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class WeaponController extends BaseController {
 
-        try {
-            const weapons = await WeaponService.index(user.id);
-            return res.json(weapons);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    private weaponService: WeaponService;
+
+    public constructor(weaponService: WeaponService) {
+        super();
+
+        this.weaponService = weaponService;
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
+        const weapons: WeaponDto[] = await this.weaponService.index(user.id);
 
+        return this.ok(res, weapons);
+    }
+
+    protected async getImpl(req: any, res: Response, user: LoginCredentials) {
         const { id } = req.params;
 
-        try {
-            const weapon = await WeaponService.get(id, user.id);
-            return res.json(weapon);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const weapon: WeaponDto = await this.weaponService.get(id, user.id);
+
+        return this.ok(res, weapon);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
-
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
         const { id } = req.params;
         const { have_weapon: haveWeapon } = req.body;
 
-        try {
-            await WeaponService.update(id, haveWeapon, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        await this.weaponService.update(id, haveWeapon, user.id);
+
+        return this.noContent(res);
     }
 }
 

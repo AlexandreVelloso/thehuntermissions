@@ -1,32 +1,40 @@
 import { Response } from 'express';
 
 import AnimalService from '../Services/AnimalService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
+import { LoginCredentials } from '../Dtos/UserCredentialsDto';
+import AnimalDto from '../Dtos/AnimalDto';
 
-class AnimalController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class AnimalController extends BaseController {
 
-        try {
-            const animals = await AnimalService.index(user.id);
-            return res.json(animals);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+    private animalService: AnimalService;
+
+    public constructor(animalService: AnimalService) {
+        super();
+
+        this.animalService = animalService;
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
+    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const animals: AnimalDto[] = await this.animalService
+            .index(user.id);
 
-        const animalId = String(req.params.id);
-
-        try {
-            const animal = await AnimalService.get(animalId, user.id);
-            return res.json(animal);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(res, animals);
     }
+
+    protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+        const animalId = req.params.id;
+
+        const animal: AnimalDto = await this.animalService
+            .get(animalId, user.id);
+
+        return this.ok(res, animal);
+    }
+
+    protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
 }
 
 export default AnimalController;
