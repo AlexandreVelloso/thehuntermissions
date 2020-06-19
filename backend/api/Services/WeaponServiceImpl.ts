@@ -45,10 +45,10 @@ class WeaponServiceImpl implements WeaponService {
 
         if (userWeapon) {
             await this.userWeaponRepository
-                .update(weapon.id, userId, haveWeapon);
+                .update(weaponId, userId, haveWeapon);
         } else {
             await this.userWeaponRepository
-                .insert(weapon.id, userId, haveWeapon);
+                .insert(weaponId, userId, haveWeapon);
         }
     }
 
