@@ -3,8 +3,17 @@ import BaseController from './BaseController';
 
 class ObjectiveController extends BaseController {
 
+    private objectiveService: ObjectiveService;
+
+    public constructor(objectiveService: ObjectiveService) {
+        super();
+
+        this.objectiveService = objectiveService;
+    }
+
     protected async indexImpl(user: any) {
-        const objectives = await ObjectiveService.index(user.id);
+        const objectives = await this.objectiveService
+            .index(user.id);
 
         return this.ok(objectives);
     }
@@ -12,8 +21,9 @@ class ObjectiveController extends BaseController {
     protected async getImpl(user: any) {
         const { id: objectiveId } = this.req.params;
 
-        const objective = await ObjectiveService.get(objectiveId, user.id);
-        
+        const objective = await this.objectiveService
+            .get(objectiveId, user.id);
+
         return this.ok(objective);
     }
 
@@ -21,7 +31,8 @@ class ObjectiveController extends BaseController {
         const { id } = this.req.params;
         const { completed } = this.req.body;
 
-        await ObjectiveService.update(id, completed, user.id);
+        await this.objectiveService
+            .update(id, completed, user.id);
 
         return this.noContent();
     }
