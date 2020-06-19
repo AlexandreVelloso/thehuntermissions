@@ -13,6 +13,7 @@ class ObjectiveController extends BaseController {
         const { id: objectiveId } = this.req.params;
 
         const objective = await ObjectiveService.get(objectiveId, user.id);
+        
         return this.ok(objective);
     }
 
