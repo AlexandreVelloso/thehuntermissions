@@ -2,6 +2,9 @@ import WeaponService from "./WeaponService";
 import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
 import WeaponRepository from "../Repositories/WeaponRepository";
 import UserWeaponRepository from "../Repositories/UserWeaponRepository";
+import WeaponModel from "../../database/models/WeaponModel";
+import WeaponDto from "../Dtos/WeaponDto";
+import UserWeaponModel from "../../database/models/UserWeaponModel";
 
 class WeaponServiceImpl implements WeaponService {
 
@@ -16,31 +19,33 @@ class WeaponServiceImpl implements WeaponService {
         this.userWeaponRepository = userWeaponRepository;
     }
 
-    public async index(userId: number): Promise<any[]> {
-        return await this.weaponRepository
+    public async index(userId: number): Promise<WeaponDto[]> {
+        const weapons: WeaponModel[] = await this.weaponRepository
             .getWeaponsByUser(userId);
+
+        return WeaponDto.toDto(weapons);
     }
 
-    public async get(weaponId: number, userId: number): Promise<any> {
-        const weapon = await this.weaponRepository
+    public async get(weaponId: number, userId: number): Promise<WeaponDto> {
+        const weapon: WeaponModel = await this.weaponRepository
             .findWeaponByIdAndUser(weaponId, userId);
 
         if (!weapon) {
             throw new EntityNotFoundException('Weapon not found');
         }
 
-        return weapon;
+        return WeaponDto.toDto(weapon);
     }
 
     public async update(weaponId: number, haveWeapon: boolean, userId: number): Promise<void> {
-        const weapon = await this.weaponRepository
+        const weapon: WeaponModel = await this.weaponRepository
             .findById(weaponId);
 
         if (!weapon) {
             throw new EntityNotFoundException('Weapon not found');
         }
 
-        const userWeapon = await this.userWeaponRepository
+        const userWeapon: UserWeaponModel = await this.userWeaponRepository
             .findByWeaponAndUser(weaponId, userId);
 
         if (userWeapon) {

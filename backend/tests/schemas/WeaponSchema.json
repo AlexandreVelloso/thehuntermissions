@@ -28,10 +28,7 @@
                     ]
                 },
                 "have_weapon": {
-                    "type": [
-                        "null",
-                        "number"
-                    ]
+                    "type": "boolean"
                 }
             },
             "required": [
