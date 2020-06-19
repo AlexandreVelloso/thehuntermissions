@@ -1,43 +1,29 @@
-import { Response } from 'express';
-
 import MissionService from '../Services/MissionService';
-import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import BaseController from './BaseController';
 
-class MissionController {
-    static async index(req: any, res: Response) {
-        const { user } = req.auth;
+class MissionController extends BaseController {
+    
+    protected async indexImpl(user: any): Promise<any> {
+        const missions = await MissionService.index(user.id);
 
-        try {
-            const missions = await MissionService.index(user.id);
-            return res.json(missions);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        return this.ok(missions);
     }
 
-    static async get(req: any, res: Response) {
-        const { user } = req.auth;
-        const { id: missionId } = req.params;
+    protected async getImpl(user: any): Promise<any> {
+        const { id: missionId } = this.req.params;
 
-        try {
-            const mission = await MissionService.get(missionId, user.id);
-            return res.json(mission);
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        const mission = await MissionService.get(missionId, user.id);
+
+        return this.ok(mission);
     }
 
-    static async update(req: any, res: Response) {
-        const { user } = req.auth;
-        const { id: missionId } = req.params;
-        const { completed } = req.body;
+    protected async updateImpl(user: any): Promise<any> {
+        const { id: missionId } = this.req.params;
+        const { completed } = this.req.body;
 
-        try {
-            await MissionService.update(missionId, completed, user.id);
-            return res.status(204).end();
-        } catch (err) {
-            return ErrorHandlerMiddleware.handle(err, req, res);
-        }
+        await MissionService.update(missionId, completed, user.id);
+
+        return this.noContent();
     }
 }
 
