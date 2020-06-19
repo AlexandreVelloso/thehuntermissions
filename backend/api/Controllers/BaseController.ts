@@ -13,7 +13,7 @@ abstract class BaseController {
         this.user = req.auth.user;
 
         try {
-            this.indexImpl(this.user);
+            await this.indexImpl(this.user);
         } catch (err) {
             return ErrorHandlerMiddleware.handle(err, this.req, this.res);
         }
@@ -25,7 +25,7 @@ abstract class BaseController {
         this.user = req.auth.user;
 
         try {
-            this.getImpl(this.user);
+            await this.getImpl(this.user);
         } catch (err) {
             return ErrorHandlerMiddleware.handle(err, this.req, this.res);
         }
@@ -37,7 +37,7 @@ abstract class BaseController {
         this.user = req.auth.user;
 
         try {
-            this.updateImpl(this.user);
+            await this.updateImpl(this.user);
         } catch (err) {
             return ErrorHandlerMiddleware.handle(err, this.req, this.res);
         }

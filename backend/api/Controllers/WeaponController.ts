@@ -7,13 +7,13 @@ class WeaponController extends BaseController {
         super();
     }
 
-    protected async indexImpl(user: any): Promise<any> {
+    protected async indexImpl(user: any) {
         const weapons = await WeaponService.index(user.id);
 
         return this.ok(weapons);
     }
 
-    protected async getImpl(user: any): Promise<any> {
+    protected async getImpl(user: any) {
         const { id } = this.req.params;
 
         const weapon = await WeaponService.get(id, user.id);
@@ -21,7 +21,7 @@ class WeaponController extends BaseController {
         return this.ok(weapon);
     }
 
-    protected async updateImpl(user: any): Promise<any> {
+    protected async updateImpl(user: any) {
         const { id } = this.req.params;
         const { have_weapon: haveWeapon } = this.req.body;
 
