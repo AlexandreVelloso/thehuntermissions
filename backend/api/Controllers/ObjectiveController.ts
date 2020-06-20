@@ -4,31 +4,48 @@ import ObjectiveService from '../Services/ObjectiveService';
 import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import ObjectiveDto from '../Dtos/ObjectiveDto';
+import CacheService from '../Services/CacheService';
 
 class ObjectiveController extends BaseController {
 
     private objectiveService: ObjectiveService;
+    private cacheService: CacheService;
 
     public constructor(opts: any) {
         super();
 
         this.objectiveService = opts.objectiveService;
+        this.cacheService = opts.cacheService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
-        const objectives: ObjectiveDto[] = await this.objectiveService
-            .index(user.id);
+        const key = `indexObjective_${user.id}`;
 
-        return this.ok(res, objectives);
+        const result = await this.cacheService
+            .get(key, async () => {
+                const objectives: ObjectiveDto[] = await this.objectiveService
+                    .index(user.id);
+
+                return objectives;
+            });
+
+        return this.ok(res, result);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
         const { id: objectiveId } = req.params;
 
-        const objective: ObjectiveDto = await this.objectiveService
-            .get(objectiveId, user.id);
+        const key = `getObjective_${objectiveId}_${user.id}`;
 
-        return this.ok(res, objective);
+        const result = await this.cacheService
+            .get(key, async () => {
+                const objective: ObjectiveDto = await this.objectiveService
+                    .get(objectiveId, user.id);
+
+                return objective;
+            });
+
+        return this.ok(res, result);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
@@ -37,6 +54,8 @@ class ObjectiveController extends BaseController {
 
         await this.objectiveService
             .update(id, completed, user.id);
+
+        this.cacheService.delByUserId(user.id);
 
         return this.noContent(res);
     }
