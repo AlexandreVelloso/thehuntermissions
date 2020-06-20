@@ -9,10 +9,10 @@ class LastMissionController extends BaseController {
 
     private lastMissionService: LastMissionService;
 
-    public constructor(lastMissionService: LastMissionService) {
+    public constructor(opts: any) {
         super();
 
-        this.lastMissionService = lastMissionService;
+        this.lastMissionService = opts.lastMissionService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {

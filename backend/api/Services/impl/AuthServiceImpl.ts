@@ -14,12 +14,9 @@ class AuthServiceImpl implements AuthService {
     private userRepository: UserRepository;
     private startWeaponsService: StartWeaponsService;
 
-    public constructor(
-        userRepository: UserRepository,
-        startWeaponsService: StartWeaponsService
-    ) {
-        this.userRepository = userRepository;
-        this.startWeaponsService = startWeaponsService;
+    public constructor(opts: any) {
+        this.userRepository = opts.userRepository;
+        this.startWeaponsService = opts.startWeaponsService;
     }
 
     generateToken(user: UserModel) {

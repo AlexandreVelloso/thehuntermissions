@@ -7,8 +7,8 @@ class AuthController {
 
     private authService: AuthService;
 
-    public constructor(authService: AuthService) {
-        this.authService = authService;
+    public constructor(opts: any) {
+        this.authService = opts.authService;
     }
 
     async login(req: Request, res: Response) {

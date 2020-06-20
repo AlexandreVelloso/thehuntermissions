@@ -8,12 +8,9 @@ class ForgotPasswordServiceImpl implements ForgorPasswordService {
     private userRepository: UserRepository;
     private sendResetEmailService: SendResetEmailService;
 
-    public constructor(
-        userRepository: UserRepository,
-        sendResetEmailService: SendResetEmailService,
-    ) {
-        this.userRepository = userRepository;
-        this.sendResetEmailService = sendResetEmailService;
+    public constructor(opts: any) {
+        this.userRepository = opts.userRepository;
+        this.sendResetEmailService = opts.sendResetEmailService;
     }
 
     async sendEmail(userEmail: string): Promise<void> {

@@ -11,12 +11,9 @@ class ObjectiveServiceImpl implements ObjectiveService {
     private objectiveRepository: ObjectiveRepository;
     private userObjectiveRepository: UserObjectiveRepository;
 
-    public constructor(
-        objectiveRepository: ObjectiveRepository,
-        userObjectiveRepository: UserObjectiveRepository,
-    ) {
-        this.objectiveRepository = objectiveRepository;
-        this.userObjectiveRepository = userObjectiveRepository;
+    public constructor(opts: any) {
+        this.objectiveRepository = opts.objectiveRepository;
+        this.userObjectiveRepository = opts.userObjectiveRepository;
     }
 
     async index(userId: number): Promise<ObjectiveDto[]> {

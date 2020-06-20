@@ -9,10 +9,10 @@ class ObjectiveController extends BaseController {
 
     private objectiveService: ObjectiveService;
 
-    public constructor(objectiveService: ObjectiveService) {
+    public constructor(opts: any) {
         super();
 
-        this.objectiveService = objectiveService;
+        this.objectiveService = opts.objectiveService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {

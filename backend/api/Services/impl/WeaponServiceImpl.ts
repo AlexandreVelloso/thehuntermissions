@@ -11,12 +11,9 @@ class WeaponServiceImpl implements WeaponService {
     private weaponRepository: WeaponRepository;
     private userWeaponRepository: UserWeaponRepository;
 
-    public constructor(
-        weaponRepository: WeaponRepository,
-        userWeaponRepository: UserWeaponRepository,
-    ) {
-        this.weaponRepository = weaponRepository;
-        this.userWeaponRepository = userWeaponRepository;
+    public constructor(opts: any) {
+        this.weaponRepository = opts.weaponRepository;
+        this.userWeaponRepository = opts.userWeaponRepository;
     }
 
     public async index(userId: number): Promise<WeaponDto[]> {

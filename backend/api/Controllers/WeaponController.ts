@@ -9,10 +9,10 @@ class WeaponController extends BaseController {
 
     private weaponService: WeaponService;
 
-    public constructor(weaponService: WeaponService) {
+    public constructor(opts: any) {
         super();
 
-        this.weaponService = weaponService;
+        this.weaponService = opts.weaponService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
