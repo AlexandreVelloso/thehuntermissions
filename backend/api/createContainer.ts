@@ -1,4 +1,4 @@
-import { createContainer, asClass, Lifetime, AwilixContainer } from 'awilix';
+import { createContainer, asClass, Lifetime, AwilixContainer, asValue } from 'awilix';
 
 import AnimalController from './Controllers/AnimalController';
 import AnimalServiceImpl from './Services/impl/AnimalServiceImpl';
@@ -23,6 +23,7 @@ import WeaponController from './Controllers/WeaponController';
 import StartWeaponsServiceImpl from './Services/impl/StartWeaponsServiceImpl';
 import UserObjectiveRepositoryImpl from './Repositories/impl/UserObjectiveRepositoryImpl';
 import SendResetEmailServiceImpl from './Services/impl/SendResetEmailServiceImpl';
+import CacheServiceImpl from './Services/impl/CacheServiceImpl';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -41,6 +42,7 @@ function createAppContainer(): AwilixContainer {
 
         animalService: asClass(AnimalServiceImpl, opts),
         authService: asClass(AuthServiceImpl, opts),
+        cacheService: asClass(CacheServiceImpl, opts),
         forgorPasswordService: asClass(ForgotPasswordServiceImpl, opts),
         lastMissionService: asClass(LastMissionServiceImpl, opts),
         missionService: asClass(MissionServiceImpl, opts),
@@ -56,6 +58,8 @@ function createAppContainer(): AwilixContainer {
         userObjectiveRepository: asClass(UserObjectiveRepositoryImpl, opts),
         userWeaponRepository: asClass(UserWeaponRepositoryImpl, opts),
         weaponRepository: asClass(WeaponRepositoryImpl, opts),
+
+        ttlSeconds: asValue(60 * 60),
     });
 
     return container;
