@@ -127,3 +127,5 @@ scripts/updateCsvs/*
 !scripts/updateCsvs/*.sql
 
 build/
+
+.vscode/

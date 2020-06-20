@@ -1,5 +1,5 @@
-import MissionRepository from "./MissionRepository";
-import MissionModel from "../../database/models/MissionModel";
+import MissionRepository from "../MissionRepository";
+import MissionModel from "../../../database/models/MissionModel";
 
 class MissionRepositoryImpl implements MissionRepository {
 

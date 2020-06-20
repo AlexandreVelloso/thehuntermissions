@@ -1,20 +1,22 @@
 import randtoken from 'rand-token';
 
-import UserModel from '../../database/models/UserModel';
-import { sign, verify } from '../Utils/JwtToken';
-import ValidationException from '../Exceptions/ValidationException';
-import UnauthorizedOperationException from '../Exceptions/UnauthorizedOperationException';
-import StartWeaponsService from './StartWeaponsService';
-import AuthService from './AuthService';
-import UserCredentials from '../Dtos/UserCredentialsDto';
-import UserRepository from '../Repositories/UserRepository';
+import UserModel from '../../../database/models/UserModel';
+import { sign, verify } from '../../Utils/JwtToken';
+import ValidationException from '../../Exceptions/ValidationException';
+import UnauthorizedOperationException from '../../Exceptions/UnauthorizedOperationException';
+import StartWeaponsService from '../StartWeaponsService';
+import AuthService from '../AuthService';
+import UserCredentials from '../../Dtos/UserCredentialsDto';
+import UserRepository from '../../Repositories/UserRepository';
 
 class AuthServiceImpl implements AuthService {
 
     private userRepository: UserRepository;
+    private startWeaponsService: StartWeaponsService;
 
-    public constructor(userRepository: UserRepository) {
-        this.userRepository = userRepository;
+    public constructor(opts: any) {
+        this.userRepository = opts.userRepository;
+        this.startWeaponsService = opts.startWeaponsService;
     }
 
     generateToken(user: UserModel) {
@@ -63,7 +65,8 @@ class AuthServiceImpl implements AuthService {
         const user = await this.userRepository
             .insert(email, username, password, refreshToken);
 
-        await StartWeaponsService.addWeapons(user.id);
+        await this.startWeaponsService
+            .addWeapons(user.id);
 
         return this.generateUserResponse(user);
     }

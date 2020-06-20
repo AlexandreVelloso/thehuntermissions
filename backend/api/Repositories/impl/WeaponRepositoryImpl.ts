@@ -1,5 +1,5 @@
-import WeaponRepository from "./WeaponRepository";
-import WeaponModel from "../../database/models/WeaponModel";
+import WeaponRepository from "../WeaponRepository";
+import WeaponModel from "../../../database/models/WeaponModel";
 
 class WeaponRepositoryImpl implements WeaponRepository {
 
@@ -17,6 +17,11 @@ class WeaponRepositoryImpl implements WeaponRepository {
                 this.on('weapons.id', 'user_weapons.weapon_id')
                     .on('user_id', userId);
             });
+    }
+
+    async getWeaponsWhereNameIn(names: string[]): Promise<WeaponModel[]> {
+        return await WeaponModel.query()
+            .whereIn('name', names);
     }
 
     async findWeaponByIdAndUser(weaponId: any, userId: any): Promise<WeaponModel> {

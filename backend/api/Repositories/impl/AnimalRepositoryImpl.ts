@@ -1,5 +1,5 @@
-import AnimalRepository from './AnimalRepository';
-import AnimalModel from '../../database/models/AnimalModel';
+import AnimalRepository from '../AnimalRepository';
+import AnimalModel from '../../../database/models/AnimalModel';
 
 class AnimalRepositoryImpl implements AnimalRepository {
 

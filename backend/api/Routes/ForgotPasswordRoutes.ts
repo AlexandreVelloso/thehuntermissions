@@ -1,17 +1,16 @@
 import { Router } from 'express';
+import { AwilixContainer } from 'awilix';
 
 import ForgotPasswordController from '../Controllers/ForgotPasswordController';
-import ForgotPasswordServiceImpl from '../Services/ForgotPasswordServiceImpl';
-import UserRepositoryImpl from '../Repositories/UserRepositoryImpl';
 
-const router = Router();
+function createForgotPasswordRoutes(container: AwilixContainer): Router {
+    const router = Router();
 
-const forgotPasswordController = new ForgotPasswordController(
-    new ForgotPasswordServiceImpl(
-        new UserRepositoryImpl()
-    )
-);
+    const forgotPasswordController: ForgotPasswordController = container.resolve('forgotPasswordController');
 
-router.post('/forgotPassword', (req, res) => forgotPasswordController.sendEmail(req, res));
+    router.post('/forgotPassword', (req, res) => forgotPasswordController.sendEmail(req, res));
 
-export default router;
+    return router;
+}
+
+export default createForgotPasswordRoutes;

@@ -4,31 +4,48 @@ import AnimalService from '../Services/AnimalService';
 import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import AnimalDto from '../Dtos/AnimalDto';
+import CacheService from '../Services/CacheService';
 
 class AnimalController extends BaseController {
 
     private animalService: AnimalService;
+    private cacheService: CacheService;
 
-    public constructor(animalService: AnimalService) {
+    public constructor(opts: any) {
         super();
 
-        this.animalService = animalService;
+        this.animalService = opts.animalService;
+        this.cacheService = opts.cacheService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animals: AnimalDto[] = await this.animalService
-            .index(user.id);
+        const key = `indexAnimal_${user.id}`;
 
-        return this.ok(res, animals);
+        const result = await this.cacheService
+            .get(key, async () => {
+                const animals: AnimalDto[] = await this.animalService
+                    .index(user.id);
+
+                return animals;
+            });
+
+        return this.ok(res, result);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
         const animalId = req.params.id;
 
-        const animal: AnimalDto = await this.animalService
-            .get(animalId, user.id);
+        const key = `getAnimal_${animalId}_${user.id}`;
 
-        return this.ok(res, animal);
+        const result = await this.cacheService
+            .get(key, async () => {
+                const animal: AnimalDto = await this.animalService
+                    .get(animalId, user.id);
+
+                return animal;
+            });
+
+        return this.ok(res, result);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {

@@ -1,5 +1,5 @@
-import UserModel from "../../database/models/UserModel";
-import UserRepository from "./UserRepository";
+import UserModel from "../../../database/models/UserModel";
+import UserRepository from "../UserRepository";
 
 class UserRepositoryImpl implements UserRepository {
 

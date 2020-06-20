@@ -1,5 +1,5 @@
-import UserObjectiveRepository from "./UserObjectiveRepository";
-import UserObjectiveModel from "../../database/models/UserObjectiveModel";
+import UserObjectiveRepository from "../UserObjectiveRepository";
+import UserObjectiveModel from "../../../database/models/UserObjectiveModel";
 
 class UserObjectiveRepositoryImpl implements UserObjectiveRepository {
 

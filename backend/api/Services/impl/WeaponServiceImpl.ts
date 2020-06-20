@@ -1,22 +1,19 @@
-import WeaponService from "./WeaponService";
-import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
-import WeaponRepository from "../Repositories/WeaponRepository";
-import UserWeaponRepository from "../Repositories/UserWeaponRepository";
-import WeaponModel from "../../database/models/WeaponModel";
-import WeaponDto from "../Dtos/WeaponDto";
-import UserWeaponModel from "../../database/models/UserWeaponModel";
+import WeaponService from "../WeaponService";
+import EntityNotFoundException from "../../Exceptions/EntityNotFoundException";
+import WeaponRepository from "../../Repositories/WeaponRepository";
+import UserWeaponRepository from "../../Repositories/UserWeaponRepository";
+import WeaponModel from "../../../database/models/WeaponModel";
+import WeaponDto from "../../Dtos/WeaponDto";
+import UserWeaponModel from "../../../database/models/UserWeaponModel";
 
 class WeaponServiceImpl implements WeaponService {
 
     private weaponRepository: WeaponRepository;
     private userWeaponRepository: UserWeaponRepository;
 
-    public constructor(
-        weaponRepository: WeaponRepository,
-        userWeaponRepository: UserWeaponRepository,
-    ) {
-        this.weaponRepository = weaponRepository;
-        this.userWeaponRepository = userWeaponRepository;
+    public constructor(opts: any) {
+        this.weaponRepository = opts.weaponRepository;
+        this.userWeaponRepository = opts.userWeaponRepository;
     }
 
     public async index(userId: number): Promise<WeaponDto[]> {

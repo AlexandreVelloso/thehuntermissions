@@ -1,23 +1,19 @@
-import ObjectiveService from "./ObjectiveService";
-import ObjectiveRepository from "../Repositories/ObjectiveRepository";
-import { userHasSomeObjectiveWeapon } from '../Utils/ObjectiveWeapons';
-import ObjectiveModel from "../../database/models/ObjectiveModel";
-import EntityNotFoundException from "../Exceptions/EntityNotFoundException";
-import UserObjectiveRepository from "../Repositories/UserObjectiveRepository";
-import ObjectiveDto from "../Dtos/ObjectiveDto";
-import UserObjectiveModel from "../../database/models/UserObjectiveModel";
+import ObjectiveService from "../ObjectiveService";
+import ObjectiveRepository from "../../Repositories/ObjectiveRepository";
+import ObjectiveModel from "../../../database/models/ObjectiveModel";
+import EntityNotFoundException from "../../Exceptions/EntityNotFoundException";
+import UserObjectiveRepository from "../../Repositories/UserObjectiveRepository";
+import ObjectiveDto from "../../Dtos/ObjectiveDto";
+import UserObjectiveModel from "../../../database/models/UserObjectiveModel";
 
 class ObjectiveServiceImpl implements ObjectiveService {
 
     private objectiveRepository: ObjectiveRepository;
     private userObjectiveRepository: UserObjectiveRepository;
 
-    public constructor(
-        objectiveRepository: ObjectiveRepository,
-        userObjectiveRepository: UserObjectiveRepository,
-    ) {
-        this.objectiveRepository = objectiveRepository;
-        this.userObjectiveRepository = userObjectiveRepository;
+    public constructor(opts: any) {
+        this.objectiveRepository = opts.objectiveRepository;
+        this.userObjectiveRepository = opts.userObjectiveRepository;
     }
 
     async index(userId: number): Promise<ObjectiveDto[]> {
