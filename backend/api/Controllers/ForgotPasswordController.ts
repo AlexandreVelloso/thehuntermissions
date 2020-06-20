@@ -7,8 +7,8 @@ class ForgotPasswordController {
 
     private forgorPasswordService: ForgotPasswordService;
 
-    public constructor(forgorPasswordService: ForgotPasswordService) {
-        this.forgorPasswordService = forgorPasswordService;
+    public constructor(opts: any) {
+        this.forgorPasswordService = opts.forgorPasswordService;
     }
 
     async sendEmail(req: Request, res: Response) {

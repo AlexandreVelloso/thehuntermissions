@@ -7,7 +7,7 @@ import { isAllObjectivesCompleted } from '../../api/Utils/AnimalsMissions';
 import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
-import UserCredentials from '../../api/Models/UserCredentials';
+import UserCredentials from '../../api/Dtos/UserCredentialsDto';
 
 let user: UserCredentials;
 

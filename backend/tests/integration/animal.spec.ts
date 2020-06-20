@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { matchersWithOptions } from 'jest-json-schema';
 
-import UserCredentials from "../../api/Models/UserCredentials";
+import UserCredentials from "../../api/Dtos/UserCredentialsDto";
 import app from '../../api/app';
 import connection from '../../database/connection';
 import errorSchema from '../schemas/ErrorSchema.json';

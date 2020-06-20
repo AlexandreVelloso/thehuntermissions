@@ -1,21 +1,17 @@
-import express from 'express';
+import { Router } from 'express';
+import { AwilixContainer } from 'awilix';
 
 import LastMissionController from '../Controllers/LastMissionController';
-import LastMissionServiceImpl from '../Services/impl/LastMissionServiceImpl';
-import AnimalServiceImpl from '../Services/impl/AnimalServiceImpl';
-import AnimalRepositoryImpl from '../Repositories/impl/AnimalRepositoryImpl';
 
-const router = express.Router();
+function createLastMissionRoutes(container: AwilixContainer): Router {
+    const router = Router();
 
-const lastMissionController = new LastMissionController(
-    new LastMissionServiceImpl(
-        new AnimalServiceImpl(
-            new AnimalRepositoryImpl()
-        ),
-    )
-);
+    const lastMissionController: LastMissionController = container.resolve('lastMissionController');
 
-router.get('/lastMissions', (req, res) => lastMissionController.index(req, res));
-router.get('/lastMissions/:id', (req, res) => lastMissionController.get(req, res));
+    router.get('/lastMissions', (req, res) => lastMissionController.index(req, res));
+    router.get('/lastMissions/:id', (req, res) => lastMissionController.get(req, res));
 
-export default router;
+    return router;
+}
+
+export default createLastMissionRoutes;

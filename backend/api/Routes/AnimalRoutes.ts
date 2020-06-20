@@ -1,18 +1,17 @@
 import { Router } from 'express';
+import { AwilixContainer } from 'awilix';
 
 import AnimalController from '../Controllers/AnimalController';
-import AnimalServiceImpl from '../Services/impl/AnimalServiceImpl';
-import AnimalRepositoryImpl from '../Repositories/impl/AnimalRepositoryImpl';
 
-const router = Router();
+function createAnimalRoutes(container: AwilixContainer): Router {
+    const router = Router();
 
-const animalController = new AnimalController(
-    new AnimalServiceImpl(
-        new AnimalRepositoryImpl()
-    )
-);
+    const animalController: AnimalController = container.resolve('animalController');
 
-router.get('/animals', (req, res) => animalController.index(req, res));
-router.get('/animals/:id', (req, res) => animalController.get(req, res));
+    router.get('/animals', (req, res) => animalController.index(req, res));
+    router.get('/animals/:id', (req, res) => animalController.get(req, res));
 
-export default router;
+    return router;
+}
+
+export default createAnimalRoutes;

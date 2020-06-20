@@ -9,10 +9,10 @@ class AnimalController extends BaseController {
 
     private animalService: AnimalService;
 
-    public constructor(animalService: AnimalService) {
+    public constructor(opts: any) {
         super();
 
-        this.animalService = animalService;
+        this.animalService = opts.animalService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {

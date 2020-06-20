@@ -8,8 +8,8 @@ class LastMissionServiceImpl implements LastMissionService {
 
     private animalService: AnimalService;
 
-    public constructor(animalService: AnimalService) {
-        this.animalService = animalService;
+    public constructor(opts: any) {
+        this.animalService = opts.animalService;
     }
 
     async index(userId: number): Promise<LastMissionDto[]> {

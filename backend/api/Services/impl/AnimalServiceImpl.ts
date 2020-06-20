@@ -8,8 +8,8 @@ class AnimalServiceImpl implements AnimalService {
 
     private animalRepository: AnimalRepository;
 
-    public constructor(animalRepository: AnimalRepository) {
-        this.animalRepository = animalRepository;
+    public constructor(opts: any) {
+        this.animalRepository = opts.animalRepository;
     }
 
     async index(userId: number): Promise<AnimalDto[]> {

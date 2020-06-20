@@ -13,14 +13,10 @@ class MissionServiceImpl implements MissionService {
     private objectiveRepository: ObjectiveRepository;
     private userObjectiveRepository: UserObjectiveRepository;
 
-    public constructor(
-        missionRepository: MissionRepository,
-        objectiveRepository: ObjectiveRepository,
-        userObjectiveRepository: UserObjectiveRepository,
-    ) {
-        this.missionRepository = missionRepository;
-        this.objectiveRepository = objectiveRepository;
-        this.userObjectiveRepository = userObjectiveRepository;
+    public constructor(opts: any) {
+        this.missionRepository = opts.missionRepository;
+        this.objectiveRepository = opts.objectiveRepository;
+        this.userObjectiveRepository = opts.userObjectiveRepository;
     }
 
     async index(userId: any): Promise<UserModel[]> {

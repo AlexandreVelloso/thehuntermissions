@@ -7,7 +7,7 @@ import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
 import lastMissionSchema from '../schemas/LastMissionSchema.json';
-import UserCredentials from '../../api/Models/UserCredentials';
+import UserCredentials from '../../api/Dtos/UserCredentialsDto';
 
 function objectivesHasDuplicates(objectives: any) {
     for (let i = 0; i < objectives.length - 1; i += 1) {

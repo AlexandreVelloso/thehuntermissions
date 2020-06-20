@@ -8,10 +8,10 @@ class MissionController extends BaseController {
 
     private missionService: MissionService;
 
-    public constructor(missionService: MissionService) {
+    public constructor(opts: any) {
         super();
 
-        this.missionService = missionService;
+        this.missionService = opts.missionService;
     }
 
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
