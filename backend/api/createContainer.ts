@@ -30,6 +30,8 @@ function createAppContainer(): AwilixContainer {
     const opts = {
         lifetime: Lifetime.SINGLETON
     };
+    const HOUR = 60 * 60;
+    const DAY = HOUR * 24;
 
     container.register({
         animalController: asClass(AnimalController, opts),
@@ -59,7 +61,7 @@ function createAppContainer(): AwilixContainer {
         userWeaponRepository: asClass(UserWeaponRepositoryImpl, opts),
         weaponRepository: asClass(WeaponRepositoryImpl, opts),
 
-        ttlSeconds: asValue(60 * 60),
+        ttlSeconds: asValue(DAY * 7),
     });
 
     return container;
