@@ -24,6 +24,10 @@ import StartWeaponsServiceImpl from './Services/impl/StartWeaponsServiceImpl';
 import UserObjectiveRepositoryImpl from './Repositories/impl/UserObjectiveRepositoryImpl';
 import SendResetEmailServiceImpl from './Services/impl/SendResetEmailServiceImpl';
 import CacheServiceImpl from './Services/impl/CacheServiceImpl';
+import GetValidator from './Validators/GetValidator';
+import UpdateMissionValidator from './Validators/UpdateMissionValidator';
+import UpdateObjectiveValidator from './Validators/UpdateObjectiveValidator';
+import UpdateWeaponValidator from './Validators/UpdateWeaponValidator';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -60,6 +64,11 @@ function createAppContainer(): AwilixContainer {
         userObjectiveRepository: asClass(UserObjectiveRepositoryImpl, opts),
         userWeaponRepository: asClass(UserWeaponRepositoryImpl, opts),
         weaponRepository: asClass(WeaponRepositoryImpl, opts),
+
+        getValidator: asClass(GetValidator, opts),
+        updateMissionsValidator: asClass(UpdateMissionValidator, opts),
+        updateObjectiveValidator: asClass(UpdateObjectiveValidator, opts),
+        updateWeaponValidator: asClass(UpdateWeaponValidator, opts),
 
         ttlSeconds: asValue(DAY * 7),
     });

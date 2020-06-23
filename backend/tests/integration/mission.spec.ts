@@ -112,13 +112,22 @@ describe('Missions Get', () => {
         expect(objectives[0].completed).toBe(false);
     });
 
-    it('should give error when not find mission', async () => {
+    it('should give 404 error when not find mission', async () => {
         const response = await request(app)
-            .get('/api/missions/0')
+            .get('/api/missions/99999')
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Mission not found');
+    });
+
+    it('should give 400 error mission id is not valid', async () => {
+        const response = await request(app)
+            .get('/api/missions/0')
+            .set('Authorization', user.accessToken);
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
     });
 
     it('should validate JWT token', async () => {
@@ -169,7 +178,7 @@ describe('Missions Update', () => {
 
     it('should give an error when not find mission to update', async () => {
         const response = await request(app)
-            .put('/api/missions/0')
+            .put('/api/missions/999999')
             .set('Authorization', user.accessToken)
             .send({
                 completed: true,
@@ -184,6 +193,41 @@ describe('Missions Update', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Mission not found');
+    });
+
+    it('should give an 400 error when missionId to update is not valid', async () => {
+        const response = await request(app)
+            .put('/api/missions/0')
+            .set('Authorization', user.accessToken)
+            .send({
+                completed: true,
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"missionId\" must be larger than or equal to 1');
+    });
+
+    it('should give an 400 error when completed is not present', async () => {
+        const response = await request(app)
+            .put('/api/missions/1')
+            .set('Authorization', user.accessToken);
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"completed\" is required');
     });
 
     it('should validate JWT token', async () => {

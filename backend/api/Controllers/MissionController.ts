@@ -5,20 +5,25 @@ import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import CacheService from '../Services/CacheService';
 import MissionDto from '../Dtos/MissionDto';
+import BaseValidator from '../Validators/BaseValidator';
 
 class MissionController extends BaseController {
 
     private missionService: MissionService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
+    private updateMissionsValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.missionService = opts.missionService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
+        this.updateMissionsValidator = opts.updateMissionsValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+    protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexMission_${user.id}`;
 
         const missions: MissionDto[] = await this.cacheService
@@ -33,7 +38,8 @@ class MissionController extends BaseController {
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const { id: missionId } = req.params;
+        const { id: missionId } = this.getValidator
+            .validate(req);
 
         const key = `getMission_${missionId}_${user.id}`;
 
@@ -49,8 +55,9 @@ class MissionController extends BaseController {
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const { id: missionId } = req.params;
-        const { completed } = req.body;
+
+        const { missionId, completed } = this.updateMissionsValidator
+            .validate(req);
 
         await this.missionService
             .update(missionId, completed, user.id);

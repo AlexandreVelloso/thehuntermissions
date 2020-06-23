@@ -5,20 +5,25 @@ import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import WeaponDto from '../Dtos/WeaponDto';
 import CacheService from '../Services/CacheService';
+import BaseValidator from '../Validators/BaseValidator';
 
 class WeaponController extends BaseController {
 
     private weaponService: WeaponService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
+    private updateWeaponValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.weaponService = opts.weaponService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
+        this.updateWeaponValidator = opts.updateWeaponValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
+    protected async indexImpl(res: Response, user: LoginCredentials) {
         const key = `indexWeapon_${user.id}`;
 
         const weapons: WeaponDto[] = await this.cacheService
@@ -33,7 +38,8 @@ class WeaponController extends BaseController {
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
-        const { id: weaponId } = req.params;
+        const { id: weaponId } = this.getValidator
+            .validate(req);
 
         const key = `getWeapon_${weaponId}_${user.id}`;
 
@@ -49,8 +55,8 @@ class WeaponController extends BaseController {
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
-        const { id: weaponId } = req.params;
-        const { have_weapon: haveWeapon } = req.body;
+        const { weaponId, haveWeapon } = this.updateWeaponValidator
+            .validate(req);
 
         await this.weaponService
             .update(weaponId, haveWeapon, user.id);

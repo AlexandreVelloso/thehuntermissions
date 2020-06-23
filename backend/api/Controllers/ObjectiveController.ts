@@ -5,20 +5,25 @@ import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import ObjectiveDto from '../Dtos/ObjectiveDto';
 import CacheService from '../Services/CacheService';
+import BaseValidator from '../Validators/BaseValidator';
 
 class ObjectiveController extends BaseController {
 
     private objectiveService: ObjectiveService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
+    private updateObjectiveValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.objectiveService = opts.objectiveService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
+        this.updateObjectiveValidator = opts.updateObjectiveValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
+    protected async indexImpl(res: Response, user: LoginCredentials) {
         const key = `indexObjective_${user.id}`;
 
         const objectives: ObjectiveDto[] = await this.cacheService
@@ -33,7 +38,8 @@ class ObjectiveController extends BaseController {
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
-        const { id: objectiveId } = req.params;
+        const { id: objectiveId } = this.getValidator
+            .validate(req);
 
         const key = `getObjective_${objectiveId}_${user.id}`;
 
@@ -49,11 +55,11 @@ class ObjectiveController extends BaseController {
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials) {
-        const { id } = req.params;
-        const { completed } = req.body;
+        const { objectiveId, completed } = this.updateObjectiveValidator
+            .validate(req);
 
         await this.objectiveService
-            .update(id, completed, user.id);
+            .update(objectiveId, completed, user.id);
 
         this.cacheService.delByUserId(user.id);
 
