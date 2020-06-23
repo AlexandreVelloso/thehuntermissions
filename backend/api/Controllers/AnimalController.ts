@@ -5,20 +5,23 @@ import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import AnimalDto from '../Dtos/AnimalDto';
 import CacheService from '../Services/CacheService';
+import BaseValidator from '../Validators/BaseValidator';
 
 class AnimalController extends BaseController {
 
     private animalService: AnimalService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.animalService = opts.animalService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+    protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexAnimal_${user.id}`;
 
         const animals: AnimalDto[] = await this.cacheService
@@ -33,7 +36,8 @@ class AnimalController extends BaseController {
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const animalId = req.params.id;
+        const { id: animalId } = this.getValidator
+            .validate(req);
 
         const key = `getAnimal_${animalId}_${user.id}`;
 
@@ -48,7 +52,7 @@ class AnimalController extends BaseController {
         return this.ok(res, animal);
     }
 
-    protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
+    protected async updateImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
         throw new Error("Method not implemented.");
     }
 

@@ -109,9 +109,18 @@ describe('Weapons Get', () => {
         expect(response.body).toMatchSchema(testSchema);
     });
 
-    it('should give error when not find weapon', async () => {
+    it('should give 400 error when not find weapon', async () => {
         const response = await request(app)
             .get('/api/weapons/0')
+            .set('Authorization', user.accessToken);
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
+    });
+
+    it('should give error when not find weapon', async () => {
+        const response = await request(app)
+            .get('/api/weapons/999999')
             .set('Authorization', user.accessToken);
 
         expect(response.status).toBe(404);
@@ -182,7 +191,7 @@ describe('Weapons Update', () => {
 
     it('should give an error when not find weapon to update', async () => {
         const response = await request(app)
-            .put('/api/weapons/0')
+            .put('/api/weapons/99999')
             .set('Authorization', user.accessToken)
             .send({
                 have_weapon: true,
@@ -197,6 +206,41 @@ describe('Weapons Update', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Weapon not found');
+    });
+
+    it('should give an 400 error when id to update is not valid', async () => {
+        const response = await request(app)
+            .put('/api/weapons/0')
+            .set('Authorization', user.accessToken)
+            .send({
+                have_weapon: true,
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"weaponId\" must be larger than or equal to 1');
+    });
+
+    it('should give an 400 error when have_weapon is not present', async () => {
+        const response = await request(app)
+            .put('/api/weapons/1')
+            .set('Authorization', user.accessToken);
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"haveWeapon\" is required');
     });
 
     it('should validate JWT token', async () => {

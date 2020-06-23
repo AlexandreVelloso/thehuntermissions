@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/AlexandreVelloso/thehuntermissions#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@types/app-root-path": "^1.2.4",
     "@types/compression": "^1.7.0",
     "@types/cors": "^2.8.6",

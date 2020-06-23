@@ -5,20 +5,23 @@ import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import LastMissionDto from '../Dtos/LastMissionDto';
 import CacheService from '../Services/CacheService';
+import BaseValidator from '../Validators/BaseValidator';
 
 class LastMissionController extends BaseController {
 
     private lastMissionService: LastMissionService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.lastMissionService = opts.lastMissionService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+    protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexLastMission_${user.id}`;
 
         const lastMissions: LastMissionDto[] = await this.cacheService
@@ -33,7 +36,8 @@ class LastMissionController extends BaseController {
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const { id: animalId } = req.params;
+        const { id: animalId } = this.getValidator
+            .validate(req);
 
         const key = `getLastMission_${animalId}_${user.id}`;
 

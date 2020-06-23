@@ -5,17 +5,17 @@ import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 
 abstract class BaseController {
     public async index(req: any, res: Response) {
-        const user = req.auth.user;
+        const user: LoginCredentials = req.auth.user;
 
         try {
-            await this.indexImpl(req, res, user);
+            await this.indexImpl(res, user);
         } catch (err) {
             return ErrorHandlerMiddleware.handle(err, req, res);
         }
     }
 
     public async get(req: any, res: Response) {
-        const user = req.auth.user;
+        const user: LoginCredentials = req.auth.user;
 
         try {
             await this.getImpl(req, res, user);
@@ -25,7 +25,7 @@ abstract class BaseController {
     }
 
     public async update(req: any, res: Response) {
-        const user = req.auth.user;
+        const user: LoginCredentials = req.auth.user;
 
         try {
             await this.updateImpl(req, res, user);
@@ -34,7 +34,7 @@ abstract class BaseController {
         }
     }
 
-    protected abstract async indexImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
+    protected abstract async indexImpl(res: Response, user: LoginCredentials): Promise<void | any>;
     protected abstract async getImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
     protected abstract async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<void | any>;
 
