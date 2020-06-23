@@ -4,6 +4,7 @@ import MissionService from '../Services/MissionService';
 import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import CacheService from '../Services/CacheService';
+import MissionDto from '../Dtos/MissionDto';
 
 class MissionController extends BaseController {
 
@@ -20,15 +21,15 @@ class MissionController extends BaseController {
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexMission_${user.id}`;
 
-        const result = await this.cacheService
+        const missions: MissionDto[] = await this.cacheService
             .get(key, async () => {
-                const missions = await this.missionService
+                const missions: MissionDto[] = await this.missionService
                     .index(user.id);
 
                 return missions;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, missions);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -36,15 +37,15 @@ class MissionController extends BaseController {
 
         const key = `getMission_${missionId}_${user.id}`;
 
-        const result = await this.cacheService
+        const mission: MissionDto = await this.cacheService
             .get(key, async () => {
-                const mission = await this.missionService
+                const mission: MissionDto = await this.missionService
                     .get(missionId, user.id);
 
                 return mission;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, mission);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {

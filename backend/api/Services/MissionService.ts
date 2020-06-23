@@ -1,10 +1,10 @@
-import UserModel from "../../database/models/UserModel";
+import MissionDto from "../Dtos/MissionDto";
 
 interface MissionService {
 
-    index(userId: number): Promise<UserModel[]>;
+    index(userId: number): Promise<MissionDto[]>;
 
-    get(missionId: number, userId: number): Promise<UserModel>;
+    get(missionId: number, userId: number): Promise<MissionDto>;
 
     update(missionId: number, missionCompleted: boolean, userId: number): Promise<void>;
 
