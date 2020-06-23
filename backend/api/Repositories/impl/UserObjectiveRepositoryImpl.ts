@@ -1,5 +1,6 @@
 import UserObjectiveRepository from "../UserObjectiveRepository";
 import UserObjectiveModel from "../../../database/models/UserObjectiveModel";
+import { Transaction } from "objection";
 
 class UserObjectiveRepositoryImpl implements UserObjectiveRepository {
 
@@ -17,21 +18,25 @@ class UserObjectiveRepositoryImpl implements UserObjectiveRepository {
     }
 
     async update(objectiveId: number, userId: number, isObjectiveCompleted: boolean): Promise<void> {
-        await UserObjectiveModel.query()
-            .where('objective_id', objectiveId)
-            .where('user_id', userId)
-            .patch({
-                completed: isObjectiveCompleted,
-            });
+        await UserObjectiveModel.transaction(async (trx: Transaction) => {
+            await UserObjectiveModel.query(trx)
+                .where('objective_id', objectiveId)
+                .where('user_id', userId)
+                .patch({
+                    completed: isObjectiveCompleted,
+                });
+        });
     }
 
     async insert(objectiveId: number, userId: number, isObjectiveCompleted: boolean): Promise<void> {
-        await UserObjectiveModel.query()
-            .insert({
-                objective_id: objectiveId,
-                user_id: userId,
-                completed: isObjectiveCompleted,
-            });
+        await UserObjectiveModel.transaction(async (trx: Transaction) => {
+            await UserObjectiveModel.query(trx)
+                .insert({
+                    objective_id: objectiveId,
+                    user_id: userId,
+                    completed: isObjectiveCompleted,
+                });
+        });
     }
 
     async getObjectivesByUserWhereObjectivesIn(userId: number, objectivesIds: number[]): Promise<UserObjectiveModel[]> {
@@ -41,14 +46,18 @@ class UserObjectiveRepositoryImpl implements UserObjectiveRepository {
     }
 
     async updateMany(objectivesIds: number[], completed: boolean): Promise<void> {
-        await UserObjectiveModel.query()
-            .where('objective_id', 'in', objectivesIds)
-            .update({ completed });
+        await UserObjectiveModel.transaction(async (trx: Transaction) => {
+            await UserObjectiveModel.query(trx)
+                .where('objective_id', 'in', objectivesIds)
+                .update({ completed });
+        });
     }
 
     async insertMany(userObjectives: any[]): Promise<void> {
-        await UserObjectiveModel.query()
-            .insertGraph(userObjectives);
+        await UserObjectiveModel.transaction(async (trx: Transaction) => {
+            await UserObjectiveModel.query(trx)
+                .insertGraph(userObjectives);
+        });
     }
 
 }
