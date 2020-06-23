@@ -21,7 +21,7 @@ class ObjectiveController extends BaseController {
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
         const key = `indexObjective_${user.id}`;
 
-        const result = await this.cacheService
+        const objectives: ObjectiveDto[] = await this.cacheService
             .get(key, async () => {
                 const objectives: ObjectiveDto[] = await this.objectiveService
                     .index(user.id);
@@ -29,7 +29,7 @@ class ObjectiveController extends BaseController {
                 return objectives;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, objectives);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
@@ -37,7 +37,7 @@ class ObjectiveController extends BaseController {
 
         const key = `getObjective_${objectiveId}_${user.id}`;
 
-        const result = await this.cacheService
+        const objective: ObjectiveDto = await this.cacheService
             .get(key, async () => {
                 const objective: ObjectiveDto = await this.objectiveService
                     .get(objectiveId, user.id);
@@ -45,7 +45,7 @@ class ObjectiveController extends BaseController {
                 return objective;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, objective);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials) {

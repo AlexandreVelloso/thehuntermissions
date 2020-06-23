@@ -21,7 +21,7 @@ class LastMissionController extends BaseController {
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexLastMission_${user.id}`;
 
-        const result = await this.cacheService
+        const lastMissions: LastMissionDto[] = await this.cacheService
             .get(key, async () => {
                 const animals: LastMissionDto[] = await this.lastMissionService
                     .index(user.id);
@@ -29,7 +29,7 @@ class LastMissionController extends BaseController {
                 return animals;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, lastMissions);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -37,7 +37,7 @@ class LastMissionController extends BaseController {
 
         const key = `getLastMission_${animalId}_${user.id}`;
 
-        const result = await this.cacheService
+        const lastMission: LastMissionDto = await this.cacheService
             .get(key, async () => {
                 const animal: LastMissionDto = await this.lastMissionService
                     .get(animalId, user.id);
@@ -45,7 +45,7 @@ class LastMissionController extends BaseController {
                 return animal;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, lastMission);
     }
 
     protected updateImpl(_req: any, _res: Response, _user: LoginCredentials): Promise<any> {

@@ -21,7 +21,7 @@ class AnimalController extends BaseController {
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexAnimal_${user.id}`;
 
-        const result = await this.cacheService
+        const animals: AnimalDto[] = await this.cacheService
             .get(key, async () => {
                 const animals: AnimalDto[] = await this.animalService
                     .index(user.id);
@@ -29,7 +29,7 @@ class AnimalController extends BaseController {
                 return animals;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, animals);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -37,7 +37,7 @@ class AnimalController extends BaseController {
 
         const key = `getAnimal_${animalId}_${user.id}`;
 
-        const result = await this.cacheService
+        const animal: AnimalDto = await this.cacheService
             .get(key, async () => {
                 const animal: AnimalDto = await this.animalService
                     .get(animalId, user.id);
@@ -45,7 +45,7 @@ class AnimalController extends BaseController {
                 return animal;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, animal);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {

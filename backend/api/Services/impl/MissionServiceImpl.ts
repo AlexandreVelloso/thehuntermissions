@@ -1,6 +1,5 @@
 import EntityNotFoundException from '../../Exceptions/EntityNotFoundException';
 import MissionService from '../MissionService';
-import UserModel from '../../../database/models/UserModel';
 import MissionRepository from '../../Repositories/MissionRepository';
 import ObjectiveRepository from '../../Repositories/ObjectiveRepository';
 import UserObjectiveRepository from '../../Repositories/UserObjectiveRepository';
@@ -19,7 +18,7 @@ class MissionServiceImpl implements MissionService {
         this.userObjectiveRepository = opts.userObjectiveRepository;
     }
 
-    async index(userId: any): Promise<UserModel[]> {
+    async index(userId: any): Promise<MissionDto[]> {
         const missions: MissionModel[] = await this.missionRepository
             .getMissionsByUser(userId);
 
@@ -28,7 +27,7 @@ class MissionServiceImpl implements MissionService {
         return missionsDtos;
     }
 
-    async get(missionId: any, userId: any): Promise<UserModel> {
+    async get(missionId: any, userId: any): Promise<MissionDto> {
         const mission: MissionModel = await this.missionRepository
             .findMissionByUser(missionId, userId);
 

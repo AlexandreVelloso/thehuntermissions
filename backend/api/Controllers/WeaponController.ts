@@ -21,7 +21,7 @@ class WeaponController extends BaseController {
     protected async indexImpl(_req: any, res: Response, user: LoginCredentials) {
         const key = `indexWeapon_${user.id}`;
 
-        const result = await this.cacheService
+        const weapons: WeaponDto[] = await this.cacheService
             .get(key, async () => {
                 const weapons: WeaponDto[] = await this.weaponService
                     .index(user.id);
@@ -29,7 +29,7 @@ class WeaponController extends BaseController {
                 return weapons;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, weapons);
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
@@ -37,7 +37,7 @@ class WeaponController extends BaseController {
 
         const key = `getWeapon_${weaponId}_${user.id}`;
 
-        const result = await this.cacheService
+        const weapon: WeaponDto = await this.cacheService
             .get(key, async () => {
                 const weapon: WeaponDto = await this.weaponService
                     .get(weaponId, user.id);
@@ -45,7 +45,7 @@ class WeaponController extends BaseController {
                 return weapon;
             });
 
-        return this.ok(res, result);
+        return this.ok(res, weapon);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials) {

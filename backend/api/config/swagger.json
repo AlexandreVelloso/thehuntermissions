@@ -135,7 +135,7 @@
                 }
             }
         },
-        "refreshToken": {
+        "/refresh": {
             "post": {
                 "tags": [
                     "Authentication"
@@ -577,6 +577,91 @@
                 ]
             }
         },
+        "/weapons/{weaponId}": {
+            "get": {
+                "tags": [
+                    "Weapon"
+                ],
+                "parameters": [
+                    {
+                        "name": "weaponId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the weapon to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Find a weapon",
+                "operationId": "findWeapon",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Weapon"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Weapon"
+                ],
+                "parameters": [
+                    {
+                        "name": "weaponId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the weapon to update",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "have_weapon",
+                        "in": "body",
+                        "required": true,
+                        "description": "Boolean to describe if the weapon was bought or not",
+                        "type": "object",
+                        "properties": {
+                            "have_weapon": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update a Weapon",
+                "operationId": "updateWeapon",
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
         "/objectives": {
             "get": {
                 "tags": [
@@ -668,7 +753,7 @@
                         "type": "object",
                         "properties": {
                             "completed": {
-                                "type": "integer"
+                                "type": "boolean"
                             }
                         }
                     }
@@ -717,6 +802,9 @@
                 "name": {
                     "type": "string"
                 },
+                "mission": {
+                    "$ref": "#/definitions/Mission"
+                },
                 "created_at": {
                     "type": "string",
                     "format": "date-time"
@@ -748,6 +836,9 @@
                     "type": "integer",
                     "format": "int32"
                 },
+                "user_has_weapon": {
+                    "type": "boolean"
+                },
                 "created_at": {
                     "type": "string",
                     "format": "date-time"
@@ -778,6 +869,19 @@
                     "type": "integer",
                     "format": "int32"
                 },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "completed": {
+                    "type": "boolean"
+                },
+                "user_has_weapon": {
+                    "type": "boolean"
+                },
+                "weapons": {
+                    "$ref": "#/definitions/Weapon"
+                },
                 "created_at": {
                     "type": "string",
                     "format": "date-time"
@@ -785,20 +889,6 @@
                 "updated_at": {
                     "type": "string",
                     "format": "date-time"
-                },
-                "user_id": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "completed": {
-                    "type": "integer"
-                },
-                "weapon_id": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "have_weapon": {
-                    "type": "boolean"
                 }
             }
         },
@@ -816,6 +906,13 @@
                     "type": "integer",
                     "format": "int32"
                 },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "have_weapon": {
+                    "type": "boolean"
+                },
                 "created_at": {
                     "type": "string",
                     "format": "date-time"
@@ -823,12 +920,6 @@
                 "updated_at": {
                     "type": "string",
                     "format": "date-time"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "have_weapon": {
-                    "type": "integer"
                 }
             }
         },
@@ -843,8 +934,12 @@
         "LastMission": {
             "type": "object",
             "properties": {
-                "animal": {
-                    "$ref": "#/definitions/Animal"
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "mission": {
                     "$ref": "#/definitions/Mission"
@@ -857,6 +952,10 @@
                 "user": {
                     "type": "object",
                     "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
                         "username": {
                             "type": "string"
                         },

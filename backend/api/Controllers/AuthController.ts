@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import AuthService from '../Services/AuthService';
 import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
+import UserCredentials from '../Dtos/UserCredentialsDto';
 
 class AuthController {
 
@@ -15,7 +16,7 @@ class AuthController {
         const { email, password } = req.body;
 
         try {
-            const userCredentials = await this.authService
+            const userCredentials: UserCredentials = await this.authService
                 .login(email, password);
             return res.json(userCredentials);
         } catch (err) {
@@ -27,7 +28,7 @@ class AuthController {
         const { username, email, password } = req.body;
 
         try {
-            const userCredentials = await this.authService
+            const userCredentials: UserCredentials = await this.authService
                 .register(username, email, password);
             return res.json(userCredentials);
         } catch (err) {
@@ -51,7 +52,7 @@ class AuthController {
         const { refreshToken } = req.body;
 
         try {
-            const userCredentials = await this.authService
+            const userCredentials: UserCredentials = await this.authService
                 .refreshToken(refreshToken);
             return res.json(userCredentials);
         } catch (err) {
