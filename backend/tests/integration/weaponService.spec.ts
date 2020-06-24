@@ -1,9 +1,9 @@
 import WeaponService from '../../api/Services/WeaponService';
 import WeaponServiceImpl from '../../api/Services/impl/WeaponServiceImpl';
+import EntityNotFoundException from '../../api/Exceptions/EntityNotFoundException';
 
 import MockWeaponRepository from '../__mocks__/Repositories/MockWeaponRepository';
 import MockUserWeaponRepository from '../__mocks__/Repositories/MockUserWeaponRepository';
-import EntityNotFoundException from '../../api/Exceptions/EntityNotFoundException';
 
 let weaponService: WeaponService;
 
