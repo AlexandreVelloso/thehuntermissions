@@ -56,21 +56,6 @@ describe('Objectives Index', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
     });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/objectives');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
-    });
 });
 
 describe('Objectives Get', () => {
@@ -125,21 +110,6 @@ describe('Objectives Get', () => {
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Objective not found');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/objectives');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
     });
 });
 
@@ -241,21 +211,6 @@ describe('Objectives Update', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Objective not found');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .put('/api/objectives');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
     });
 });
 

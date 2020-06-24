@@ -69,21 +69,6 @@ describe('Missions Index', () => {
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(false);
     });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/missions');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
-    });
 });
 
 describe('Missions Get', () => {
@@ -128,21 +113,6 @@ describe('Missions Get', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/missions');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
     });
 });
 
@@ -228,21 +198,6 @@ describe('Missions Update', () => {
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('\"completed\" is required');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .put('/api/missions');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
     });
 });
 
