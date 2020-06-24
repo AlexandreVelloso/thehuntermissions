@@ -3,7 +3,7 @@ import WeaponRepository from "../../../api/Repositories/WeaponRepository";
 class MockWeaponRepository implements WeaponRepository {
 
     public findById(weaponId: number): any {
-        if (weaponId !== 1 && weaponId !== 2) {
+        if (weaponId <= 0 || weaponId > 1000) {
             return undefined;
         }
 
@@ -60,7 +60,7 @@ class MockWeaponRepository implements WeaponRepository {
     }
 
     public findWeaponByIdAndUser(weaponId: number, userId: number): any {
-        if (userId !== 1 || weaponId !== 1) {
+        if (weaponId <= 0 || weaponId > 1000) {
             return undefined;
         }
 

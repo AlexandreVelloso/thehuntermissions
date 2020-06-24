@@ -3,7 +3,7 @@ import UserWeaponRepository from "../../../api/Repositories/UserWeaponRepository
 class MockUserWeaponRepository implements UserWeaponRepository {
 
     findByWeaponAndUser(weaponId: number, userId: number): any {
-        if (weaponId !== 1) {
+        if (weaponId <= 0 || weaponId > 50) {
             return undefined;
         }
 

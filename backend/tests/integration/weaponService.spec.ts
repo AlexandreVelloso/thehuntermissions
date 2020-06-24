@@ -83,7 +83,7 @@ describe('Weapons Service - Update', () => {
     });
 
     it('should update a weapon when user does not have weapon', async () => {
-        const weaponId = 2;
+        const weaponId = 100;
         const haveWeapon = true;
         const userId = 1;
 
