@@ -2,7 +2,7 @@ import UserWeaponRepository from "../../../api/Repositories/UserWeaponRepository
 
 class MockUserWeaponRepository implements UserWeaponRepository {
 
-    findByWeaponAndUser(weaponId: number, userId: number): any {
+    public findByWeaponAndUser(weaponId: number, userId: number): any {
         if (weaponId <= 0 || weaponId > 50) {
             return undefined;
         }
@@ -14,11 +14,11 @@ class MockUserWeaponRepository implements UserWeaponRepository {
         }
     }
 
-    update(weaponId: number, userId: number, haveWeapon: boolean): any { }
+    public update(weaponId: number, userId: number, haveWeapon: boolean): any { }
 
-    insert(weaponId: number, userId: number, haveWeapon: boolean): any { }
+    public insert(weaponId: number, userId: number, haveWeapon: boolean): any { }
 
-    findById(id: number): any {
+    public findById(id: number): any {
         return {
             weapon_id: 1,
             userId: 1,

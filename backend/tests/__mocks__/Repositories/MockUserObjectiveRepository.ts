@@ -2,7 +2,7 @@ import UserObjectiveRepository from "../../../api/Repositories/UserObjectiveRepo
 
 class MockUserObjectiveRepository implements UserObjectiveRepository {
 
-    findByObjectiveAndUser(objectiveId: number, userId: number): any {
+    public findByObjectiveAndUser(objectiveId: number, userId: number): any {
         if (objectiveId <= 0 || objectiveId > 100) {
             return undefined;
         }
@@ -14,7 +14,7 @@ class MockUserObjectiveRepository implements UserObjectiveRepository {
         }
     }
 
-    getObjectivesByUserWhereObjectivesIn(userId: number, objectivesIds: number[]): any {
+    public async getObjectivesByUserWhereObjectivesIn(userId: number, objectivesIds: number[]): Promise<any> {
         if (objectivesIds.length === 0) {
             return undefined;
         }
@@ -33,15 +33,15 @@ class MockUserObjectiveRepository implements UserObjectiveRepository {
         ];
     }
 
-    insert(objectiveId: number, userId: number, isObjectiveCompleted: boolean): any { }
+    public insert(objectiveId: number, userId: number, isObjectiveCompleted: boolean): any { }
 
-    insertMany(userObjectives: any[]): any { }
+    public insertMany(userObjectives: any[]): any { }
 
-    update(objectiveId: number, userId: number, isObjectiveCompleted: boolean): any { }
+    public update(objectiveId: number, userId: number, isObjectiveCompleted: boolean): any { }
 
-    updateMany(objectivesIds: number[], objectiveCompleted: boolean): any { }
+    public updateMany(objectivesIds: number[], objectiveCompleted: boolean): any { }
 
-    findById(id: number): any {
+    public findById(id: number): any {
         if (id <= 0 || id > 100) {
             return undefined;
         }

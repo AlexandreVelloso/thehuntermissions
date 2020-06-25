@@ -67,7 +67,7 @@ describe('Objectives Service - Get', () => {
             });
     });
 
-    it('should throw exception when objective not found', async () => {
+    it('should throw exception when objective not found', () => {
         const objectiveId = 0;
         const userId = 1;
 
@@ -88,7 +88,7 @@ describe('Objectives Service - Update', () => {
             .toBe(undefined);
     });
 
-    it('should update objective when user dooes not have objective', () => {
+    it('should update objective when user does not have objective', () => {
         const objectiveId = 1000;
         const completed = true;
         const userId = 1;
