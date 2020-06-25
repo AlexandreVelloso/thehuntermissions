@@ -79,7 +79,7 @@ describe('Weapons Service - Update', () => {
 
         expect(weaponService.update(weaponId, haveWeapon, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should update a weapon when user does not have weapon', async () => {
@@ -89,7 +89,7 @@ describe('Weapons Service - Update', () => {
 
         expect(weaponService.update(weaponId, haveWeapon, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should throw exception when not found weapon', async () => {

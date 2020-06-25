@@ -125,7 +125,7 @@ describe('Missions Service - Update', () => {
 
         expect(missionService.update(missionId, completed, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should update mission with objectives that exists', () => {
@@ -135,7 +135,7 @@ describe('Missions Service - Update', () => {
 
         expect(missionService.update(missionId, completed, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should give error when not find mission', () => {

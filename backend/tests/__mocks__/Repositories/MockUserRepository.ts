@@ -3,8 +3,12 @@ import UserRepository from "../../../api/Repositories/UserRepository";
 class MockUserRepository implements UserRepository {
 
     findByEmail(email: string): any {
-        if (email === '') {
+        if (email !== 'email@email.com') {
             return undefined;
+        }
+
+        function verifyPassword(password: string) {
+            return password === 'password';
         }
 
         return {
@@ -12,6 +16,7 @@ class MockUserRepository implements UserRepository {
             email: 'email@email.com',
             password: 'password',
             refresh_token: 'refresh_token',
+            verifyPassword: verifyPassword
         }
     }
 
@@ -28,7 +33,14 @@ class MockUserRepository implements UserRepository {
         }
     }
 
-    insert(email: string, username: string, password: string, refreshToken: string): any { }
+    insert(email: string, username: string, password: string, refreshToken: string): any {
+        return {
+            username,
+            email,
+            password: 'hashPassword',
+            refresh_token: 'refresh_token',
+        }
+    }
 
     updatePasswordByEmail(email: string, password: string): any { }
 

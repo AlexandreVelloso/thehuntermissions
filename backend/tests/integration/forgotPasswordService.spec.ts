@@ -20,7 +20,7 @@ describe('Forgot Password Service', () => {
 
         expect(forgotPasswordService.sendEmail(userEmail))
             .resolves
-            .toEqual(undefined);
+            .toBeUndefined();
     });
 
     it('should throw error when email not found', () => {

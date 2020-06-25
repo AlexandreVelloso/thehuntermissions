@@ -85,7 +85,7 @@ describe('Objectives Service - Update', () => {
 
         expect(objectiveService.update(objectiveId, completed, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should update objective when user does not have objective', () => {
@@ -95,7 +95,7 @@ describe('Objectives Service - Update', () => {
 
         expect(objectiveService.update(objectiveId, completed, userId))
             .resolves
-            .toBe(undefined);
+            .toBeUndefined();
     });
 
     it('should trhow exception when not found objective', () => {
