@@ -1,11 +1,11 @@
 import AuthService from "../../api/Services/AuthService";
 import AuthServiceImpl from "../../api/Services/impl/AuthServiceImpl";
 import ValidationException from "../../api/Exceptions/ValidationException";
+import { sign } from "../../api/Utils/JwtToken";
+import UnauthorizedOperationException from "../../api/Exceptions/UnauthorizedOperationException";
 
 import MockUserRepository from "../__mocks__/Repositories/MockUserRepository";
 import MockStartWeaponsService from '../__mocks__/Services/MockStartWeaponsService';
-import { sign } from "../../api/Utils/JwtToken";
-import UnauthorizedOperationException from "../../api/Exceptions/UnauthorizedOperationException";
 
 let authService: AuthService;
 
