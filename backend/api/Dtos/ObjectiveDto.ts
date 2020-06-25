@@ -39,12 +39,20 @@ class ObjectiveDto extends BaseDto {
     }
 
     static modelToDto(model: ObjectiveModel): ObjectiveDto {
+        let completed;
+
+        if (model.completed instanceof Number) {
+            completed = completed === 1;
+        } else {
+            completed = model.completed;
+        }
+
         return new ObjectiveDto(
             model.id,
             model.name,
             model.mission_id,
             model.user_id,
-            model.completed === 1,
+            completed,
             model.weapons,
             model.created_at,
             model.updated_at,
