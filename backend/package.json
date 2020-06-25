@@ -7,7 +7,7 @@
     "start": "ts-node index.ts",
     "build": "tsc -p .",
     "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules index.ts",
-    "test": "jest --runInBand --detectOpenHandles --coverage",
+    "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "lint": "eslint",
     "db_reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },

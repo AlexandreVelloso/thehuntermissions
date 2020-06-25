@@ -1,62 +1,44 @@
 import request from 'supertest';
 import { matchersWithOptions } from 'jest-json-schema';
 
-import UserCredentials from "../../api/Dtos/UserCredentialsDto";
+import connection from "../../database/connection";
+import { sign } from "../../api/Utils/JwtToken";
 import app from '../../api/app';
-import connection from '../../database/connection';
-import errorSchema from '../schemas/ErrorSchema.json';
-import objectiveSchema from '../schemas/ObjectiveSchema.json';
-import missionSchema from '../schemas/MissionSchema.json';
 import animalSchema from '../schemas/AnimalSchema.json';
+import missionSchema from '../schemas/MissionSchema.json';
 
-function objectivesHasDuplicates(objectives: any) {
-    for (let i = 0; i < objectives.length - 1; i += 1) {
-        if (objectives[i].id === objectives[i + 1].id) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-let user: UserCredentials;
+let accessToken: string;
 
 beforeAll(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
     await connection.seed.run();
 
-    const response = await request(app)
-        .post('/api/auth/register')
-        .send({
-            username: 'user',
-            email: 'user@email.com',
-            password: '1234',
-        });
+    accessToken = 'Bearer ' + sign({
+        id: 1,
+        username: 'user',
+        email: 'email@email.com',
+    });
 
-    user = response.body;
+    expect.extend(matchersWithOptions({
+        schemas: [missionSchema, animalSchema],
+    }));
+
+    test('Validate schemas', () => {
+        expect(animalSchema).toBeValidSchema();
+        expect(missionSchema).toBeValidSchema();
+    });
 });
 
 afterAll(async () => {
     await connection.migrate.rollback();
 });
 
-expect.extend(matchersWithOptions({
-    schemas: [missionSchema, animalSchema, objectiveSchema, errorSchema],
-}));
-
-test('Validate schemas', () => {
-    expect(animalSchema).toBeValidSchema();
-    expect(missionSchema).toBeValidSchema();
-    expect(objectiveSchema).toBeValidSchema();
-    expect(errorSchema).toBeValidSchema();
-});
-
 describe('Animals Index', () => {
-    it('should list all animals', async () => {
+    it('should seed all animals', async () => {
         const response = await request(app)
             .get('/api/animals')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', accessToken);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(49);
@@ -79,27 +61,13 @@ describe('Animals Index', () => {
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(false);
     });
-
-    it('should not repeat objective', async () => {
-        const response = await request(app)
-            .get('/api/animals')
-            .set('Authorization', user.accessToken);
-
-        const animal = response.body[1];
-        const { missions } = animal;
-
-        const objectivesToTest = missions[7].objectives;
-        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
-
-        expect(hasDuplicates).toBe(false);
-    });
 });
 
 describe('Animals Get', () => {
     it('should retrieve a animal from user', async () => {
         const response = await request(app)
             .get('/api/animals/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', accessToken);
 
         expect(response.status).toBe(200);
 
@@ -125,7 +93,7 @@ describe('Animals Get', () => {
     it('should give 400 error when id is not valid', async () => {
         const response = await request(app)
             .get('/api/animals/0')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', accessToken);
 
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
@@ -134,22 +102,9 @@ describe('Animals Get', () => {
     it('should give 404 error when not find animal', async () => {
         const response = await request(app)
             .get('/api/animals/9999999')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', accessToken);
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Animal not found');
-    });
-
-    it('should not repeat objective', async () => {
-        const response = await request(app)
-            .get('/api/animals/2')
-            .set('Authorization', user.accessToken);
-
-        const { missions } = response.body;
-
-        const objectivesToTest = missions[7].objectives;
-        const hasDuplicates = objectivesHasDuplicates(objectivesToTest);
-
-        expect(hasDuplicates).toBe(false);
     });
 });
