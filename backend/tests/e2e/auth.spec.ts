@@ -134,7 +134,7 @@ describe('Login', () => {
 
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Username or password incorrect');
+        expect(response.body.error).toBe('Email or password incorrect');
     });
 });
 
@@ -249,7 +249,7 @@ describe('Reset password', () => {
 
         expect(testSchema).toBeValidSchema();
         expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('The passwords doesn\'t match');
+        expect(response.body.error).toBe('The passwords don\'t match');
     });
 
     it('should give error when the token is invalid', async () => {
