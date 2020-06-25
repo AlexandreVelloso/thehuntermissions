@@ -80,17 +80,6 @@ describe('LastMissions Index', () => {
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(false);
     });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/lastMissions');
-
-        expect(response.status).toBe(401);
-
-        expect(response.body).toEqual({
-            error: 'Invalid token',
-        });
-    });
 });
 
 describe('LastMissions Get', () => {
@@ -137,17 +126,6 @@ describe('LastMissions Get', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/lastMissions/1');
-
-        expect(response.status).toBe(401);
-
-        expect(response.body).toEqual({
-            error: 'Invalid token',
-        });
     });
 });
 

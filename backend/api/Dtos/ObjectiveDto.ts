@@ -44,11 +44,19 @@ class ObjectiveDto extends BaseDto {
             model.name,
             model.mission_id,
             model.user_id,
-            model.completed === 1,
+            this.isTrue(model.completed),
             model.weapons,
             model.created_at,
             model.updated_at,
         );
+    }
+
+    static isTrue(value: any) {
+        if (typeof value === 'boolean') {
+            return value;
+        } else {
+            return value === 1;
+        }
     }
 }
 

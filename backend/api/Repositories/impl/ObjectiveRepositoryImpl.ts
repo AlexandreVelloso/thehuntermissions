@@ -10,7 +10,7 @@ class ObjectiveRepositoryImpl implements ObjectiveRepository {
     }
 
     async findObjectiveByUser(objectiveId: any, userId: any): Promise<ObjectiveModel> {
-        return await await ObjectiveModel.query()
+        return await ObjectiveModel.query()
             .select('objectives.*', 'user_objectives.user_id', 'user_objectives.completed')
             // eslint-disable-next-line func-names
             .leftJoin('user_objectives', function () {

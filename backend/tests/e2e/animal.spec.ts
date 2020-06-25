@@ -80,21 +80,6 @@ describe('Animals Index', () => {
         expect(objectives[0].completed).toBe(false);
     });
 
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/animals');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
-    });
-
     it('should not repeat objective', async () => {
         const response = await request(app)
             .get('/api/animals')
@@ -153,21 +138,6 @@ describe('Animals Get', () => {
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Animal not found');
-    });
-
-    it('should validate JWT token', async () => {
-        const response = await request(app)
-            .get('/api/animals');
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid token');
     });
 
     it('should not repeat objective', async () => {

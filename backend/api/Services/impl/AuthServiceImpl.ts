@@ -46,7 +46,7 @@ class AuthServiceImpl implements AuthService {
             .findByEmail(email);
 
         if (!user || !await user.verifyPassword(password)) {
-            throw new ValidationException('Username or password incorrect');
+            throw new ValidationException('Email or password incorrect');
         }
 
         return this.generateUserResponse(user);
@@ -81,7 +81,7 @@ class AuthServiceImpl implements AuthService {
         }
 
         if (password !== confirmPassword) {
-            throw new ValidationException('The passwords doesn\'t match');
+            throw new ValidationException('The passwords don\'t match');
         }
 
         const user = await this.userRepository
