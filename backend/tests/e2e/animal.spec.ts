@@ -6,14 +6,14 @@ import { sign } from "../../api/Utils/JwtToken";
 import app from '../../api/app';
 import animalSchema from '../schemas/AnimalSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
+import { generateAnimal } from '../__fakers__/AnimalFaker';
+import { generateMission } from '../__fakers__/MissionFaker';
+import { generateObjective } from '../__fakers__/ObjectiveFaker';
+import { generateUserObjective } from '../__fakers__/UserObjectiveFaker';
 
 let accessToken: string;
 
 beforeAll(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
-    await connection.seed.run();
-
     accessToken = 'Bearer ' + sign({
         id: 1,
         username: 'user',
@@ -30,11 +30,18 @@ beforeAll(async () => {
     });
 });
 
-afterAll(async () => {
-    await connection.migrate.rollback();
-});
-
 describe('Animals Index', () => {
+
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+    });
+
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should seed all animals', async () => {
         const response = await request(app)
             .get('/api/animals')
@@ -64,6 +71,23 @@ describe('Animals Index', () => {
 });
 
 describe('Animals Get', () => {
+    beforeAll(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+
+        const animal = await generateAnimal();
+        const mission = await generateMission(animal.id);
+        const objective = await generateObjective(mission.id);
+
+        const userId = 1;
+
+        await generateUserObjective(userId, objective.id);
+    });
+
+    afterAll(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should retrieve a animal from user', async () => {
         const response = await request(app)
             .get('/api/animals/1')
@@ -79,15 +103,10 @@ describe('Animals Get', () => {
         expect(response.body).toMatchSchema(testSchema);
 
         const animal = response.body;
+        expect(animal.missions).toHaveLength(1);
+
         const firstMission = animal.missions[0];
-
-        expect(firstMission.user_has_weapon).toBe(true);
-
-        const { objectives } = firstMission;
-
-        expect(objectives).toHaveLength(4);
-        expect(objectives[0].user_id).toBe(null);
-        expect(objectives[0].completed).toBe(false);
+        expect(firstMission.objectives).toHaveLength(1);
     });
 
     it('should give 400 error when id is not valid', async () => {
