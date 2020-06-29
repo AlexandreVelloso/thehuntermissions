@@ -32,6 +32,7 @@ import AuthLoginValidator from './Validators/AuthLoginValidator';
 import AuthRegisterValidator from './Validators/AuthRegisterValidator';
 import AuthResetPasswordValidator from './Validators/AuthResetPasswordValidator';
 import AuthRefreshTokenValidator from './Validators/AuthRefreshTokenValidator';
+import ForgotPasswordValidator from './Validators/ForgotPasswordValidator';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -77,6 +78,7 @@ function createAppContainer(): AwilixContainer {
         authRegisterValidator: asClass(AuthRegisterValidator, opts),
         authResetPasswordValidator: asClass(AuthResetPasswordValidator, opts),
         authRefreshTokenValidator: asClass(AuthRefreshTokenValidator, opts),
+        forgotPasswordValidator: asClass(ForgotPasswordValidator, opts),
 
         ttlSeconds: asValue(DAY * 7),
     });
