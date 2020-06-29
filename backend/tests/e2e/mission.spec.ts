@@ -2,50 +2,58 @@ import request from 'supertest';
 import { matchersWithOptions } from 'jest-json-schema';
 
 import app from '../../api/app';
+import { sign } from "../../api/Utils/JwtToken";
 import connection from '../../database/connection';
-import { isAllObjectivesCompleted } from '../../api/Utils/AnimalsMissions';
 import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
-import UserCredentials from '../../api/Dtos/UserCredentialsDto';
+import { isAllObjectivesCompleted } from '../../api/Utils/AnimalsMissions';
+import { generateMission } from '../__fakers__/MissionFaker';
+import { generateObjective } from '../__fakers__/ObjectiveFaker';
+import { generateUserObjective } from '../__fakers__/UserObjectiveFaker';
 
-let user: UserCredentials;
+let firstUserAccessToken: string;
+let secondUserAccessToken: string;
 
-beforeAll(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
-    await connection.seed.run();
+beforeAll(() => {
+    firstUserAccessToken = 'Bearer ' + sign({
+        id: 1,
+        username: 'user',
+        email: 'firstUser@email.com',
+    });
 
-    const response = await request(app)
-        .post('/api/auth/register')
-        .send({
-            username: 'user',
-            email: 'user@email.com',
-            password: '1234',
-        });
+    secondUserAccessToken = 'Bearer ' + sign({
+        id: 2,
+        username: 'user',
+        email: 'secondUser@email.com',
+    });
 
-    user = response.body;
+    expect.extend(matchersWithOptions({
+        schemas: [errorSchema, objectiveSchema, missionSchema],
+    }));
+
+    test('Validate schemas', () => {
+        expect(errorSchema).toBeValidSchema();
+        expect(objectiveSchema).toBeValidSchema();
+        expect(missionSchema).toBeValidSchema();
+    });
 });
 
-afterAll(async () => {
-    await connection.migrate.rollback();
-});
+describe('Weapon Index', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+        await connection.seed.run();
+    });
 
-expect.extend(matchersWithOptions({
-    schemas: [missionSchema, objectiveSchema, errorSchema],
-}));
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
 
-test('Validate schemas', () => {
-    expect(objectiveSchema).toBeValidSchema();
-    expect(missionSchema).toBeValidSchema();
-    expect(errorSchema).toBeValidSchema();
-});
-
-describe('Missions Index', () => {
     it('should list all missions from user', async () => {
         const response = await request(app)
             .get('/api/missions')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(446);
@@ -71,11 +79,26 @@ describe('Missions Index', () => {
     });
 });
 
-describe('Missions Get', () => {
+describe('Weapon Get', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+
+        const objectiveId = 1;
+        const missionId = 1;
+
+        await generateMission(missionId);
+        await generateObjective(objectiveId, missionId);
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should retrieve a mission from user', async () => {
         const response = await request(app)
             .get('/api/missions/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(200);
 
@@ -92,7 +115,6 @@ describe('Missions Get', () => {
 
         const { objectives } = mission;
 
-        expect(objectives).toHaveLength(4);
         expect(objectives[0].user_id).toBe(null);
         expect(objectives[0].completed).toBe(false);
     });
@@ -100,7 +122,7 @@ describe('Missions Get', () => {
     it('should give 404 error when not find mission', async () => {
         const response = await request(app)
             .get('/api/missions/99999')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Mission not found');
@@ -109,18 +131,33 @@ describe('Missions Get', () => {
     it('should give 400 error mission id is not valid', async () => {
         const response = await request(app)
             .get('/api/missions/0')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
     });
 });
 
-describe('Missions Update', () => {
+describe('Weapon Update', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+
+        const objectiveId = 1;
+        const missionId = 1;
+
+        await generateMission(missionId);
+        await generateObjective(objectiveId, missionId);
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+
     it('should update mission', async () => {
         const responseOld = await request(app)
             .get('/api/missions/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const oldObjectives = responseOld.body.objectives;
         const allOldObjectivesCompleted = isAllObjectivesCompleted(oldObjectives);
@@ -129,7 +166,7 @@ describe('Missions Update', () => {
 
         const responseUpdate = await request(app)
             .put('/api/missions/1')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -138,7 +175,7 @@ describe('Missions Update', () => {
 
         const responseNew = await request(app)
             .get('/api/missions/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const newObjectives = responseNew.body.objectives;
         const allNewObjectivesCompleted = isAllObjectivesCompleted(newObjectives);
@@ -149,7 +186,7 @@ describe('Missions Update', () => {
     it('should give an error when not find mission to update', async () => {
         const response = await request(app)
             .put('/api/missions/999999')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -168,7 +205,7 @@ describe('Missions Update', () => {
     it('should give an 400 error when missionId to update is not valid', async () => {
         const response = await request(app)
             .put('/api/missions/0')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -187,7 +224,7 @@ describe('Missions Update', () => {
     it('should give an 400 error when completed is not present', async () => {
         const response = await request(app)
             .put('/api/missions/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(400);
 
@@ -201,40 +238,18 @@ describe('Missions Update', () => {
     });
 });
 
-describe('Test missions for two users', () => {
-    let user2: UserCredentials;
-
+describe('Test weapons for two users', () => {
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
-        await connection.seed.run();
 
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user',
-                email: 'user@email.com',
-                password: '1234',
-            });
+        const objectiveId = 1;
+        const missionId = 1;
+        const userId = 1;
 
-        user = response.body;
-
-        const response2 = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user2',
-                email: 'user2@email.com',
-                password: '1234',
-            });
-
-        user2 = response2.body;
-
-        await request(app)
-            .put('/api/missions/1')
-            .set('Authorization', user.accessToken)
-            .send({
-                completed: true,
-            });
+        await generateMission(missionId);
+        await generateObjective(objectiveId, missionId);
+        await generateUserObjective(userId, objectiveId, true);
     });
 
     afterEach(async () => {
@@ -244,11 +259,11 @@ describe('Test missions for two users', () => {
     it('should have different results for missions indexes', async () => {
         const response1 = await request(app)
             .get('/api/missions')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const response2 = await request(app)
             .get('/api/missions')
-            .set('Authorization', user2.accessToken);
+            .set('Authorization', secondUserAccessToken);
 
         const firstMissoinObjectivesUser1 = response1.body[0].objectives;
         const allObjectivesCompletedUser1 = isAllObjectivesCompleted(firstMissoinObjectivesUser1);
@@ -266,11 +281,11 @@ describe('Test missions for two users', () => {
     it('should have different results for missions gets', async () => {
         const response1 = await request(app)
             .get('/api/missions/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const response2 = await request(app)
             .get('/api/missions/1')
-            .set('Authorization', user2.accessToken);
+            .set('Authorization', secondUserAccessToken);
 
         const firstMissoinObjectivesUser1 = response1.body.objectives;
         const allObjectivesCompletedUser1 = isAllObjectivesCompleted(firstMissoinObjectivesUser1);
