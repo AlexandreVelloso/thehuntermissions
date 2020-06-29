@@ -75,13 +75,17 @@ describe('Animals Get', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        const animal = await generateAnimal();
-        const mission = await generateMission(animal.id);
-        const objective = await generateObjective(mission.id);
+        const animalId = 1;
+        const missionId = 1;
+        const objectiveId = 1;
+
+        const animal = await generateAnimal(animalId);
+        const mission = await generateMission(missionId, animalId);
+        const objective = await generateObjective(objectiveId, missionId);
 
         const userId = 1;
 
-        await generateUserObjective(userId, objective.id);
+        await generateUserObjective(userId, objectiveId);
     });
 
     afterAll(async () => {

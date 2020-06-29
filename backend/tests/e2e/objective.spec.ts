@@ -70,8 +70,11 @@ describe('Objectives Get', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        const objective = await generateObjective();
-        await generateUserObjective(1, objective.id);
+        const objectiveId = 1;
+        const userId = 1;
+
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId);
     });
 
     afterAll(async () => {
@@ -117,8 +120,11 @@ describe('Objectives Update', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        const objective = await generateObjective(1);
-        await generateUserObjective(1, objective.id);
+        const objectiveId = 1;
+        const userId = 1;
+
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId);
     });
 
     afterEach(async () => {
@@ -210,8 +216,11 @@ describe('Test objectives for two users', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        const objective = await generateObjective(1);
-        await generateUserObjective(1, objective.id, true);
+        const objectiveId = 1;
+        const userId = 1;
+
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId, true);
     });
 
     afterEach(async () => {
