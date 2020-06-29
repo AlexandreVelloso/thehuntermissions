@@ -3,17 +3,27 @@ import { Request, Response } from 'express';
 import AuthService from '../Services/AuthService';
 import ErrorHandlerMiddleware from '../Middleware/ErrorHandlerMiddleware';
 import UserCredentials from '../Dtos/UserCredentialsDto';
+import BaseValidator from '../Validators/BaseValidator';
 
 class AuthController {
 
     private authService: AuthService;
+    private authLoginValidator: BaseValidator;
+    private authRegisterValidator: BaseValidator;
+    private authResetPasswordValidator: BaseValidator;
+    private authRefreshTokenValidator: BaseValidator;
 
     public constructor(opts: any) {
         this.authService = opts.authService;
+        this.authLoginValidator = opts.authLoginValidator;
+        this.authRegisterValidator = opts.authRegisterValidator;
+        this.authResetPasswordValidator = opts.authResetPasswordValidator;
+        this.authRefreshTokenValidator = opts.authRefreshTokenValidator;
     }
 
     async login(req: Request, res: Response) {
-        const { email, password } = req.body;
+        const { email, password } = this.authLoginValidator
+            .validate(req);
 
         try {
             const userCredentials: UserCredentials = await this.authService
@@ -25,7 +35,8 @@ class AuthController {
     }
 
     async register(req: Request, res: Response) {
-        const { username, email, password } = req.body;
+        const { username, email, password } = this.authRegisterValidator
+            .validate(req);
 
         try {
             const userCredentials: UserCredentials = await this.authService
@@ -37,7 +48,8 @@ class AuthController {
     }
 
     async resetPassword(req: Request, res: Response) {
-        const { token, password, confirmPassword } = req.body;
+        const { token, password, confirm_password: confirmPassword } = this.authResetPasswordValidator
+            .validate(req);
 
         try {
             await this.authService
@@ -49,7 +61,8 @@ class AuthController {
     }
 
     async refreshToken(req: Request, res: Response) {
-        const { refreshToken } = req.body;
+        const { refreshToken } = this.authRefreshTokenValidator
+            .validate(req);
 
         try {
             const userCredentials: UserCredentials = await this.authService

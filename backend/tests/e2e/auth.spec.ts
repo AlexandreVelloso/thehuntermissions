@@ -1,28 +1,39 @@
 import request from 'supertest';
 import { matchersWithOptions } from 'jest-json-schema';
-import app from '../../api/app';
-import connection from '../../database/connection';
-import { sign } from '../../api/Utils/JwtToken';
 
+import connection from "../../database/connection";
+import { sign } from "../../api/Utils/JwtToken";
+import app from '../../api/app';
 import errorSchema from '../schemas/ErrorSchema.json';
 import loginResponseSchema from '../schemas/LoginResponseSchema.json';
+import { generateUser, generateUserWithDefaultPassword } from '../__fakers__/UserFaker';
 
-expect.extend(matchersWithOptions({
-    schemas: [errorSchema, loginResponseSchema],
-}));
+let accessToken: string;
 
-test('Validate schemas', () => {
-    expect(errorSchema).toBeValidSchema();
-    expect(loginResponseSchema).toBeValidSchema();
+beforeAll(async () => {
+    accessToken = 'Bearer ' + sign({
+        id: 1,
+        username: 'user',
+        email: 'email@email.com',
+    });
+
+    expect.extend(matchersWithOptions({
+        schemas: [errorSchema, loginResponseSchema],
+    }));
+
+    test('Validate schemas', () => {
+        expect(errorSchema).toBeValidSchema();
+        expect(loginResponseSchema).toBeValidSchema();
+    });
 });
 
 describe('Register', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await connection.migrate.rollback();
     });
 
@@ -50,19 +61,15 @@ describe('Register', () => {
     });
 
     it('should not register a user with equal email', async () => {
-        const user = {
-            username: 'aa',
-            email: 'a@a.com',
-            password: '1234',
-        };
-
-        await request(app)
-            .post('/api/auth/register')
-            .send(user);
+        await generateUser('username', 'email@email.com');
 
         const response = await request(app)
             .post('/api/auth/register')
-            .send(user);
+            .send({
+                username: 'username',
+                email: 'email@email.com',
+                password: '1234',
+            });
 
         expect(response.status).toBe(400);
 
@@ -77,19 +84,9 @@ describe('Register', () => {
 });
 
 describe('Login', () => {
-    const user = {
-        email: 'a@a.com',
-        username: 'aa',
-        password: '1234',
-    };
-
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
-
-        await request(app)
-            .post('/api/auth/register')
-            .send(user);
     });
 
     afterEach(async () => {
@@ -97,11 +94,13 @@ describe('Login', () => {
     });
 
     it('should login a user that is registered', async () => {
+        const user = await generateUserWithDefaultPassword();
+
         const response = await request(app)
             .post('/api/auth/login')
             .send({
                 email: user.email,
-                password: user.password,
+                password: '1234'
             });
 
         expect(response.status).toBe(200);
@@ -114,11 +113,13 @@ describe('Login', () => {
         expect(response.body).toMatchSchema(testSchema);
 
         const { user: userResponse } = response.body;
-        expect(userResponse.username).toBe('aa');
-        expect(userResponse.email).toBe('a@a.com');
+        expect(userResponse.username).toBe(user.username);
+        expect(userResponse.email).toBe(user.email);
     });
 
     it('should validate user credentials', async () => {
+        await generateUser('usename', 'email');
+
         const response = await request(app)
             .post('/api/auth/login')
             .send({
@@ -138,78 +139,10 @@ describe('Login', () => {
     });
 });
 
-describe('Refresh token', () => {
-    let user: any;
-
+describe('Refresh password', () => {
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
-
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                email: 'a@a.com',
-                username: 'aa',
-                password: '1234',
-            });
-
-        user = response.body;
-    });
-
-    afterEach(async () => {
-        await connection.migrate.rollback();
-    });
-
-    it('should reset user token', async () => {
-        const response = await request(app)
-            .post('/api/auth/refresh')
-            .send({
-                refreshToken: user.refreshToken,
-            });
-
-        expect(response.status).toBe(200);
-
-        const testSchema = {
-            $ref: 'loginResponse#/definitions/login',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-    });
-
-    it('should fail when not found the refresh token', async () => {
-        const response = await request(app)
-            .post('/api/auth/refresh')
-            .send({
-                refreshToken: 'invalidToken',
-            });
-
-        expect(response.status).toBe(401);
-
-        const testSchema = {
-            $ref: 'error#/definitions/error',
-        };
-
-        expect(testSchema).toBeValidSchema();
-        expect(response.body).toMatchSchema(testSchema);
-        expect(response.body.error).toBe('Invalid refresh token');
-    });
-});
-
-describe('Reset password', () => {
-    const user = {
-        email: 'a@a.com',
-        username: 'aa',
-        password: '1234',
-    };
-
-    beforeEach(async () => {
-        await connection.migrate.rollback();
-        await connection.migrate.latest();
-
-        await request(app)
-            .post('/api/auth/register')
-            .send(user);
     });
 
     afterEach(async () => {
@@ -217,13 +150,15 @@ describe('Reset password', () => {
     });
 
     it('should reset a user password', async () => {
+        await generateUser('username', 'a@a.com');
+
         const token = sign({ email: 'a@a.com' });
 
         const response = await request(app)
             .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
-                confirmPassword: 'newPassword',
+                confirm_password: 'newPassword',
                 token,
             });
 
@@ -231,13 +166,15 @@ describe('Reset password', () => {
     });
 
     it('should give error when passwords don\'t match', async () => {
+        await generateUser('username', 'a@a.com');
+
         const token = sign({ email: 'a@a.com' });
 
         const response = await request(app)
             .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
-                confirmPassword: 'password',
+                confirm_password: 'password',
                 token,
             });
 
@@ -253,11 +190,13 @@ describe('Reset password', () => {
     });
 
     it('should give error when the token is invalid', async () => {
+        await generateUser('username', 'a@a.com');
+
         const response = await request(app)
             .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
-                confirmPassword: 'newPassword',
+                confirm_password: 'newPassword',
                 token: 'invalid token',
             });
 
@@ -272,14 +211,16 @@ describe('Reset password', () => {
         expect(response.body.error).toBe('Invalid token');
     });
 
-    it('should give error when not find the user', async () => {
+    it('should give error when not find user', async () => {
+        await generateUser('username', 'a@a.com');
+
         const token = sign({ email: 'invalid@email.com' });
 
         const response = await request(app)
             .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
-                confirmPassword: 'newPassword',
+                confirm_password: 'newPassword',
                 token,
             });
 
@@ -294,7 +235,9 @@ describe('Reset password', () => {
         expect(response.body.error).toBe('User not found');
     });
 
-    it('should login with new password', async () => {
+    it.skip('should reset password and login with new password', async () => {
+        const user = await generateUser('username', 'a@a.com');
+
         const token = sign({ email: 'a@a.com' });
 
         await request(app)
