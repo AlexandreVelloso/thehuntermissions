@@ -1,5 +1,7 @@
+import * as Knex from "knex";
 
-exports.up = function up(knex) {
+
+export async function up(knex: Knex): Promise<any> {
     return knex.schema.createTable('objectives_weapons', (table) => {
         table.increments();
         table.integer('objective_id')
@@ -17,8 +19,10 @@ exports.up = function up(knex) {
             .references('id')
             .inTable('weapons');
     });
-};
+}
 
-exports.down = function down(knex) {
+
+export async function down(knex: Knex): Promise<any> {
     return knex.schema.dropTable('objectives_weapons');
-};
+}
+
