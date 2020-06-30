@@ -9,7 +9,7 @@ import Checkbox from '../../components/Checkbox';
 import api from '../../services/api';
 
 export default function Animal() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     const username = localStorage.getItem('username');
     const history = useHistory();
     const { animalId } = useParams();
@@ -139,10 +139,10 @@ export default function Animal() {
                 <ul>
                     {animal.missions && animal.missions.map(mission => (
                         <li key={mission.id}>
-                            <p className="avaliability-tags">
+                            <span className="avaliability-tags">
                                 {mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
                                 {!mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
-                            </p>
+                            </span>
                             <div className="mission-title">
                                 <h2>{mission.name}</h2>
                                 <button onClick={() => handleCompleteMission(mission.id)} disabled={loading}>Complete mission</button>

@@ -9,7 +9,7 @@ import Checkbox from '../../components/Checkbox';
 import api from '../../services/api';
 
 export default function Weapon() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     const username = localStorage.getItem('username');
     const history = useHistory();
 
