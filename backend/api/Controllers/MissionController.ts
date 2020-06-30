@@ -23,18 +23,33 @@ class MissionController extends BaseController {
         this.updateMissionsValidator = opts.updateMissionsValidator;
     }
 
+    private async indexMissionsByUserId(userId: number): Promise<MissionDto[]> {
+        const missions: MissionDto[] = await this.missionService
+            .index(userId);
+
+        return missions;
+    }
+
     protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexMission_${user.id}`;
 
-        const missions: MissionDto[] = await this.cacheService
-            .get(key, async () => {
-                const missions: MissionDto[] = await this.missionService
-                    .index(user.id);
+        let missions: MissionDto[];
 
-                return missions;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            missions = await this.indexMissionsByUserId(user.id);
+        } else {
+            missions = await this.cacheService
+                .get(key, async () => await this.indexMissionsByUserId(user.id));
+        }
 
         return this.ok(res, missions);
+    }
+
+    private async findMissionByUserId(missionId: number, userId: number): Promise<MissionDto> {
+        const mission: MissionDto = await this.missionService
+            .get(missionId, userId);
+
+        return mission;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -43,13 +58,14 @@ class MissionController extends BaseController {
 
         const key = `getMission_${missionId}_${user.id}`;
 
-        const mission: MissionDto = await this.cacheService
-            .get(key, async () => {
-                const mission: MissionDto = await this.missionService
-                    .get(missionId, user.id);
+        let mission: MissionDto;
 
-                return mission;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            mission = await this.findMissionByUserId(missionId, user.id);
+        } else {
+            mission = await this.cacheService
+                .get(key, async () => await this.findMissionByUserId(missionId, user.id));
+        }
 
         return this.ok(res, mission);
     }

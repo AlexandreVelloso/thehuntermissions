@@ -151,6 +151,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "/node_modules/",
     "__mocks__",
+    "__fakers__",
   ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files

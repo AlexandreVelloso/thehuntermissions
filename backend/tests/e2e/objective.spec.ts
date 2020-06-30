@@ -1,50 +1,57 @@
 import request from 'supertest';
 import { matchersWithOptions } from 'jest-json-schema';
 
-import UserCredentials from "../../api/Dtos/UserCredentialsDto";
 import app from '../../api/app';
 import connection from '../../database/connection';
 import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
 import weaponSchema from '../schemas/WeaponSchema.json';
+import { generateObjective } from '../__fakers__/ObjectiveFaker';
+import { generateUserObjective } from '../__fakers__/UserObjectiveFaker';
+import { sign } from '../../api/Utils/JwtToken';
 
-let user: UserCredentials;
+let firstUserAccessToken: string;
+let secondUserAccessToken: string;
 
-expect.extend(matchersWithOptions({
-    schemas: [objectiveSchema, weaponSchema, errorSchema],
-}));
+beforeAll(() => {
+    firstUserAccessToken = 'Bearer ' + sign({
+        id: 1,
+        username: 'user',
+        email: 'firstUser@email.com',
+    });
 
-test('Validate schemas', () => {
-    expect(objectiveSchema).toBeValidSchema();
-    expect(weaponSchema).toBeValidSchema();
-    expect(errorSchema).toBeValidSchema();
+    secondUserAccessToken = 'Bearer ' + sign({
+        id: 2,
+        username: 'user',
+        email: 'secondUser@email.com',
+    });
+
+    expect.extend(matchersWithOptions({
+        schemas: [errorSchema, objectiveSchema, weaponSchema],
+    }));
+
+    test('Validate schemas', () => {
+        expect(errorSchema).toBeValidSchema();
+        expect(objectiveSchema).toBeValidSchema();
+        expect(weaponSchema).toBeValidSchema();
+    });
 });
 
 describe('Objectives Index', () => {
-    afterAll(async () => {
-        await connection.migrate.rollback();
-    });
-
     beforeAll(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
         await connection.seed.run();
+    });
 
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user',
-                email: 'user@email.com',
-                password: '1234',
-            });
-
-        user = response.body;
+    afterAll(async () => {
+        await connection.migrate.rollback();
     });
 
     it('should list all objectives from user', async () => {
         const response = await request(app)
             .get('/api/objectives')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(1013);
@@ -59,30 +66,25 @@ describe('Objectives Index', () => {
 });
 
 describe('Objectives Get', () => {
-    afterAll(async () => {
-        await connection.migrate.rollback();
-    });
-
     beforeAll(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
-        await connection.seed.run();
 
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user',
-                email: 'user@email.com',
-                password: '1234',
-            });
+        const objectiveId = 1;
+        const userId = 1;
 
-        user = response.body;
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId);
+    });
+
+    afterAll(async () => {
+        await connection.migrate.rollback();
     });
 
     it('should retrieve a object from a user', async () => {
         const response = await request(app)
             .get('/api/objectives/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(200);
 
@@ -97,7 +99,7 @@ describe('Objectives Get', () => {
     it('should give 400 error when id is not valid', async () => {
         const response = await request(app)
             .get('/api/objectives/0')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('\"id\" must be larger than or equal to 1');
@@ -106,7 +108,7 @@ describe('Objectives Get', () => {
     it('should give 404 error when not find objective', async () => {
         const response = await request(app)
             .get('/api/objectives/999999')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         expect(response.status).toBe(404);
         expect(response.body.error).toBe('Objective not found');
@@ -114,37 +116,32 @@ describe('Objectives Get', () => {
 });
 
 describe('Objectives Update', () => {
-    afterEach(async () => {
-        await connection.migrate.rollback();
-    });
-
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
-        await connection.seed.run();
 
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user',
-                email: 'user@email.com',
-                password: '1234',
-            });
+        const objectiveId = 1;
+        const userId = 1;
 
-        user = response.body;
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId);
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
     });
 
     it('should update objective', async () => {
         const responseOld = await request(app)
             .get('/api/objectives/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const objectiveOld = responseOld.body;
         expect(objectiveOld.completed).toBe(false);
 
         const responseUpdate = await request(app)
             .put('/api/objectives/1')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -153,7 +150,7 @@ describe('Objectives Update', () => {
 
         const responseNew = await request(app)
             .get('/api/objectives/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const objectiveNew = responseNew.body;
         expect(objectiveNew.completed).toBe(true);
@@ -162,7 +159,7 @@ describe('Objectives Update', () => {
     it('should give an 400 error when id for update is not valid', async () => {
         const response = await request(app)
             .put('/api/objectives/0')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -181,7 +178,7 @@ describe('Objectives Update', () => {
     it('should give an 400 error when completed is not present', async () => {
         const response = await request(app)
             .put('/api/objectives/1')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
 
         expect(response.status).toBe(400);
 
@@ -197,7 +194,7 @@ describe('Objectives Update', () => {
     it('should give an error when not find objective to update', async () => {
         const response = await request(app)
             .put('/api/objectives/99999')
-            .set('Authorization', user.accessToken)
+            .set('Authorization', firstUserAccessToken)
             .send({
                 completed: true,
             });
@@ -215,53 +212,29 @@ describe('Objectives Update', () => {
 });
 
 describe('Test objectives for two users', () => {
-    let user2: UserCredentials;
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+
+        const objectiveId = 1;
+        const userId = 1;
+
+        const objective = await generateObjective(objectiveId);
+        await generateUserObjective(userId, objectiveId, true);
+    });
 
     afterEach(async () => {
         await connection.migrate.rollback();
     });
 
-    beforeEach(async () => {
-        await connection.migrate.rollback();
-        await connection.migrate.latest();
-        await connection.seed.run();
-
-        const response = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user',
-                email: 'user@email.com',
-                password: '1234',
-            });
-
-        user = response.body;
-
-        const response2 = await request(app)
-            .post('/api/auth/register')
-            .send({
-                username: 'user2',
-                email: 'user2@email.com',
-                password: '1234',
-            });
-
-        user2 = response2.body;
-
-        await request(app)
-            .put('/api/objectives/1')
-            .set('Authorization', user.accessToken)
-            .send({
-                completed: true,
-            });
-    });
-
     it('should have different results for objectives indexes', async () => {
         const response1 = await request(app)
             .get('/api/objectives')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const response2 = await request(app)
             .get('/api/objectives')
-            .set('Authorization', user2.accessToken);
+            .set('Authorization', secondUserAccessToken);
 
         const firstObjectiveUser1 = response1.body[0];
         expect(firstObjectiveUser1.user_id).toBe(1);
@@ -275,11 +248,11 @@ describe('Test objectives for two users', () => {
     it('should have different results for objectives gets', async () => {
         const response1 = await request(app)
             .get('/api/objectives/1')
-            .set('Authorization', user.accessToken);
+            .set('Authorization', firstUserAccessToken);
 
         const response2 = await request(app)
             .get('/api/objectives/1')
-            .set('Authorization', user2.accessToken);
+            .set('Authorization', secondUserAccessToken);
 
         const firstObjectiveUser1 = response1.body;
         expect(firstObjectiveUser1.user_id).toBe(1);
