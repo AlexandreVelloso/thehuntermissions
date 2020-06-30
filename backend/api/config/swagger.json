@@ -964,10 +964,10 @@
                         }
                     }
                 },
-                "accessToken": {
+                "access_token": {
                     "type": "string"
                 },
-                "refreshToken": {
+                "refresh_token": {
                     "type": "string"
                 }
             }

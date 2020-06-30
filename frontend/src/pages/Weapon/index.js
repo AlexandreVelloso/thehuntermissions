@@ -28,7 +28,6 @@ export default function Weapon() {
                 setLoading(false);
 
                 setWeapons(response.data);
-            console.log(response.data)
 
             } catch (err) {
                 if (!err.response || err.response.status === 401) {
