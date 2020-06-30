@@ -37,7 +37,7 @@ class LastMissionController extends BaseController {
             lastMissions = await this.indexLastMissionsByUserId(user.id);
         } else {
             lastMissions = await this.cacheService
-                .get(key, this.indexLastMissionsByUserId(user.id));
+                .get(key, async () => await this.indexLastMissionsByUserId(user.id));
         }
 
         return this.ok(res, lastMissions);

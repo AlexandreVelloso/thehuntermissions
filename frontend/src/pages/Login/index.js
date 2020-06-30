@@ -27,10 +27,10 @@ export default function Login() {
             setLoading(false);
 
             const { username } = response.data.user;
-            const { accessToken, refreshToken } = response.data;
+            const { access_token: accessToken, refresh_token: refreshToken } = response.data;
 
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('refresh_token', refreshToken);
             localStorage.setItem('username', username);
 
             history.push('/');

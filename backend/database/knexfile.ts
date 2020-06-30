@@ -2,7 +2,7 @@
 
 import appRoot from 'app-root-path';
 
-export default {
+module.exports = {
 
     development: {
         client: 'sqlite3',
