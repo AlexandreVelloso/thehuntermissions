@@ -1,5 +1,5 @@
 import knex from 'knex';
-import configuration from './knexfile';
+import configuration from '../knexfile';
 
 let config;
 switch (process.env.NODE_ENV) {
