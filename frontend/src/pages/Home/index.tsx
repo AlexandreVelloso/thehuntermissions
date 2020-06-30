@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { FiRefreshCcw } from 'react-icons/fi';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './styles.css';
 import NavBar from '../../components/Navbar';
 import Checkbox from '../../components/Checkbox';
+import LastMission from '../../interfaces/LastMission.interface';
+import Objective from '../../interfaces/Objective.interface';
 
 import api from '../../services/api';
 
-export default function Animal() {
+export default function Home() {
     const token = localStorage.getItem('access_token');
     const username = localStorage.getItem('username');
     const history = useHistory();
-    const { animalId } = useParams();
 
-    const [animal, setAnimal] = useState([]);
+    const [animals, setAnimals] = useState<LastMission[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function loadAnimal() {
+        async function loadAnimals() {
             try {
                 setLoading(true);
-                const response = await api.get(`animals/${animalId}`, {
+                const response = await api.get('lastMissions', {
                     headers: {
                         Authorization: token,
                     }
                 });
                 setLoading(false);
-                setAnimal(response.data);
+                setAnimals(response.data);
             } catch (err) {
                 if (!err.response) {
                     alert('Error when try to connect to server');
@@ -36,30 +37,24 @@ export default function Animal() {
                 }
             }
         }
+        loadAnimals();
+    }, [token, history]);
 
-        loadAnimal();
-    }, [token, history, animalId]);
-
-    async function loadAnimal() {
+    async function loadAnimals() {
         try {
-            setLoading(true);
-            const response = await api.get(`animals/${animalId}`, {
+            const response = await api.get('lastMissions', {
                 headers: {
                     Authorization: token,
                 }
             });
-            setLoading(false);
-            setAnimal(response.data);
+
+            setAnimals(response.data);
         } catch (err) {
-            if (!err.response) {
-                alert('Error when try to connect to server');
-            } else if (err.response.status === 401) {
-                history.push('/login');
-            }
+
         }
     }
 
-    async function updateObjective(objectiveId, completed) {
+    async function updateObjective(objectiveId: number, completed: boolean) {
         try {
             await api.put(`objectives/${objectiveId}`, {
                 completed,
@@ -74,7 +69,7 @@ export default function Animal() {
         }
     }
 
-    async function updateMission(missionId) {
+    async function updateMission(missionId: number) {
         try {
             await api.put(`missions/${missionId}`, {
                 completed: true,
@@ -89,40 +84,36 @@ export default function Animal() {
         }
     }
 
-    async function handleChangeObjective(objectiveId, checked) {
+    async function handleChangeObjective(objectiveId: number, checked: boolean) {
         setLoading(true);
         await updateObjective(objectiveId, checked);
-        await loadAnimal();
+        await loadAnimals();
         setLoading(false);
     }
 
-    function changeObjectivesCheckbox(missionId) {
-        const missionsChanged = animal.missions.map((mission) => {
+    function changeObjectivesCheckbox(missionId: number) {
+        const animalsChanged: LastMission[] = animals.map((animal: LastMission) => {
 
-            if (mission.id === missionId) {
-                const objectives = mission.objectives.map((objective) => {
+            if (animal.mission.id === missionId) {
+                const objectives: Objective[] = animal.mission.objectives.map((objective: Objective) => {
                     objective.completed = true;
                     return objective;
                 });
 
-                mission.objectives = objectives;
+                animal.mission.objectives = objectives;
             }
 
-            return mission;
+            return animal;
         });
 
-        const animalChanged = {
-            ...animal
-        }
-        animalChanged.missions = missionsChanged;
-        setAnimal(animalChanged);
+        setAnimals(animalsChanged);
     }
 
-    async function handleCompleteMission(missionId) {
+    async function handleCompleteMission(missionId: number) {
         setLoading(true);
         changeObjectivesCheckbox(missionId);
         await updateMission(missionId);
-        await loadAnimal();
+        await loadAnimals();
         setLoading(false);
     }
 
@@ -132,26 +123,23 @@ export default function Animal() {
             <div className="loader-icon">
                 <div className={loading ? 'loading' : 'not-loading'}><FiRefreshCcw size={45}></FiRefreshCcw></div>
             </div>
-            <div className="animal-container">
-                <div className="animal-name">
-                    <h1>{animal.name}</h1>
-                </div>
+            <div className="home-container">
                 <ul>
-                    {animal.missions && animal.missions.map(mission => (
-                        <li key={mission.id}>
+                    {animals.map(animal => (
+                        <li key={animal.id}>
                             <span className="avaliability-tags">
-                                {mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
-                                {!mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
+                                {animal.mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {!animal.mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
                             </span>
-                            <div className="mission-title">
-                                <h2>{mission.name}</h2>
-                                <button onClick={() => handleCompleteMission(mission.id)} disabled={loading}>Complete mission</button>
+                            <div className="animal-title">
+                                <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>
+                                <button onClick={() => handleCompleteMission(animal.mission.id)} disabled={loading}>Complete mission</button>
                             </div>
                             <div className="mission-info">
-                                <strong>{mission.reward}$gm</strong>
+                                <strong>{animal.mission.name} - {animal.mission.reward}$gm</strong>
                             </div>
                             <ul>
-                                {mission.objectives.map(objective => (
+                                {animal.mission.objectives.map(objective => (
                                     <li key={objective.id}>
                                         <Checkbox id={objective.id} label={objective.name} checked={objective.completed} onChange={handleChangeObjective}></Checkbox>
                                     </li>

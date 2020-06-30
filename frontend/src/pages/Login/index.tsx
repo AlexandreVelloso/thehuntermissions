@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import './styles.css';
@@ -6,36 +6,36 @@ import './styles.css';
 import api from '../../services/api';
 import logo from '../../assets/Logo.jpg';
 
-export default function Register() {
-    const [username, setUsername] = useState('');
+export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useHistory();
 
-    async function handleRegister(e) {
-        e.preventDefault();
+    async function handleLogin(event: FormEvent) {
+        event.preventDefault();
 
         try {
             setErrorMessage('');
 
             setLoading(true);
-            const response = await api.post('auth/register', {
-                username,
+            const response = await api.post('auth/login', {
                 email,
                 password
             });
             setLoading(false);
 
-            const { accessToken, refreshToken } = response.data;
+            const { username } = response.data.user;
+            const { access_token: accessToken, refresh_token: refreshToken } = response.data;
 
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('access_token', accessToken);
+            localStorage.setItem('refresh_token', refreshToken);
             localStorage.setItem('username', username);
 
             history.push('/');
         } catch (err) {
+
             setLoading(false);
             if (!err.response) {
                 setErrorMessage('Error when try to connect to server')
@@ -46,18 +46,14 @@ export default function Register() {
     }
 
     return (
-        <div className="register-container">
+        <div className="login-container">
             <section className="form">
-                <form onSubmit={handleRegister}>
+                <form onSubmit={handleLogin}>
                     <img src={logo} alt="Logo"></img>
                     {
                         errorMessage &&
                         <div className="errorMessage">{errorMessage}</div>
                     }
-                    <input
-                        placeholder="Username"
-                        onChange={e => setUsername(e.target.value)}
-                    />
                     <input
                         placeholder="E-mail"
                         onChange={e => setEmail(e.target.value)}
@@ -68,12 +64,17 @@ export default function Register() {
                         onChange={e => setPassword(e.target.value)}
                     />
                     <button disabled={loading} className="button" type="submit">
-                        Entrar
+                        Login
                     </button>
 
-                    <Link className="back-link" to="login">
-                        Voltar para o login
-                    </Link>
+                    <div className="aboveLogin">
+                        <Link className="back-link" to="forgot-password">
+                            Forgot password
+                        </Link>
+                        <Link className="back-link" to="register">
+                            Register
+                        </Link>
+                    </div>
                 </form>
             </section>
         </div>

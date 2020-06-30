@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import './styles.css';
@@ -12,8 +12,8 @@ export default function ForgotPassword() {
     const [successMessage, setSuccessMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    async function handleForgotPassword(e) {
-        e.preventDefault();
+    async function handleForgotPassword(event: FormEvent) {
+        event.preventDefault();
 
         try {
             setErrorMessage('');
