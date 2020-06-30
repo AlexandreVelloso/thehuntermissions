@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import Animal from './pages/Animal';
 import Weapon from './pages/Weapon';
 
-export default function Routes({ match }) {
+export default function Routes() {
     return (
         <BrowserRouter>
             <Switch>

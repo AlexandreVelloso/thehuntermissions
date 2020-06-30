@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import './styles.css';
@@ -6,7 +6,7 @@ import './styles.css';
 import api from '../../services/api';
 import logo from '../../assets/Logo.jpg';
 
-export default function ResetPassword({ resetToken }) {
+export default function ResetPassword() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -19,15 +19,15 @@ export default function ResetPassword({ resetToken }) {
         return new URLSearchParams(useLocation().search);
     }
 
-    async function handleResetPassword(e) {
-        e.preventDefault();
+    async function handleResetPassword(event: FormEvent) {
+        event.preventDefault();
 
         try {
             if (!token || !password || !confirmPassword) {
                 return;
             }
 
-            if(password !== confirmPassword){
+            if (password !== confirmPassword) {
                 setErrorMessage('The passwords doesn\'t match');
                 return;
             }

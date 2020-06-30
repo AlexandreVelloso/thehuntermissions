@@ -6,7 +6,7 @@ import './styles.css';
 
 import logo from '../../assets/Logo.jpg';
 
-export default function MyNavBar({ username }) {
+export default function MyNavBar({ username }: { username: string | null }) {
     const history = useHistory();
 
     async function handleLogout() {
