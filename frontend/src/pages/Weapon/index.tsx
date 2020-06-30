@@ -7,13 +7,14 @@ import NavBar from '../../components/Navbar';
 import Checkbox from '../../components/Checkbox';
 
 import api from '../../services/api';
+import WeaponInterface from '../../interfaces/Weapon.interface';
 
 export default function Weapon() {
     const token = localStorage.getItem('access_token');
     const username = localStorage.getItem('username');
     const history = useHistory();
 
-    const [weapons, setWeapons] = useState([]);
+    const [weapons, setWeapons] = useState<WeaponInterface[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default function Weapon() {
         }
     }
 
-    async function updateWeapon(missionId, checked) {
+    async function updateWeapon(missionId: number, checked: boolean) {
         try {
             await api.put(`weapons/${missionId}`, {
                 have_weapon: checked,
@@ -67,7 +68,7 @@ export default function Weapon() {
         }
     }
 
-    async function handleChangeWeapon(objectiveId, checked) {
+    async function handleChangeWeapon(objectiveId: number, checked: boolean) {
         setLoading(true);
         await updateWeapon(objectiveId, checked);
         await loadWeapons();
@@ -82,7 +83,7 @@ export default function Weapon() {
             </div>
             <div className="home-container">
                 <ul>
-                    {weapons.map(weapon=>(
+                    {weapons.map(weapon => (
                         <li key={weapon.id}>
                             <div className="animal-title">
                                 <Checkbox id={weapon.id} label={weapon.name} checked={weapon.have_weapon} onChange={handleChangeWeapon}></Checkbox>
