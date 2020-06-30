@@ -4,52 +4,76 @@ import MissionService from '../Services/MissionService';
 import BaseController from './BaseController';
 import { LoginCredentials } from '../Dtos/UserCredentialsDto';
 import CacheService from '../Services/CacheService';
+import MissionDto from '../Dtos/MissionDto';
+import BaseValidator from '../Validators/BaseValidator';
 
 class MissionController extends BaseController {
 
     private missionService: MissionService;
     private cacheService: CacheService;
+    private getValidator: BaseValidator;
+    private updateMissionsValidator: BaseValidator;
 
     public constructor(opts: any) {
         super();
 
         this.missionService = opts.missionService;
         this.cacheService = opts.cacheService;
+        this.getValidator = opts.getValidator;
+        this.updateMissionsValidator = opts.updateMissionsValidator;
     }
 
-    protected async indexImpl(_req: any, res: Response, user: LoginCredentials): Promise<any> {
+    private async indexMissionsByUserId(userId: number): Promise<MissionDto[]> {
+        const missions: MissionDto[] = await this.missionService
+            .index(userId);
+
+        return missions;
+    }
+
+    protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexMission_${user.id}`;
 
-        const result = await this.cacheService
-            .get(key, async () => {
-                const missions = await this.missionService
-                    .index(user.id);
+        let missions: MissionDto[];
 
-                return missions;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            missions = await this.indexMissionsByUserId(user.id);
+        } else {
+            missions = await this.cacheService
+                .get(key, async () => await this.indexMissionsByUserId(user.id));
+        }
 
-        return this.ok(res, result);
+        return this.ok(res, missions);
+    }
+
+    private async findMissionByUserId(missionId: number, userId: number): Promise<MissionDto> {
+        const mission: MissionDto = await this.missionService
+            .get(missionId, userId);
+
+        return mission;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const { id: missionId } = req.params;
+        const { id: missionId } = this.getValidator
+            .validate(req);
 
         const key = `getMission_${missionId}_${user.id}`;
 
-        const result = await this.cacheService
-            .get(key, async () => {
-                const mission = await this.missionService
-                    .get(missionId, user.id);
+        let mission: MissionDto;
 
-                return mission;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            mission = await this.findMissionByUserId(missionId, user.id);
+        } else {
+            mission = await this.cacheService
+                .get(key, async () => await this.findMissionByUserId(missionId, user.id));
+        }
 
-        return this.ok(res, result);
+        return this.ok(res, mission);
     }
 
     protected async updateImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
-        const { id: missionId } = req.params;
-        const { completed } = req.body;
+
+        const { missionId, completed } = this.updateMissionsValidator
+            .validate(req);
 
         await this.missionService
             .update(missionId, completed, user.id);

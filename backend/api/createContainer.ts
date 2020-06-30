@@ -24,6 +24,15 @@ import StartWeaponsServiceImpl from './Services/impl/StartWeaponsServiceImpl';
 import UserObjectiveRepositoryImpl from './Repositories/impl/UserObjectiveRepositoryImpl';
 import SendResetEmailServiceImpl from './Services/impl/SendResetEmailServiceImpl';
 import CacheServiceImpl from './Services/impl/CacheServiceImpl';
+import GetValidator from './Validators/GetValidator';
+import UpdateMissionValidator from './Validators/UpdateMissionValidator';
+import UpdateObjectiveValidator from './Validators/UpdateObjectiveValidator';
+import UpdateWeaponValidator from './Validators/UpdateWeaponValidator';
+import AuthLoginValidator from './Validators/AuthLoginValidator';
+import AuthRegisterValidator from './Validators/AuthRegisterValidator';
+import AuthResetPasswordValidator from './Validators/AuthResetPasswordValidator';
+import AuthRefreshTokenValidator from './Validators/AuthRefreshTokenValidator';
+import ForgotPasswordValidator from './Validators/ForgotPasswordValidator';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -60,6 +69,16 @@ function createAppContainer(): AwilixContainer {
         userObjectiveRepository: asClass(UserObjectiveRepositoryImpl, opts),
         userWeaponRepository: asClass(UserWeaponRepositoryImpl, opts),
         weaponRepository: asClass(WeaponRepositoryImpl, opts),
+
+        getValidator: asClass(GetValidator, opts),
+        updateMissionsValidator: asClass(UpdateMissionValidator, opts),
+        updateObjectiveValidator: asClass(UpdateObjectiveValidator, opts),
+        updateWeaponValidator: asClass(UpdateWeaponValidator, opts),
+        authLoginValidator: asClass(AuthLoginValidator, opts),
+        authRegisterValidator: asClass(AuthRegisterValidator, opts),
+        authResetPasswordValidator: asClass(AuthResetPasswordValidator, opts),
+        authRefreshTokenValidator: asClass(AuthRefreshTokenValidator, opts),
+        forgotPasswordValidator: asClass(ForgotPasswordValidator, opts),
 
         ttlSeconds: asValue(DAY * 7),
     });

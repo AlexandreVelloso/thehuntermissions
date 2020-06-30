@@ -1,5 +1,6 @@
 import UserWeaponRepository from "../UserWeaponRepository";
 import UserWeaponModel from "../../../database/models/UserWeaponModel";
+import { Transaction } from "objection";
 
 class UserWeaponRepositoryImpl implements UserWeaponRepository {
 
@@ -17,21 +18,25 @@ class UserWeaponRepositoryImpl implements UserWeaponRepository {
     }
 
     async update(weaponId: number, userId: number, haveWeapon: boolean): Promise<void> {
-        await UserWeaponModel.query()
-            .where('weapon_id', weaponId)
-            .where('user_id', userId)
-            .patch({
-                have_weapon: haveWeapon,
-            });
+        await UserWeaponModel.transaction(async (trx: Transaction) => {
+            await UserWeaponModel.query(trx)
+                .where('weapon_id', weaponId)
+                .where('user_id', userId)
+                .patch({
+                    have_weapon: haveWeapon,
+                });
+        });
     }
 
     async insert(weaponId: number, userId: number, haveWeapon: boolean): Promise<void> {
-        await UserWeaponModel.query()
-            .insert({
-                weapon_id: weaponId,
-                user_id: userId,
-                have_weapon: haveWeapon,
-            });
+        await UserWeaponModel.transaction(async trx => {
+            await UserWeaponModel.query(trx)
+                .insert({
+                    weapon_id: weaponId,
+                    user_id: userId,
+                    have_weapon: haveWeapon,
+                });
+        });
     }
 
 }

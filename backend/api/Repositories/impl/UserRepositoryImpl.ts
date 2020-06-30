@@ -1,5 +1,6 @@
 import UserModel from "../../../database/models/UserModel";
 import UserRepository from "../UserRepository";
+import { Transaction } from "objection";
 
 class UserRepositoryImpl implements UserRepository {
 
@@ -22,21 +23,26 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     async insert(email: string, username: string, password: string, refreshToken: string): Promise<UserModel> {
-        return await UserModel.query()
-            .insert({
-                email,
-                username,
-                password,
-                refresh_token: refreshToken,
-            });
+        return await UserModel.transaction(async (trx: Transaction) => {
+            return await UserModel.query(trx)
+                .insert({
+                    email,
+                    username,
+                    password,
+                    refresh_token: refreshToken,
+                });
+        });
+
     }
 
     async updatePasswordByEmail(email: string, password: string): Promise<void> {
-        await UserModel.query()
-            .where('email', email)
-            .patch({
-                password,
-            });
+        await UserModel.transaction(async (trx: Transaction) => {
+            await UserModel.query(trx)
+                .where('email', email)
+                .patch({
+                    password,
+                });
+        });
     }
 
 }

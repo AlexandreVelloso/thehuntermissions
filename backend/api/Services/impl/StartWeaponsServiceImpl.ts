@@ -19,10 +19,10 @@ class StartWeaponsServiceImpl {
                 '243 Bolt Action Rifle'
             ]);
 
-        await weapons.forEach(async (weapon) => {
+        for (let index = 0; index < weapons.length; index += 1) {
             await this.userWeaponRepository
-                .insert(weapon.id, userId, true);
-        });
+                .insert(weapons[index].id, userId, true);
+        }
     }
 }
 
