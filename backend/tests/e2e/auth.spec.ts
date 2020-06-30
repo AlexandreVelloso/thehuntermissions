@@ -8,15 +8,7 @@ import errorSchema from '../schemas/ErrorSchema.json';
 import loginResponseSchema from '../schemas/LoginResponseSchema.json';
 import { generateUser, generateUserWithDefaultPassword } from '../__fakers__/UserFaker';
 
-let accessToken: string;
-
 beforeAll(async () => {
-    accessToken = 'Bearer ' + sign({
-        id: 1,
-        username: 'user',
-        email: 'email@email.com',
-    });
-
     expect.extend(matchersWithOptions({
         schemas: [errorSchema, loginResponseSchema],
     }));
@@ -81,6 +73,83 @@ describe('Register', () => {
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Email already exists');
     });
+
+    it('should give error 400 when username is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                email: 'email@email.com',
+                password: 'password',
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"username\" is required');
+    });
+
+    it('should give error 400 when email is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'username',
+                password: 'password'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"email\" is required');
+    });
+
+    it('should give error 400 when email is invalid', async () => {
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'username',
+                email: 'not an email',
+                password: 'password'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"email\" must be a valid email');
+    });
+
+    it('should give error 400 when password is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'username',
+                email: 'email@email.com'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"password\" is required');
+    });
 });
 
 describe('Login', () => {
@@ -137,9 +206,65 @@ describe('Login', () => {
         expect(response.body).toMatchSchema(testSchema);
         expect(response.body.error).toBe('Email or password incorrect');
     });
+
+    it('should give error 400 when email is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/login')
+            .send({
+                password: 'password'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"email\" is required');
+    });
+
+    it('should give error 400 when password is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/login')
+            .send({
+                email: 'email@email.com'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"password\" is required');
+    });
+
+    it('should give error 400 when email is invalid', async () => {
+        const response = await request(app)
+            .post('/api/auth/register')
+            .send({
+                username: 'username',
+                email: 'not an email',
+                password: 'password'
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"email\" must be a valid email');
+    });
 });
 
-describe('Refresh password', () => {
+describe('Reset password', () => {
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
@@ -235,7 +360,7 @@ describe('Refresh password', () => {
         expect(response.body.error).toBe('User not found');
     });
 
-    it.skip('should reset password and login with new password', async () => {
+    it('should reset password and login with new password', async () => {
         const user = await generateUser('username', 'a@a.com');
 
         const token = sign({ email: 'a@a.com' });
@@ -244,7 +369,7 @@ describe('Refresh password', () => {
             .post('/api/auth/resetPassword')
             .send({
                 password: 'newPassword',
-                confirmPassword: 'newPassword',
+                confirm_password: 'newPassword',
                 token,
             });
 
@@ -265,5 +390,101 @@ describe('Refresh password', () => {
             });
 
         expect(newPasswordAttemptResponse.status).toBe(200);
+    });
+
+    it('should give error 400 when token is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/resetPassword')
+            .send({
+                password: 'password',
+                confirm_password: 'password',
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"token\" is required');
+    });
+
+    it('should give error 400 when password is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/resetPassword')
+            .send({
+                token: 'token',
+                confirm_password: 'password',
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"password\" is required');
+    });
+
+    it('should give error 400 when confirm password is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/resetPassword')
+            .send({
+                token: 'token',
+                password: 'password',
+            });
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"confirm_password\" is required');
+    });
+});
+
+describe('Refresh token', () => {
+    beforeEach(async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+    });
+
+    afterEach(async () => {
+        await connection.migrate.rollback();
+    });
+    
+    it('should refresh user token', async () => {
+        const user = await generateUser('username', 'a@a.com');
+
+        const response = await request(app)
+            .post('/api/auth/refresh')
+            .send({
+                refresh_token: user.refresh_token
+            });
+
+        expect(response.status).toBe(200);
+    });
+
+    it('should give error 400 when refresh token is not present', async () => {
+        const response = await request(app)
+            .post('/api/auth/refresh')
+            .send();
+
+        expect(response.status).toBe(400);
+
+        const testSchema = {
+            $ref: 'error#/definitions/error',
+        };
+
+        expect(testSchema).toBeValidSchema();
+        expect(response.body).toMatchSchema(testSchema);
+        expect(response.body.error).toBe('\"refresh_token\" is required');
     });
 });

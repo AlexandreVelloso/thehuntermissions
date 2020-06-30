@@ -6,15 +6,15 @@ import ValidationException from "../Exceptions/ValidationException";
 class AuthRefreshTokenValidator implements BaseValidator {
 
     validate(req: any) {
-        const { refreshToken } = req.body;
+        const { refresh_token } = req.body;
 
         const schema = Joi.object({
-            refreshToken: Joi.string()
+            refresh_token: Joi.string()
                 .required(),
         });
 
         const validated = schema.validate({
-            refreshToken,
+            refresh_token,
         });
 
         if (validated.error) {
