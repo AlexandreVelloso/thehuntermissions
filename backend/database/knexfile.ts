@@ -2,8 +2,7 @@
 
 import appRoot from 'app-root-path';
 
-module.exports = {
-
+export default {
     development: {
         client: 'sqlite3',
         connection: {
@@ -65,5 +64,4 @@ module.exports = {
             directory: `${appRoot}/database/seeds`,
         },
     },
-
 };
