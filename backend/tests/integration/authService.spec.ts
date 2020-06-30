@@ -25,8 +25,8 @@ describe('Register', () => {
         const result = await authService.register(username, email, password);
 
         expect(result).toHaveProperty('user');
-        expect(result).toHaveProperty('accessToken');
-        expect(result).toHaveProperty('refreshToken');
+        expect(result).toHaveProperty('access_token');
+        expect(result).toHaveProperty('refresh_token');
 
         expect(result.user).toHaveProperty('id');
         expect(result.user).toHaveProperty('username');
@@ -52,8 +52,8 @@ describe('Login', () => {
         const result = await authService.login(email, password);
 
         expect(result).toHaveProperty('user');
-        expect(result).toHaveProperty('accessToken');
-        expect(result).toHaveProperty('refreshToken');
+        expect(result).toHaveProperty('access_token');
+        expect(result).toHaveProperty('refresh_token');
 
         expect(result.user).toHaveProperty('id');
         expect(result.user).toHaveProperty('username');
@@ -120,8 +120,8 @@ describe('Refresh token', () => {
         const result = await authService.refreshToken(refreshToken);
 
         expect(result).toHaveProperty('user');
-        expect(result).toHaveProperty('accessToken');
-        expect(result).toHaveProperty('refreshToken');
+        expect(result).toHaveProperty('access_token');
+        expect(result).toHaveProperty('refresh_token');
 
         expect(result.user).toHaveProperty('id');
         expect(result.user).toHaveProperty('username');

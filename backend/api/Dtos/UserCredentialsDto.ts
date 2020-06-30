@@ -6,6 +6,6 @@ export interface LoginCredentials {
 
 export default interface UserCredentials {
     user: LoginCredentials;
-    accessToken: string;
-    refreshToken: string;
+    access_token: string;
+    refresh_token: string;
 }

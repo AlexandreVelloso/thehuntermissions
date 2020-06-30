@@ -36,8 +36,8 @@ class AuthServiceImpl implements AuthService {
                 username: user.username,
                 email: user.email,
             },
-            accessToken,
-            refreshToken: user.refresh_token,
+            access_token: accessToken,
+            refresh_token: user.refresh_token,
         };
     };
 
