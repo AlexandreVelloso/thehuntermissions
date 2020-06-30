@@ -70,8 +70,11 @@ describe('Weapons Get', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        await generateWeapon(1);
-        await generateUserWeapon(1, 1, true);
+        const weaponId = 1;
+        const userId = 1;
+
+        await generateWeapon(weaponId);
+        await generateUserWeapon(userId, weaponId, true);
     });
 
     afterEach(async () => {
@@ -116,6 +119,12 @@ describe('Weapons Update', () => {
     beforeEach(async () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
+
+        const weaponId = 1;
+        const userId = 1;
+
+        await generateWeapon(weaponId);
+        await generateUserWeapon(userId, weaponId, false);
     });
 
     afterEach(async () => {
@@ -123,9 +132,6 @@ describe('Weapons Update', () => {
     });
 
     it('should update weapon', async () => {
-        await generateWeapon(1);
-        await generateUserWeapon(1, 1, false);
-
         const responseOld = await request(app)
             .get('/api/weapons/1')
             .set('Authorization', firstUserAccessToken);
@@ -210,8 +216,11 @@ describe('Test weapons for two users', () => {
         await connection.migrate.rollback();
         await connection.migrate.latest();
 
-        await generateWeapon(1);
-        await generateUserWeapon(1, 1, true);
+        const weaponId = 1;
+        const userId = 1;
+
+        await generateWeapon(weaponId);
+        await generateUserWeapon(userId, weaponId, true);
     });
 
     afterEach(async () => {
