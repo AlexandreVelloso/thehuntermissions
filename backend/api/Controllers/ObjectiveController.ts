@@ -23,18 +23,33 @@ class ObjectiveController extends BaseController {
         this.updateObjectiveValidator = opts.updateObjectiveValidator;
     }
 
+    private async indexObjectivesByUserId(userId: number): Promise<ObjectiveDto[]> {
+        const objectives: ObjectiveDto[] = await this.objectiveService
+            .index(userId);
+
+        return objectives;
+    }
+
     protected async indexImpl(res: Response, user: LoginCredentials) {
         const key = `indexObjective_${user.id}`;
 
-        const objectives: ObjectiveDto[] = await this.cacheService
-            .get(key, async () => {
-                const objectives: ObjectiveDto[] = await this.objectiveService
-                    .index(user.id);
+        let objectives: ObjectiveDto[];
 
-                return objectives;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            objectives = await this.indexObjectivesByUserId(user.id);
+        } else {
+            objectives = await this.cacheService
+                .get(key, async () => await this.indexObjectivesByUserId(user.id));
+        }
 
         return this.ok(res, objectives);
+    }
+
+    private async findObjectiveByUserId(objectiveId: number, userId: number): Promise<ObjectiveDto> {
+        const objective: ObjectiveDto = await this.objectiveService
+            .get(objectiveId, userId);
+
+        return objective;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
@@ -43,13 +58,14 @@ class ObjectiveController extends BaseController {
 
         const key = `getObjective_${objectiveId}_${user.id}`;
 
-        const objective: ObjectiveDto = await this.cacheService
-            .get(key, async () => {
-                const objective: ObjectiveDto = await this.objectiveService
-                    .get(objectiveId, user.id);
+        let objective: ObjectiveDto;
 
-                return objective;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            objective = await this.findObjectiveByUserId(objectiveId, user.id);
+        } else {
+            objective = await this.cacheService
+                .get(key, async () => await this.findObjectiveByUserId(objectiveId, user.id));
+        }
 
         return this.ok(res, objective);
     }

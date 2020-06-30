@@ -21,18 +21,33 @@ class AnimalController extends BaseController {
         this.getValidator = opts.getValidator;
     }
 
+    private async indexAnimalsByUserId(userId: number): Promise<AnimalDto[]> {
+        const animals = await this.animalService
+            .index(userId);
+
+        return animals;
+    }
+
     protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexAnimal_${user.id}`;
 
-        const animals: AnimalDto[] = await this.cacheService
-            .get(key, async () => {
-                const animals: AnimalDto[] = await this.animalService
-                    .index(user.id);
+        let animals: AnimalDto[];
 
-                return animals;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            animals = await this.indexAnimalsByUserId(user.id);
+        } else {
+            animals = await this.cacheService
+                .get(key, async () => await this.indexAnimalsByUserId(user.id));
+        }
 
         return this.ok(res, animals);
+    }
+
+    private async findAnimalByUserId(animalId: number, userId: number): Promise<AnimalDto> {
+        const animal: AnimalDto = await this.animalService
+            .get(animalId, userId);
+
+        return animal;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -41,13 +56,14 @@ class AnimalController extends BaseController {
 
         const key = `getAnimal_${animalId}_${user.id}`;
 
-        const animal: AnimalDto = await this.cacheService
-            .get(key, async () => {
-                const animal: AnimalDto = await this.animalService
-                    .get(animalId, user.id);
+        let animal: AnimalDto;
 
-                return animal;
-            });
+        if (process.env.NODE_ENV === 'testing') {
+            animal = await this.findAnimalByUserId(animalId, user.id);
+        } else {
+            animal = await this.cacheService
+                .get(key, async () => await this.findAnimalByUserId(animalId, user.id));
+        }
 
         return this.ok(res, animal);
     }

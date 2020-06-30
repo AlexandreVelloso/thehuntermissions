@@ -22,10 +22,10 @@ class AuthController {
     }
 
     async login(req: Request, res: Response) {
-        const { email, password } = this.authLoginValidator
-            .validate(req);
-
         try {
+            const { email, password } = this.authLoginValidator
+                .validate(req);
+
             const userCredentials: UserCredentials = await this.authService
                 .login(email, password);
             return res.json(userCredentials);
@@ -35,10 +35,10 @@ class AuthController {
     }
 
     async register(req: Request, res: Response) {
-        const { username, email, password } = this.authRegisterValidator
-            .validate(req);
-
         try {
+            const { username, email, password } = this.authRegisterValidator
+                .validate(req);
+
             const userCredentials: UserCredentials = await this.authService
                 .register(username, email, password);
             return res.json(userCredentials);
@@ -48,10 +48,10 @@ class AuthController {
     }
 
     async resetPassword(req: Request, res: Response) {
-        const { token, password, confirm_password: confirmPassword } = this.authResetPasswordValidator
-            .validate(req);
-
         try {
+            const { token, password, confirm_password: confirmPassword } = this.authResetPasswordValidator
+                .validate(req);
+
             await this.authService
                 .resetPassword(token, password, confirmPassword);
             return res.status(200).end();
@@ -61,10 +61,10 @@ class AuthController {
     }
 
     async refreshToken(req: Request, res: Response) {
-        const { refreshToken } = this.authRefreshTokenValidator
-            .validate(req);
-
         try {
+            const { refresh_token: refreshToken } = this.authRefreshTokenValidator
+                .validate(req);
+
             const userCredentials: UserCredentials = await this.authService
                 .refreshToken(refreshToken);
             return res.json(userCredentials);

@@ -23,18 +23,33 @@ class WeaponController extends BaseController {
         this.updateWeaponValidator = opts.updateWeaponValidator;
     }
 
+    private async indexWeaponsByUserId(userId: number): Promise<WeaponDto[]> {
+        const weapons: WeaponDto[] = await this.weaponService
+            .index(userId);
+
+        return weapons;
+    }
+
     protected async indexImpl(res: Response, user: LoginCredentials) {
         const key = `indexWeapon_${user.id}`;
 
-        const weapons: WeaponDto[] = await this.cacheService
-            .get(key, async () => {
-                const weapons: WeaponDto[] = await this.weaponService
-                    .index(user.id);
+        let weapons: WeaponDto[];
 
-                return weapons;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            weapons = await this.indexWeaponsByUserId(user.id);
+        } else {
+            weapons = await this.cacheService
+                .get(key, async () => await this.indexWeaponsByUserId(user.id));
+        }
 
         return this.ok(res, weapons);
+    }
+
+    private async findWeaponByUserId(weaponId: number, userId: number): Promise<WeaponDto> {
+        const weapon: WeaponDto = await this.weaponService
+            .get(weaponId, userId);
+
+        return weapon;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials) {
@@ -43,13 +58,14 @@ class WeaponController extends BaseController {
 
         const key = `getWeapon_${weaponId}_${user.id}`;
 
-        const weapon: WeaponDto = await this.cacheService
-            .get(key, async () => {
-                const weapon: WeaponDto = await this.weaponService
-                    .get(weaponId, user.id);
+        let weapon: WeaponDto;
 
-                return weapon;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            weapon = await this.findWeaponByUserId(weaponId, user.id);
+        } else {
+            weapon = await this.cacheService
+                .get(key, async () => await this.findWeaponByUserId(weaponId, user.id));
+        }
 
         return this.ok(res, weapon);
     }

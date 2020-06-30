@@ -21,18 +21,33 @@ class LastMissionController extends BaseController {
         this.getValidator = opts.getValidator;
     }
 
+    private async indexLastMissionsByUserId(userId: number): Promise<LastMissionDto[]> {
+        const animals: LastMissionDto[] = await this.lastMissionService
+            .index(userId);
+
+        return animals;
+    }
+
     protected async indexImpl(res: Response, user: LoginCredentials): Promise<any> {
         const key = `indexLastMission_${user.id}`;
 
-        const lastMissions: LastMissionDto[] = await this.cacheService
-            .get(key, async () => {
-                const animals: LastMissionDto[] = await this.lastMissionService
-                    .index(user.id);
+        let lastMissions: LastMissionDto[];
 
-                return animals;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            lastMissions = await this.indexLastMissionsByUserId(user.id);
+        } else {
+            lastMissions = await this.cacheService
+                .get(key, this.indexLastMissionsByUserId(user.id));
+        }
 
         return this.ok(res, lastMissions);
+    }
+
+    private async findLastMissionByUserId(animalId: number, userId: number): Promise<LastMissionDto> {
+        const animal: LastMissionDto = await this.lastMissionService
+            .get(animalId, userId);
+
+        return animal;
     }
 
     protected async getImpl(req: any, res: Response, user: LoginCredentials): Promise<any> {
@@ -41,13 +56,14 @@ class LastMissionController extends BaseController {
 
         const key = `getLastMission_${animalId}_${user.id}`;
 
-        const lastMission: LastMissionDto = await this.cacheService
-            .get(key, async () => {
-                const animal: LastMissionDto = await this.lastMissionService
-                    .get(animalId, user.id);
+        let lastMission: LastMissionDto;
 
-                return animal;
-            });
+        if (process.env.NODE_ENV === 'test') {
+            lastMission = await this.findLastMissionByUserId(animalId, user.id);
+        } else {
+            lastMission = await this.cacheService
+                .get(key, async () => await this.findLastMissionByUserId(animalId, user.id));
+        }
 
         return this.ok(res, lastMission);
     }
