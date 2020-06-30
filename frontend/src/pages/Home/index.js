@@ -9,7 +9,7 @@ import Checkbox from '../../components/Checkbox';
 import api from '../../services/api';
 
 export default function Home() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     const username = localStorage.getItem('username');
     const history = useHistory();
 
@@ -125,10 +125,10 @@ export default function Home() {
                 <ul>
                     {animals.map(animal => (
                         <li key={animal.id}>
-                            <p className="avaliability-tags">
+                            <span className="avaliability-tags">
                                 {animal.mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
                                 {!animal.mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
-                            </p>
+                            </span>
                             <div className="animal-title">
                                 <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>
                                 <button onClick={() => handleCompleteMission(animal.mission.id)} disabled={loading}>Complete mission</button>
