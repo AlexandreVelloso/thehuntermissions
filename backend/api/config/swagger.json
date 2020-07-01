@@ -1001,8 +1001,20 @@
                 "user_has_weapon": {
                     "type": "boolean"
                 },
+                "user_has_equipament": {
+                    "type": "boolean"
+                },
                 "weapons": {
-                    "$ref": "#/definitions/Weapon"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Weapon"
+                    }
+                },
+                "equipaments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Weapon"
+                    }
                 },
                 "created_at": {
                     "type": "string",
@@ -1045,7 +1057,7 @@
                 }
             }
         },
-        "Equipament":{
+        "Equipament": {
             "type": "object",
             "properties": {
                 "id": {
