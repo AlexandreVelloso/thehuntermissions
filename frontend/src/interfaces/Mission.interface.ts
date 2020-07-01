@@ -8,6 +8,7 @@ interface Mission {
     animal_id: number,
     objectives: Objective[],
     user_has_weapon: boolean,
+    user_has_equipament: boolean,
     created_at: string,
     updated_at: string,
 }

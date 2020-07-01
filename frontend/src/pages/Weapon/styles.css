@@ -49,14 +49,6 @@
     margin-left: 10px;
 }
 
-.home-container .avaliable {
-    background: green;
-}
-
-.home-container .buy-gun {
-    background: red;
-}
-
 .home-container ul li {
     background: #fff;
     padding: 12px;

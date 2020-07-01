@@ -46,6 +46,10 @@
     background: red;
 }
 
+.animal-container .buy-equipament {
+    background: orange;
+}
+
 .animal-name {
     text-align: center;
     padding-bottom: 20px;
