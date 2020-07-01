@@ -6,6 +6,7 @@ import { sign } from "../../api/Utils/JwtToken";
 import connection from '../../database/connection';
 import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
+import equipamentSchema from '../schemas/EquipamentSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
 import { isAllObjectivesCompleted } from '../../api/Utils/AnimalsMissions';
 import { generateMission } from '../__fakers__/MissionFaker';
@@ -29,13 +30,19 @@ beforeAll(() => {
     });
 
     expect.extend(matchersWithOptions({
-        schemas: [errorSchema, objectiveSchema, missionSchema],
+        schemas: [
+            errorSchema,
+            objectiveSchema,
+            missionSchema,
+            equipamentSchema,
+        ],
     }));
 
     test('Validate schemas', () => {
         expect(errorSchema).toBeValidSchema();
         expect(objectiveSchema).toBeValidSchema();
         expect(missionSchema).toBeValidSchema();
+        expect(equipamentSchema).toBeValidSchema();
     });
 });
 

@@ -31,6 +31,7 @@ describe('Missions Service - Index', () => {
                     hint: 'hint',
                     animal_id: 1,
                     user_has_weapon: true,
+                    user_has_equipament: true,
                     objectives: [
                         {
                             id: 1,
@@ -39,7 +40,9 @@ describe('Missions Service - Index', () => {
                             user_id: 1,
                             completed: true,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }
@@ -54,6 +57,7 @@ describe('Missions Service - Index', () => {
                     hint: 'hint',
                     animal_id: 1,
                     user_has_weapon: true,
+                    user_has_equipament: true,
                     objectives: [
                         {
                             id: 1,
@@ -62,7 +66,9 @@ describe('Missions Service - Index', () => {
                             user_id: 1,
                             completed: false,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }
@@ -89,6 +95,7 @@ describe('Missions Service - Get', () => {
                 hint: 'hint',
                 animal_id: 1,
                 user_has_weapon: true,
+                user_has_equipament: true,
                 objectives: [
                     {
                         id: 1,
@@ -97,7 +104,9 @@ describe('Missions Service - Get', () => {
                         user_id: 1,
                         completed: true,
                         user_has_weapon: true,
+                        user_has_equipament: true,
                         weapons: [],
+                        equipaments: [],
                         created_at: '',
                         updated_at: '',
                     }
