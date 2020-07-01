@@ -5,6 +5,7 @@ import app from '../../api/app';
 import connection from '../../database/connection';
 import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
+import equipamentSchema from '../schemas/EquipamentSchema.json';
 import weaponSchema from '../schemas/WeaponSchema.json';
 import { generateObjective } from '../__fakers__/ObjectiveFaker';
 import { generateUserObjective } from '../__fakers__/UserObjectiveFaker';
@@ -27,13 +28,19 @@ beforeAll(() => {
     });
 
     expect.extend(matchersWithOptions({
-        schemas: [errorSchema, objectiveSchema, weaponSchema],
+        schemas: [
+            errorSchema,
+            objectiveSchema,
+            weaponSchema,
+            equipamentSchema
+        ],
     }));
 
     test('Validate schemas', () => {
         expect(errorSchema).toBeValidSchema();
         expect(objectiveSchema).toBeValidSchema();
         expect(weaponSchema).toBeValidSchema();
+        expect(equipamentSchema).toBeValidSchema();
     });
 });
 

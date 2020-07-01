@@ -8,6 +8,7 @@ import errorSchema from '../schemas/ErrorSchema.json';
 import objectiveSchema from '../schemas/ObjectiveSchema.json';
 import missionSchema from '../schemas/MissionSchema.json';
 import lastMissionSchema from '../schemas/LastMissionSchema.json';
+import equipamentSchema from '../schemas/EquipamentSchema.json';
 import { generateAnimal } from '../__fakers__/AnimalFaker';
 import { generateMission } from '../__fakers__/MissionFaker';
 import { generateObjective } from '../__fakers__/ObjectiveFaker';
@@ -26,7 +27,8 @@ beforeAll(() => {
             missionSchema,
             lastMissionSchema,
             objectiveSchema,
-            errorSchema
+            errorSchema,
+            equipamentSchema,
         ],
     }));
 
@@ -35,6 +37,7 @@ beforeAll(() => {
         expect(missionSchema).toBeValidSchema();
         expect(objectiveSchema).toBeValidSchema();
         expect(errorSchema).toBeValidSchema();
+        expect(equipamentSchema).toBeValidSchema();
     });
 });
 

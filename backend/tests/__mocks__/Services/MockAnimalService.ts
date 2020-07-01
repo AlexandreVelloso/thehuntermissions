@@ -16,6 +16,7 @@ class MockAnimalService implements AnimalService {
                         hint: '',
                         animal_id: 1,
                         user_has_weapon: true,
+                        user_has_equipament: true,
                         objectives: [
                             {
                                 id: 1,
@@ -24,7 +25,9 @@ class MockAnimalService implements AnimalService {
                                 user_id: 1,
                                 completed: true,
                                 user_has_weapon: true,
+                                user_has_equipament: true,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             },
@@ -35,7 +38,9 @@ class MockAnimalService implements AnimalService {
                                 user_id: 1,
                                 completed: false,
                                 user_has_weapon: true,
+                                user_has_equipament: true,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             }
@@ -66,6 +71,7 @@ class MockAnimalService implements AnimalService {
                     hint: '',
                     animal_id: 1,
                     user_has_weapon: true,
+                    user_has_equipament: true,
                     objectives: [
                         {
                             id: 1,
@@ -74,7 +80,9 @@ class MockAnimalService implements AnimalService {
                             user_id: 1,
                             completed: true,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         },
@@ -85,7 +93,9 @@ class MockAnimalService implements AnimalService {
                             user_id: 1,
                             completed: false,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }

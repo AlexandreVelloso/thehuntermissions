@@ -30,6 +30,7 @@ describe('LastMissions Service - Index', () => {
                         hint: '',
                         animal_id: 1,
                         user_has_weapon: true,
+                        user_has_equipament: true,
                         objectives: [
                             {
                                 id: 1,
@@ -38,7 +39,9 @@ describe('LastMissions Service - Index', () => {
                                 user_id: 1,
                                 completed: true,
                                 user_has_weapon: true,
+                                user_has_equipament: true,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             },
@@ -49,7 +52,9 @@ describe('LastMissions Service - Index', () => {
                                 user_id: 1,
                                 completed: false,
                                 user_has_weapon: true,
+                                user_has_equipament: true,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             }
@@ -82,6 +87,7 @@ describe('LastMissions Service - Get', () => {
                     hint: '',
                     animal_id: 1,
                     user_has_weapon: true,
+                    user_has_equipament: true,
                     objectives: [
                         {
                             id: 1,
@@ -90,7 +96,9 @@ describe('LastMissions Service - Get', () => {
                             user_id: 1,
                             completed: true,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         },
@@ -101,7 +109,9 @@ describe('LastMissions Service - Get', () => {
                             user_id: 1,
                             completed: false,
                             user_has_weapon: true,
+                            user_has_equipament: true,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }

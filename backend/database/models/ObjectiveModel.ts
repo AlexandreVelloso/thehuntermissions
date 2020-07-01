@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import UserObjectiveModel from './UserObjectiveModel';
 import WeaponModel from './WeaponModel';
+import EquipamentModel from './EquipamentModel';
 
 class ObjectiveModel extends Model {
     id: any;
@@ -9,6 +10,7 @@ class ObjectiveModel extends Model {
     user_id: any;
     completed: any;
     weapons: any;
+    equipaments: any;
     created_at: any;
     updated_at: any;
 
@@ -23,7 +25,19 @@ class ObjectiveModel extends Model {
                 modelClass: UserObjectiveModel,
                 join: {
                     from: 'objectives.id',
-                    to: 'user_objectives.objective_id'
+                    to: 'user_objectives.objective_id',
+                }
+            },
+            equipaments: {
+                relation: Model.ManyToManyRelation,
+                modelClass: EquipamentModel,
+                join: {
+                    from: 'objectives.id',
+                    through: {
+                        from: 'objectives_equipaments.objective_id',
+                        to: 'objectives_equipaments.equipament_id'
+                    },
+                    to: 'equipaments.id'
                 }
             },
             weapons: {

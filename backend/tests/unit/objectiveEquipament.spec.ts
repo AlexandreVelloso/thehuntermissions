@@ -1,19 +1,19 @@
 import {
-    userHasSomeObjectiveWeapon,
-    allObjectivesWeaponsAreAvaliable,
-} from '../../api/Utils/ObjectiveWeapons';
-import WeaponDto from '../../api/Dtos/WeaponDto';
+    userHasSomeObjectiveEquipament,
+    allObjectivesEquipamentsAreAvaliable,
+} from '../../api/Utils/ObjectiveEquipaments';
 import ObjectiveDto from '../../api/Dtos/ObjectiveDto';
+import EquipamentDto from '../../api/Dtos/EquipamentDto';
 
 describe('User Have Some Objective Weapon', () => {
     it('should give true when weapons array is empty', () => {
-        const result = userHasSomeObjectiveWeapon([]);
+        const result = userHasSomeObjectiveEquipament([]);
 
         expect(result).toBe(true);
     });
 
     it('should give true when user has 1 weapon', () => {
-        const weapons: WeaponDto[] = [
+        const weapons: EquipamentDto[] = [
             {
                 id: 1,
                 name: '',
@@ -21,7 +21,7 @@ describe('User Have Some Objective Weapon', () => {
                 created_at: '',
                 updated_at: '',
                 user_id: null,
-                have_weapon: true,
+                have_equipament: true,
             },
             {
                 id: 2,
@@ -30,16 +30,16 @@ describe('User Have Some Objective Weapon', () => {
                 created_at: '',
                 updated_at: '',
                 user_id: null,
-                have_weapon: false,
+                have_equipament: false,
             },
         ];
-        const result = userHasSomeObjectiveWeapon(weapons);
+        const result = userHasSomeObjectiveEquipament(weapons);
 
         expect(result).toBe(true);
     });
 
     it('should give false when user has no weapons', () => {
-        const weapons: WeaponDto[] = [
+        const weapons: EquipamentDto[] = [
             {
                 id: 1,
                 name: '',
@@ -47,7 +47,7 @@ describe('User Have Some Objective Weapon', () => {
                 created_at: '',
                 updated_at: '',
                 user_id: null,
-                have_weapon: false,
+                have_equipament: false,
             },
             {
                 id: 2,
@@ -56,11 +56,11 @@ describe('User Have Some Objective Weapon', () => {
                 created_at: '',
                 updated_at: '',
                 user_id: null,
-                have_weapon: false,
+                have_equipament: false,
             }
         ];
 
-        const result = userHasSomeObjectiveWeapon(weapons);
+        const result = userHasSomeObjectiveEquipament(weapons);
 
         expect(result).toBe(false);
     });
@@ -97,7 +97,7 @@ describe('All Objectives Are Avaliable', () => {
             },
         ];
 
-        const result = allObjectivesWeaponsAreAvaliable(objectives);
+        const result = allObjectivesEquipamentsAreAvaliable(objectives);
 
         expect(result).toBe(true);
     });
@@ -132,7 +132,7 @@ describe('All Objectives Are Avaliable', () => {
             },
         ];
 
-        const result = allObjectivesWeaponsAreAvaliable(objectives);
+        const result = allObjectivesEquipamentsAreAvaliable(objectives);
 
         expect(result).toBe(false);
     });
@@ -167,7 +167,7 @@ describe('All Objectives Are Avaliable', () => {
             },
         ];
 
-        const result = allObjectivesWeaponsAreAvaliable(objectives);
+        const result = allObjectivesEquipamentsAreAvaliable(objectives);
 
         expect(result).toBe(false);
     });
