@@ -3,7 +3,7 @@ import faker from 'faker';
 import WeaponModel from '../../database/models/WeaponModel';
 
 export async function generateWeapon(weaponId?: number) {
-    return await WeaponModel.query()
+    return WeaponModel.query()
         .insert({
             id: weaponId,
             name: faker.name.firstName(),
