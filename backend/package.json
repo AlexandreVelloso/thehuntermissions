@@ -9,7 +9,7 @@
     "dev": "ts-node-dev --transpileOnly --ignore-watch node_modules index.ts",
     "test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "lint": "eslint",
-    "db_reset": "cd database && knex migrate:rollback && knex migrate:latest && knex seed:run"
+    "db_reset": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },
   "repository": {
     "type": "git",
