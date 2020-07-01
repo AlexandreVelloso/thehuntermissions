@@ -1,12 +1,15 @@
+import * as Knex from "knex";
 
-exports.up = function up(knex) {
+
+export async function up(knex: Knex): Promise<any> {
     return knex.schema.createTable('animals', (table) => {
         table.increments();
         table.string('name', 50).notNullable();
         table.timestamps(true, true);
     });
-};
+}
 
-exports.down = function down(knex) {
+
+export async function down(knex: Knex): Promise<any> {
     return knex.schema.dropTable('animals');
-};
+}

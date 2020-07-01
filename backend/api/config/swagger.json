@@ -39,6 +39,10 @@
         {
             "name": "Weapon",
             "description": "Weapons in the game"
+        },
+        {
+            "name": "Equipament",
+            "description": "Equipaments in the game"
         }
     ],
     "schemes": [
@@ -760,6 +764,124 @@
                 ],
                 "summary": "Update a objective",
                 "operationId": "updateObjective",
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/equipaments": {
+            "get": {
+                "tags": [
+                    "Equipament"
+                ],
+                "summary": "Retrieve all equipaments",
+                "operationId": "getEquipaments",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Equipament"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/equipaments/{equipamentId": {
+            "get": {
+                "tags": [
+                    "Equipament"
+                ],
+                "parameters": [
+                    {
+                        "name": "equipamentId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the equipament to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Find an equipament",
+                "operationId": "findEquipament",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Equipament"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Equipament"
+                ],
+                "parameters": [
+                    {
+                        "name": "equipamentId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the equipament to update",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "have_equipament",
+                        "in": "body",
+                        "required": true,
+                        "description": "Boolean to describe if the equipament was bought or not",
+                        "type": "object",
+                        "properties": {
+                            "have_equipament": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update an Equipament",
+                "operationId": "updateEquipament",
                 "responses": {
                     "204": {
                         "description": "Successful operation"

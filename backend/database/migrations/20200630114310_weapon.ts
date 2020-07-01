@@ -1,13 +1,17 @@
+import * as Knex from "knex";
 
-exports.up = function up(knex) {
+
+export async function up(knex: Knex): Promise<any> {
     return knex.schema.createTable('weapons', (table) => {
         table.increments();
         table.string('name').notNullable();
         table.integer('price');
         table.timestamps(true, true);
     });
-};
+}
 
-exports.down = function down(knex) {
+
+export async function down(knex: Knex): Promise<any> {
     return knex.schema.dropTable('weapons');
-};
+}
+

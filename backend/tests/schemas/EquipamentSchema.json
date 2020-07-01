@@ -1,0 +1,51 @@
+{
+    "$id": "equipament",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "description": "Equipament response",
+    "definitions": {
+        "equipament": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": [
+                        "null",
+                        "number"
+                    ]
+                },
+                "have_equipament": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "price",
+                "user_id",
+                "have_equipament",
+                "created_at",
+                "updated_at"
+            ]
+        },
+        "arrayOfEquipaments":{
+            "type":"array",
+            "items": {
+                "$ref": "equipament"
+            }
+        }
+    }
+}

@@ -33,6 +33,11 @@ import AuthRegisterValidator from './Validators/AuthRegisterValidator';
 import AuthResetPasswordValidator from './Validators/AuthResetPasswordValidator';
 import AuthRefreshTokenValidator from './Validators/AuthRefreshTokenValidator';
 import ForgotPasswordValidator from './Validators/ForgotPasswordValidator';
+import EquipamentController from './Controllers/EquipamentController';
+import EquipamentServiceImpl from './Services/impl/EquipamentServiceImpl';
+import EquipamentRepositoryImpl from './Repositories/impl/EquipamentRepositoryImpl';
+import UserEquipamentRepositoryImpl from './Repositories/impl/UserEquipamentRepositoryImpl';
+import UpdateEquipamentValidator from './Validators/UpdateEquipamentValidator';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -50,6 +55,7 @@ function createAppContainer(): AwilixContainer {
         missionController: asClass(MissionController, opts),
         objectiveController: asClass(ObjectiveController, opts),
         weaponController: asClass(WeaponController, opts),
+        equipamentController: asClass(EquipamentController, opts),
 
         animalService: asClass(AnimalServiceImpl, opts),
         authService: asClass(AuthServiceImpl, opts),
@@ -60,6 +66,7 @@ function createAppContainer(): AwilixContainer {
         objectiveService: asClass(ObjectiveServiceImpl, opts),
         startWeaponsService: asClass(StartWeaponsServiceImpl, opts),
         weaponService: asClass(WeaponServiceImpl, opts),
+        equipamentService: asClass(EquipamentServiceImpl, opts),
 
         animalRepository: asClass(AnimalRepositoryImpl, opts),
         missionRepository: asClass(MissionRepositoryImpl, opts),
@@ -69,6 +76,8 @@ function createAppContainer(): AwilixContainer {
         userObjectiveRepository: asClass(UserObjectiveRepositoryImpl, opts),
         userWeaponRepository: asClass(UserWeaponRepositoryImpl, opts),
         weaponRepository: asClass(WeaponRepositoryImpl, opts),
+        equipamentRepository: asClass(EquipamentRepositoryImpl, opts),
+        userEquipamentRepository: asClass(UserEquipamentRepositoryImpl, opts),
 
         getValidator: asClass(GetValidator, opts),
         updateMissionsValidator: asClass(UpdateMissionValidator, opts),
@@ -79,6 +88,7 @@ function createAppContainer(): AwilixContainer {
         authResetPasswordValidator: asClass(AuthResetPasswordValidator, opts),
         authRefreshTokenValidator: asClass(AuthRefreshTokenValidator, opts),
         forgotPasswordValidator: asClass(ForgotPasswordValidator, opts),
+        updateEquipamentValidator: asClass(UpdateEquipamentValidator, opts),
 
         ttlSeconds: asValue(DAY * 7),
     });

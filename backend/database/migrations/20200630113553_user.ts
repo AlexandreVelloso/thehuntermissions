@@ -1,5 +1,7 @@
+import * as Knex from "knex";
 
-exports.up = function up(knex) {
+
+export async function up(knex: Knex): Promise<any> {
     return knex.schema.createTable('users', (table) => {
         table.increments();
         table.string('username').notNullable();
@@ -8,8 +10,10 @@ exports.up = function up(knex) {
         table.string('refresh_token', 256).notNullable();
         table.timestamps(true, true);
     });
-};
+}
 
-exports.down = function down(knex) {
+
+export async function down(knex: Knex): Promise<any> {
     return knex.schema.dropTable('users');
-};
+}
+
