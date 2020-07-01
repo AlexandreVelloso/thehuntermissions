@@ -817,7 +817,7 @@
                 ]
             }
         },
-        "/equipaments/{equipamentId": {
+        "/equipaments/{equipamentId}": {
             "get": {
                 "tags": [
                     "Equipament"
@@ -1033,6 +1033,37 @@
                     "format": "int32"
                 },
                 "have_weapon": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Equipament":{
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "have_equipament": {
                     "type": "boolean"
                 },
                 "created_at": {
