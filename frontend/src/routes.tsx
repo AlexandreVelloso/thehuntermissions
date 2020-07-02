@@ -8,6 +8,7 @@ import ResetPassword from './pages/ResetPassword';
 import Home from './pages/Home';
 import Animal from './pages/Animal';
 import Weapon from './pages/Weapon';
+import Equipament from './pages/Equipament';
 
 export default function Routes() {
     return (
@@ -20,6 +21,7 @@ export default function Routes() {
                 <Route path="/reset-password" exact component={ResetPassword}></Route>
                 <Route path="/weapon" exact component={Weapon}></Route>
                 <Route path="/animal/:animalId" component={Animal}></Route>
+                <Route path="/equipament" exact component={Equipament}></Route>
             </Switch>
         </BrowserRouter>
     );
