@@ -8,15 +8,18 @@ import StartWeaponsService from '../StartWeaponsService';
 import AuthService from '../AuthService';
 import UserCredentials from '../../Dtos/UserCredentialsDto';
 import UserRepository from '../../Repositories/UserRepository';
+import StartEquipamentsService from '../StartEquipamentsService';
 
 class AuthServiceImpl implements AuthService {
 
     private userRepository: UserRepository;
     private startWeaponsService: StartWeaponsService;
+    private startEquipamentsService: StartEquipamentsService;
 
     public constructor(opts: any) {
         this.userRepository = opts.userRepository;
         this.startWeaponsService = opts.startWeaponsService;
+        this.startEquipamentsService = opts.startEquipamentsService;
     }
 
     generateToken(user: UserModel) {
@@ -67,6 +70,9 @@ class AuthServiceImpl implements AuthService {
 
         await this.startWeaponsService
             .addWeapons(user.id);
+
+        await this.startEquipamentsService
+            .addEquipament(user.id);
 
         return this.generateUserResponse(user);
     }
