@@ -1,0 +1,79 @@
+.loader-icon {
+    text-align: center;
+    padding-top: 0;
+}
+
+.loading {
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.not-loading {
+    display: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(360deg);
+    }
+}
+
+.filter-container {
+    max-width: 1180px;
+    padding: 0 30px;
+    margin: 32px auto;
+    display: inline;
+}
+
+.filter-container div {
+    margin-right: 10px;
+}
+
+.filter-container button {
+    position: relative;
+    top: 18px;
+    border: 0;
+    height: 35px;
+    background-color: green;
+    color: white;
+    border-radius: 2px;
+    line-height: 25px;
+    width: 140px;
+    margin-bottom: 20px;
+}
+
+.mission-info {
+    display: line;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.mission-info strong {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: medium;
+}
+
+.animal-container ul li ul {
+    display: inline;
+}
+
+.animal-container ul li ul li input {
+    line-height: 10px;
+}
+
+.mission-title {
+    display: line;
+    padding-left: 10px;
+}
+
+.mission-title button {
+    background-color: green;
+    color: white;
+    border-radius: 2px;
+    line-height: 25px;
+    width: 140px;
+}
