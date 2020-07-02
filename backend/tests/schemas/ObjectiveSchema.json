@@ -32,6 +32,9 @@
                 },
                 "weapons": {
                     "$ref": "weapon#/definitions/arrayOfWeapons"
+                },
+                "equipaments":{
+                    "$ref": "equipament#/definitions/arrayOfEquipaments"
                 }
             },
             "required": [
@@ -41,7 +44,8 @@
                 "created_at",
                 "user_id",
                 "completed",
-                "weapons"
+                "weapons",
+                "equipaments"
             ]
         },
         "arrayOfObjectives": {

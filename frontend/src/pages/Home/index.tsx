@@ -128,8 +128,16 @@ export default function Home() {
                     {animals.map(animal => (
                         <li key={animal.id}>
                             <span className="avaliability-tags">
-                                {animal.mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {
+                                    (
+                                        animal.mission.user_has_equipament &&
+                                        animal.mission.user_has_weapon
+                                    )
+                                    &&
+                                    <p className="mission-avaliability avaliable"></p>
+                                }
                                 {!animal.mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
+                                {!animal.mission.user_has_equipament && <p className="mission-avaliability buy-equipament"></p>}
                             </span>
                             <div className="animal-title">
                                 <Link to={`animal/${animal.id}`}><h1>{animal.name}</h1></Link>

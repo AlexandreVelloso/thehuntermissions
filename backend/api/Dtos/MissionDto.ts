@@ -1,7 +1,8 @@
 import BaseDto from "./BaseDto";
 import ObjectiveDto from "./ObjectiveDto";
 import MissionModel from "../../database/models/MissionModel";
-import { allObjectivesAreAvaliable } from "../Utils/ObjectiveWeapons";
+import { allObjectivesWeaponsAreAvaliable } from "../Utils/ObjectiveWeapons";
+import { allObjectivesEquipamentsAreAvaliable } from "../Utils/ObjectiveEquipaments";
 
 class MissionDto extends BaseDto {
     public id: number;
@@ -10,6 +11,7 @@ class MissionDto extends BaseDto {
     public hint: string;
     public animal_id: number;
     public user_has_weapon: boolean;
+    public user_has_equipament: boolean;
     public created_at: string;
     public updated_at: string;
     public objectives: ObjectiveDto[];
@@ -32,7 +34,8 @@ class MissionDto extends BaseDto {
         this.hint = hint;
         this.animal_id = animal_id;
         this.objectives = ObjectiveDto.toDto(objectives);
-        this.user_has_weapon = allObjectivesAreAvaliable(this.objectives);
+        this.user_has_weapon = allObjectivesWeaponsAreAvaliable(this.objectives);
+        this.user_has_equipament = allObjectivesEquipamentsAreAvaliable(this.objectives);
         this.created_at = created_at;
         this.updated_at = updated_at;
     }

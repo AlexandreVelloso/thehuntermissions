@@ -1,20 +1,19 @@
 /* eslint-disable no-await-in-loop */
-const parse = require('csv-parse/lib/sync');
-const fs = require('fs');
+import parse from 'csv-parse/lib/sync';
+import fs from 'fs';
+import appRoot from 'app-root-path';
 
-const { Model } = require('objection');
-const knex = require('../database/connection');
+import { Model } from 'objection';
+import knex from '../database/connection';
 
-Model.knex(knex);
+import UserWeaponModel from '../database/models/UserWeaponModel';
+import WeaponModel from '../database/models/WeaponModel';
+import UserModel from '../database/models/UserModel';
+import ObjectiveModel from '../database/models/ObjectiveModel';
+import UserObjectiveModel from '../database/models/UserObjectiveModel';
+import { LoginCredentials } from '../api/Dtos/UserCredentialsDto';
 
-const UserWeapon = require('../database/models/UserWeapon');
-const Weapon = require('../database/models/Weapon');
-const User = require('../database/models/User');
-const Objective = require('../database/models/Objective');
-const UserObjective = require('../database/models/UserObjective');
-
-
-function readCsv(filename) {
+function readCsv(filename: string) {
     const fileData = fs.readFileSync(filename, {
         encoding: 'utf8',
     });
@@ -26,33 +25,33 @@ function readCsv(filename) {
     return records;
 }
 
-async function findUserByEmail(email) {
-    return User.query()
+async function findUserByEmail(email: string) {
+    return UserModel.query()
         .where('email', email)
         .first();
 }
 
-async function findWeaponByName(name) {
-    return Weapon.query()
+async function findWeaponByName(name: string) {
+    return WeaponModel.query()
         .where('name', name)
         .first();
 }
 
-async function insertUserWeapon(user, weapon, haveWeapon) {
-    const userWeaponDB = await UserWeapon.query()
+async function insertUserWeapon(user: LoginCredentials, weapon: WeaponModel, haveWeapon: boolean) {
+    const userWeaponDB = await UserWeaponModel.query()
         .where('weapon_id', weapon.id)
         .where('user_id', user.id)
         .first();
 
     if (userWeaponDB) {
-        await UserWeapon.query()
+        await UserWeaponModel.query()
             .where('weapon_id', weapon.id)
             .where('user_id', user.id)
             .patch({
                 have_weapon: haveWeapon,
             });
     } else {
-        await UserWeapon.query()
+        await UserWeaponModel.query()
             .insert({
                 weapon_id: weapon.id,
                 user_id: user.id,
@@ -61,30 +60,30 @@ async function insertUserWeapon(user, weapon, haveWeapon) {
     }
 }
 
-async function findObjectivesByName(name, numberOfObjectives) {
-    return Objective.query()
+async function findObjectivesByName(name: string, numberOfObjectives: number) {
+    return ObjectiveModel.query()
         .where('name', name)
         .limit(numberOfObjectives);
 }
 
-async function insertObjectives(user, objectives, completed) {
+async function insertObjectives(user: LoginCredentials, objectives: ObjectiveModel[], completed: boolean) {
     for (let index = 0; index < objectives.length; index += 1) {
         const objective = objectives[index];
 
-        const userObjectiveDB = await UserObjective.query()
+        const userObjectiveDB = await UserObjectiveModel.query()
             .where('user_id', user.id)
             .where('objective_id', objective.id)
             .first();
 
         if (userObjectiveDB) {
-            await UserObjective.query()
+            await UserObjectiveModel.query()
                 .where('objective_id', objective.id)
                 .where('user_id', user.id)
                 .patch({
                     completed,
                 });
         } else {
-            await UserObjective.query()
+            await UserObjectiveModel.query()
                 .insert({
                     objective_id: objective.id,
                     user_id: user.id,
@@ -95,7 +94,7 @@ async function insertObjectives(user, objectives, completed) {
 }
 
 async function updateUsers() {
-    const rows = readCsv('./updateCsvs/users.csv');
+    const rows = readCsv(`${appRoot}/scripts/updateCsvs/users.csv`);
 
     for (let i = 0; i < rows.length; i += 1) {
         const { id, username, email, password, refresh_token, created_at, updated_at } = rows[i];
@@ -118,7 +117,7 @@ async function updateUsers() {
 }
 
 async function updateUserWeapons() {
-    const rows = readCsv('./updateCsvs/users_weapons.csv');
+    const rows = readCsv(`${appRoot}/scripts/updateCsvs/users_weapons.csv`);
 
     for (let i = 0; i < rows.length; i += 1) {
         const row = rows[i];
@@ -131,7 +130,7 @@ async function updateUserWeapons() {
 }
 
 async function updateUserObjectives() {
-    const rows = readCsv('./updateCsvs/users_objectives.csv');
+    const rows = readCsv(`${appRoot}/scripts/updateCsvs/users_objectives.csv`);
 
     for (let i = 0; i < rows.length; i += 1) {
         const row = rows[i];
@@ -144,6 +143,8 @@ async function updateUserObjectives() {
 }
 
 async function updateDatabase() {
+    Model.knex(knex);
+
     await updateUsers();
     await updateUserWeapons();
     await updateUserObjectives();

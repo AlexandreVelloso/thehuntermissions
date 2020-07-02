@@ -11,6 +11,7 @@ import createObjectiveRoutes from './ObjectiveRoutes';
 import createMissionRoutes from './MissionRoutes';
 import Error404Route from './Error404Route';
 import createAppContainer from '../createContainer';
+import createEquipamentRoutes from './EquipamentRoutes';
 
 const router = Router();
 const container = createAppContainer();
@@ -27,6 +28,7 @@ router.use('/api', JwtMiddleware.handle, createLastMissionRoutes(container));
 router.use('/api', JwtMiddleware.handle, createWeaponRoutes(container));
 router.use('/api', JwtMiddleware.handle, createObjectiveRoutes(container));
 router.use('/api', JwtMiddleware.handle, createMissionRoutes(container));
+router.use('/api', JwtMiddleware.handle, createEquipamentRoutes(container));
 router.use('/api', Error404Route);
 
 export default router;

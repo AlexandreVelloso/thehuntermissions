@@ -14,6 +14,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
             user_id: 1,
             completed: 1,
             weapons: [],
+            equipaments: [],
             created_at: '',
             updated_at: '',
         }
@@ -28,6 +29,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
                 user_id: 1,
                 completed: 1,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -38,6 +40,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
                 user_id: 1,
                 completed: 0,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             }
@@ -53,6 +56,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
                 user_id: 1,
                 completed: 1,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -63,6 +67,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
                 user_id: 1,
                 completed: 1,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -73,6 +78,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
                 user_id: 1,
                 completed: 1,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             }
@@ -91,6 +97,7 @@ class MockObjectiveRepository implements ObjectiveRepository {
             user_id: 1,
             completed: 1,
             weapons: [],
+            equipaments: [],
             created_at: '',
             updated_at: '',
         }

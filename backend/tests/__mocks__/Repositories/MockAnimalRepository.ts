@@ -28,6 +28,7 @@ class MockAnimalRepository implements AnimalRepository {
                                 completed: 1,
                                 user_has_weapon: 1,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             },
@@ -39,6 +40,7 @@ class MockAnimalRepository implements AnimalRepository {
                                 completed: 1,
                                 user_has_weapon: 1,
                                 weapons: [],
+                                equipaments: [],
                                 created_at: '',
                                 updated_at: '',
                             }
@@ -78,6 +80,7 @@ class MockAnimalRepository implements AnimalRepository {
                             completed: 1,
                             user_has_weapon: 1,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         },
@@ -89,6 +92,7 @@ class MockAnimalRepository implements AnimalRepository {
                             completed: 1,
                             user_has_weapon: 1,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }
@@ -127,6 +131,7 @@ class MockAnimalRepository implements AnimalRepository {
                             completed: 1,
                             user_has_weapon: 1,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         },
@@ -138,6 +143,7 @@ class MockAnimalRepository implements AnimalRepository {
                             completed: 1,
                             user_has_weapon: 1,
                             weapons: [],
+                            equipaments: [],
                             created_at: '',
                             updated_at: '',
                         }

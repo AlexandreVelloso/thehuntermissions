@@ -57,6 +57,10 @@
     background: red;
 }
 
+.home-container .buy-equipament {
+    background: orange;
+}
+
 .home-container ul li {
     background: #fff;
     padding: 12px;

@@ -39,6 +39,10 @@
         {
             "name": "Weapon",
             "description": "Weapons in the game"
+        },
+        {
+            "name": "Equipament",
+            "description": "Equipaments in the game"
         }
     ],
     "schemes": [
@@ -779,6 +783,124 @@
                     }
                 ]
             }
+        },
+        "/equipaments": {
+            "get": {
+                "tags": [
+                    "Equipament"
+                ],
+                "summary": "Retrieve all equipaments",
+                "operationId": "getEquipaments",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Equipament"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/equipaments/{equipamentId}": {
+            "get": {
+                "tags": [
+                    "Equipament"
+                ],
+                "parameters": [
+                    {
+                        "name": "equipamentId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the equipament to retrieve",
+                        "type": "integer"
+                    }
+                ],
+                "summary": "Find an equipament",
+                "operationId": "findEquipament",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Equipament"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Equipament"
+                ],
+                "parameters": [
+                    {
+                        "name": "equipamentId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id of the equipament to update",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "have_equipament",
+                        "in": "body",
+                        "required": true,
+                        "description": "Boolean to describe if the equipament was bought or not",
+                        "type": "object",
+                        "properties": {
+                            "have_equipament": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update an Equipament",
+                "operationId": "updateEquipament",
+                "responses": {
+                    "204": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized access",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": [
+                            "JWT"
+                        ]
+                    }
+                ]
+            }
         }
     },
     "securityDefinitions": {
@@ -879,8 +1001,20 @@
                 "user_has_weapon": {
                     "type": "boolean"
                 },
+                "user_has_equipament": {
+                    "type": "boolean"
+                },
                 "weapons": {
-                    "$ref": "#/definitions/Weapon"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Weapon"
+                    }
+                },
+                "equipaments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Weapon"
+                    }
                 },
                 "created_at": {
                     "type": "string",
@@ -911,6 +1045,37 @@
                     "format": "int32"
                 },
                 "have_weapon": {
+                    "type": "boolean"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Equipament": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "have_equipament": {
                     "type": "boolean"
                 },
                 "created_at": {

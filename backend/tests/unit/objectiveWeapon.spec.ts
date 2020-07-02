@@ -1,6 +1,6 @@
 import {
     userHasSomeObjectiveWeapon,
-    allObjectivesAreAvaliable,
+    allObjectivesWeaponsAreAvaliable,
 } from '../../api/Utils/ObjectiveWeapons';
 import WeaponDto from '../../api/Dtos/WeaponDto';
 import ObjectiveDto from '../../api/Dtos/ObjectiveDto';
@@ -76,7 +76,9 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: true,
+                user_has_equipament: true,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -87,13 +89,15 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: true,
+                user_has_equipament: true,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
         ];
 
-        const result = allObjectivesAreAvaliable(objectives);
+        const result = allObjectivesWeaponsAreAvaliable(objectives);
 
         expect(result).toBe(true);
     });
@@ -107,7 +111,9 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: false,
+                user_has_equipament: false,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -118,13 +124,15 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: false,
+                user_has_equipament: false,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
         ];
 
-        const result = allObjectivesAreAvaliable(objectives);
+        const result = allObjectivesWeaponsAreAvaliable(objectives);
 
         expect(result).toBe(false);
     });
@@ -138,7 +146,9 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: false,
+                user_has_equipament: false,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
@@ -149,13 +159,15 @@ describe('All Objectives Are Avaliable', () => {
                 user_id: 1,
                 completed: false,
                 user_has_weapon: true,
+                user_has_equipament: true,
                 weapons: [],
+                equipaments: [],
                 created_at: '',
                 updated_at: '',
             },
         ];
 
-        const result = allObjectivesAreAvaliable(objectives);
+        const result = allObjectivesWeaponsAreAvaliable(objectives);
 
         expect(result).toBe(false);
     });

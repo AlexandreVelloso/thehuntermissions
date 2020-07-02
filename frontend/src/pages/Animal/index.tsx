@@ -147,8 +147,16 @@ export default function Animal() {
                     {animal.missions && animal.missions.map(mission => (
                         <li key={mission.id}>
                             <span className="avaliability-tags">
-                                {mission.user_has_weapon && <p className="mission-avaliability avaliable"></p>}
+                                {
+                                    (
+                                        mission.user_has_equipament &&
+                                        mission.user_has_weapon
+                                    )
+                                    &&
+                                    <p className="mission-avaliability avaliable"></p>
+                                }
                                 {!mission.user_has_weapon && <p className="mission-avaliability buy-gun"></p>}
+                                {!mission.user_has_equipament && <p className="mission-avaliability buy-equipament"></p>}
                             </span>
                             <div className="mission-title">
                                 <h2>{mission.name}</h2>

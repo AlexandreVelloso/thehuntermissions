@@ -5,7 +5,7 @@ import app from '../../api/app';
 import { sign } from "../../api/Utils/JwtToken";
 import connection from '../../database/connection';
 import errorSchema from '../schemas/ErrorSchema.json';
-import weaponSchema from '../schemas/weaponSchema.json';
+import weaponSchema from '../schemas/WeaponSchema.json';
 import { generateWeapon } from '../__fakers__/WeaponFaker';
 import { generateUserWeapon } from '../__fakers__/UserWeaponFaker';
 
@@ -47,8 +47,6 @@ describe('Weapons Index', () => {
     });
 
     it('should list all weapons', async () => {
-        await connection.seed.run();
-
         const response = await request(app)
             .get('/api/weapons')
             .set('Authorization', firstUserAccessToken);
