@@ -42,18 +42,6 @@ async function addWeaponsObjectives(knex: Knex, weapons: WeaponDto[], objectives
     }
 }
 
-async function createObjectivesWeaponsForAllWeapons(knex: Knex) {
-    const weaponsDb: WeaponModel[] = await WeaponModel.query();
-    const weapons: WeaponDto[] = WeaponDto.toDto(weaponsDb);
-
-    await weapons.forEach(async (weapon) => {
-        const objectivesDB = await findObjectivesByName(weapon.name);
-        const objectives: ObjectiveDto[] = ObjectiveDto.toDto(objectivesDB);
-
-        await addWeaponsObjectives(knex, [weapon], objectives);
-    });
-}
-
 async function dot17HMRHV(knex: Knex) {
     const ammo = await findAmmoByName('.17 HMR HV Ammunition');
 
@@ -596,7 +584,6 @@ exports.seed = (knex: Knex) => {
 
     return knex('objectives_weapons').del()
         .then(async () => {
-            await createObjectivesWeaponsForAllWeapons(knex);
             await dot17HMRHV(knex);
             await dot308SingleShotHandgun(knex);
             await dot4570Government(knex);
