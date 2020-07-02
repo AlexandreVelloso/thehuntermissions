@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Animal from './pages/Animal';
 import Weapon from './pages/Weapon';
 import Equipament from './pages/Equipament';
+import Search from './pages/Search';
 
 export default function Routes() {
     return (
@@ -22,6 +23,7 @@ export default function Routes() {
                 <Route path="/weapon" exact component={Weapon}></Route>
                 <Route path="/animal/:animalId" component={Animal}></Route>
                 <Route path="/equipament" exact component={Equipament}></Route>
+                <Route path="/search" exact component={Search}></Route>
             </Switch>
         </BrowserRouter>
     );
