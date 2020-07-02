@@ -7,6 +7,8 @@ interface EquipamentRepository extends BaseRepository<EquipamentModel> {
 
     findEquipamentByUser(equipamentId: number, userId: any): Promise<EquipamentModel>;
 
+    findEquipamentByName(name: string): Promise<EquipamentModel>;
+
 }
 
 export default EquipamentRepository;

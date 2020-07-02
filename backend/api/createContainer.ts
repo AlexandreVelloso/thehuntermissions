@@ -38,6 +38,7 @@ import EquipamentServiceImpl from './Services/impl/EquipamentServiceImpl';
 import EquipamentRepositoryImpl from './Repositories/impl/EquipamentRepositoryImpl';
 import UserEquipamentRepositoryImpl from './Repositories/impl/UserEquipamentRepositoryImpl';
 import UpdateEquipamentValidator from './Validators/UpdateEquipamentValidator';
+import StartEquipamentsServiceImpl from './Services/impl/StartEquipamentsServiceImpl';
 
 function createAppContainer(): AwilixContainer {
     const container = createContainer();
@@ -67,6 +68,7 @@ function createAppContainer(): AwilixContainer {
         startWeaponsService: asClass(StartWeaponsServiceImpl, opts),
         weaponService: asClass(WeaponServiceImpl, opts),
         equipamentService: asClass(EquipamentServiceImpl, opts),
+        startEquipamentsService: asClass(StartEquipamentsServiceImpl, opts),
 
         animalRepository: asClass(AnimalRepositoryImpl, opts),
         missionRepository: asClass(MissionRepositoryImpl, opts),
