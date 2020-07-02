@@ -1,8 +1,9 @@
 import UserWeaponRepository from '../../Repositories/UserWeaponRepository';
 import WeaponRepository from '../../Repositories/WeaponRepository';
 import WeaponModel from '../../../database/models/WeaponModel';
+import StartWeaponsService from '../StartWeaponsService';
 
-class StartWeaponsServiceImpl {
+class StartWeaponsServiceImpl implements StartWeaponsService {
 
     private weaponRepository: WeaponRepository;
     private userWeaponRepository: UserWeaponRepository;
