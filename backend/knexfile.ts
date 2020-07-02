@@ -48,10 +48,10 @@ export default {
     production: {
         client: 'mysql',
         connection: {
-            host: 'b652damgtxm2iidftpqq-mysql.services.clever-cloud.com',
-            database: 'b652damgtxm2iidftpqq',
-            user: 'ugj2qayct063ewjh',
-            password: 'RP1Bo0rlOqLd6jWKj1qM',
+            host: 'bb06qqmjvoledl6necnt-mysql.services.clever-cloud.com',
+            database: 'bb06qqmjvoledl6necnt',
+            user: 'u10cxbahlfusaqed',
+            password: 'jsfQnbvTxAy78J2hOYO6',
         },
         pool: {
             min: 1,
