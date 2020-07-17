@@ -466,10 +466,14 @@ async function k98kBoltActionRifle(knex: Knex) {
     const objectives = await findObjectivesByName('8x57 K98k Bolt Action Rifle');
     const objectivesDto = ObjectiveDto.toDto(objectives);
 
+    const objectives2 = await findObjectivesByName('8x57 IS K98k Bolt Action Rifle');
+    const objectivesDto2 = ObjectiveDto.toDto(objectives2);
+
     await addWeaponsObjectives(knex, weapons, objectivesDto);
+    await addWeaponsObjectives(knex, weapons, objectivesDto2);
 }
 
-async function anschtzRifle(knex: Knex) {
+async function anschutzRifle(knex: Knex) {
     const weapons = await WeaponModel.query()
         .whereIn('name', [
             '8x57 IS Anschütz 1780 D FL Bolt Action Rifle',
@@ -523,7 +527,7 @@ async function dot3006Ammunition(knex: Knex) {
     await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
-async function rockMountainElkPermitedRifle(knex: Knex) {
+async function rockMountainElkPermittedRifle(knex: Knex) {
     const weapons = await WeaponModel.query()
         .whereIn('name', [
             '45-70 Buffalo Rifle',
@@ -566,7 +570,7 @@ async function dot454Ammunition(knex: Knex) {
     await addWeaponsObjectives(knex, weapons, objectivesDto);
 }
 
-async function waterBuffaloAnyMuzeloaderAmmunition(knex: Knex) {
+async function waterBuffaloAnyMuzzleloaderAmmunition(knex: Knex) {
     const weapons = await WeaponModel.query()
         .whereIn('name', [
             '50 Inline Muzzleloader',
@@ -574,6 +578,42 @@ async function waterBuffaloAnyMuzeloaderAmmunition(knex: Knex) {
         ]);
 
     const objectives = await findObjectivesByName('Finally, harvest a charging Water Buffalo with any ethical Muzzleloader ammo.');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
+}
+
+async function dot3030LeverAction(knex: Knex) {
+    const weapons = await WeaponModel.query()
+        .whereIn('name', [
+            '30-30 Lever Action Rifle',
+        ]);
+
+    const objectives = await findObjectivesByName('.30-30 Lever Action Rifle');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
+}
+
+async function dot50ConicalBullet(knex: Knex) {
+    const weapons = await WeaponModel.query()
+        .whereIn('name', [
+            '50 Inline Muzzleloader',
+        ]);
+
+    const objectives = await findObjectivesByName('.50 Conical Bullet');
+    const objectivesDto = ObjectiveDto.toDto(objectives);
+
+    await addWeaponsObjectives(knex, weapons, objectivesDto);
+}
+
+async function recurveBow(knex: Knex) {
+    const weapons = await WeaponModel.query()
+        .whereIn('name', [
+            'Recurve Bow',
+        ]);
+
+    const objectives = await findObjectivesByName('Recurve Bow');
     const objectivesDto = ObjectiveDto.toDto(objectives);
 
     await addWeaponsObjectives(knex, weapons, objectivesDto);
@@ -613,13 +653,16 @@ exports.seed = (knex: Knex) => {
             await dot270rifle(knex);
             await dot357Handgun(knex);
             await k98kBoltActionRifle(knex);
-            await anschtzRifle(knex);
+            await anschutzRifle(knex);
             await dot8x57Ammunition(knex);
             await any4570Rifle(knex);
             await dot3006Ammunition(knex);
-            await rockMountainElkPermitedRifle(knex);
+            await rockMountainElkPermittedRifle(knex);
             await dot454Ammunition(knex);
-            await waterBuffaloAnyMuzeloaderAmmunition(knex);
+            await waterBuffaloAnyMuzzleloaderAmmunition(knex);
             await dot3006rifle(knex);
+            await dot3030LeverAction(knex);
+            await dot50ConicalBullet(knex);
+            await recurveBow(knex);
         });
 };
